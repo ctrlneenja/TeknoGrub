@@ -1,6 +1,6 @@
 from django.db import models
 
-from TeknoGrub.User.models import Users
+from User.models import Users
 # Create your models here.
 class Notifications(models.Model):
     notification_id = models.AutoField(primary_key=True)

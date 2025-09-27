@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Promo',
-    'Order',
+    'Canteen',
     'Cart',
+    'Menu',
+    'Notification',
+    'Order',
     'Payment',
+    'Promo',
+    'User',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'teknogrub',
         'USER': 'root',
-        'PASSWORD': 'Gabrielle_4',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {'init_command': "SET SQL_MODE='STRICT_TRANS_TABLES'"}

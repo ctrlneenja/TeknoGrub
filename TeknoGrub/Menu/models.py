@@ -1,5 +1,5 @@
 from django.db import models
-from TeknoGrub.Canteen.models import Canteen
+from Canteen.models import Canteen
 
 # Create your models here.
 

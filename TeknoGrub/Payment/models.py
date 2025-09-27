@@ -7,7 +7,7 @@ class UserPaymentMethod(models.Model):
     GCASH = "GCASH"
     PAYMAYA = "PAYMAYA"
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey("User.Users", on_delete=models.CASCADE)
     payment_method_choices = [
         (CARD, "Credit/Debit Card"),
         (GCASH, "GCash"),
@@ -28,4 +28,4 @@ class Payment(models.Model):
     payment_time = models.DateTimeField(auto_now_add=True)
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="payments")
-    payment_method = models.ForeignKey("users.UserPaymentMethod", on_delete=models.SET_NULL, null=True, blank=True)
+    payment_method = models.ForeignKey("Payment.UserPaymentMethod", on_delete=models.SET_NULL, null=True, blank=True)
