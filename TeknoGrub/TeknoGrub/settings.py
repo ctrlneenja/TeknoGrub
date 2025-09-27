@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'TeknoGrub.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbTeknoGrub',
+        'NAME': 'teknogrub',
         'USER': 'root',
-        'PASSWORD': 'password123',
+        'PASSWORD': 'Gabrielle_4',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {'init_command': "SET SQL_MODE='STRICT_TRANS_TABLES'"}
