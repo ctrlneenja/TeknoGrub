@@ -1,7 +1,6 @@
 from django.db import models
 from Cart.models import Cart
 
-
 # Create your models here.
 
 class Order(models.Model):
