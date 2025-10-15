@@ -1,11 +1,6 @@
 from django.db import models
-
-class Category(models.Model):
-    category_name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.category_name
-
+from Menu.models import MenuItem
+from Menu.models import Category
 
 class PromoName(models.Model):
     title = models.CharField(max_length=100)
@@ -19,6 +14,20 @@ class PromoName(models.Model):
     per_user_limit = models.IntegerField(default=1)
     max_uses = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
+
+    # MANY-TO-MANY:
+    applicable_items = models.ManyToManyField(
+        MenuItem,
+        related_name="promos",
+        blank=True 
+    )
+
+    # MANY-TO-MANY: 
+    applicable_categories = models.ManyToManyField(
+        Category,
+        related_name="promos",
+        blank=True 
+    )
 
     def __str__(self):
         return f"{self.title} ({self.code})"

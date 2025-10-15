@@ -17,6 +17,11 @@ class MenuItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     canteen = models.ForeignKey(Canteen, on_delete=models.CASCADE)
+    # MANY-TO-MANY: 
+    categories = models.ManyToManyField(
+        Category,
+        related_name="menu_items"
+    )
 
 class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
