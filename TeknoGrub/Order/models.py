@@ -26,13 +26,6 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="order_items")
 
-class OrderItemAddOn(models.Model):
-    oder_item_addon = models.AutoField(primary_key=True)
-    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name="addons")
-    addon = models.ForeignKey("Menu.AddOn", on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    price_at_order = models.DecimalField(max_digits=10, decimal_places=2)
-
 class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     login_logs = models.TextField(blank=True, null=True)

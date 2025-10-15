@@ -14,11 +14,5 @@ class CartItem(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
 
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
-    menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="cart_items")
-
-
-class CartItemAddOn(models.Model):
-    cart_item_addon = models.AutoField(primary_key=True)
-    cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name="addons")
-    addon = models.ForeignKey("Menu.AddOn", on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    # menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="cart_items")
+    # paki check if dapat naa ni kaning ako gi commentan

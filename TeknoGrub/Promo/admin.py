@@ -4,7 +4,7 @@ from .models import Category, PromoName, PromoItem, PromoCategory, PromoRedempti
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(PromoName)
-admin.site.register(PromoItem)
-admin.site.register(PromoCategory)
+# admin.site.register(PromoItem)
+# admin.site.register(PromoCategory)
 admin.site.register(PromoRedemption)
 

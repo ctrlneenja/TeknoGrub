@@ -24,16 +24,6 @@ class PromoName(models.Model):
         return f"{self.title} ({self.code})"
 
 
-class PromoItem(models.Model):
-    promo = models.ForeignKey(PromoName, on_delete=models.CASCADE, related_name="items")
-    menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="promos")
-
-
-class PromoCategory(models.Model):
-    promo = models.ForeignKey(PromoName, on_delete=models.CASCADE, related_name="categories")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="promos")
-
-
 class PromoRedemption(models.Model):
     redeemed_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey("User.Users", on_delete=models.CASCADE, related_name="redeemed_promos")
