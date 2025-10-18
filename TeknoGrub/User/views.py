@@ -5,3 +5,6 @@ def settings(request):
 
 def login_view(request):
     return render(request, 'User/login.html')
+
+def signup_view(request):
+    return render(request, 'User/signup.html')

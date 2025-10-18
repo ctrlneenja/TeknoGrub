@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_head %}
+  {# Link to the new CSS file #}
+  <link rel="stylesheet" href="{% static 'user/css/signup.css' %}">
+  {# Load the Inter font, which is great for forms #}
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  {# Faded background logo #}
+  <img class="bg-logo" src="{% static 'user/img/logocitu-1.png' %}" />
+
+  <div class="signup-grid">
+    
+    <div class="form-container">
+      <h2>Sign up to TeknoGrub!</h2>
+      <form method="POST">
+        {% csrf_token %}
+        
+        <div class="input-row">
+          <div class="input-group">
+            <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+          </div>
+          <div class="input-group">
+            <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="id_number" name="id_number" placeholder="ID Number" required>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="email" name="email" placeholder="School Email" required>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="password" name="password" placeholder="Create Password" required>
+          <img class="password-toggle-icon" src="{% static 'user/img/invisible.png' %}">
+        </div>
+
+        <button type="submit" class="signup-btn">Sign Up</button>
+      </form>
+      <p class="login-link">
+        Already have an account? <a href="#">Log in here!</a>
+      </p>
+    </div>
+
+    <div class="welcome-section">
+      <h1>Hungry? Sign up now, teknoy!</h1>
+      <p>Skip the line, enjoy the grub. Sign up now and start ordering with ease.</p>
+    </div>
+
+  </div>
+{% endblock %}
