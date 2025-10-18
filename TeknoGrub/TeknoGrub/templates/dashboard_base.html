@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeknoGrub - {% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="dashboard-body">
+
+    <!-- Main Header -->
+    <header class="dashboard-header">
+        <div class="logo">
+            TEKNO<span class="logo-yellow">GRUB</span>
+        </div>
+        <div class="header-actions">
+            <button class="icon-btn" aria-label="Notifications">🔔</button>
+            <button class="icon-btn" aria-label="Menu">☰</button>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Left Sidebar Navigation -->
+        <aside class="dashboard-sidebar">
+            <div class="user-profile">
+                <h3>Libeth Bileth</h3> {# Replace with {{ request.user.get_full_name }} #}
+                <p>11-1111-111</p> {# Replace with {{ request.user.id_number }} #}
+            </div>
+
+            <div class="canteen-selector">
+                <span>Main Canteen</span>
+                <span>▼</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <span>🍽️</span> Menu
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⭐</span> Favorites
+                </a>
+                <a href="#" class="nav-item">
+                    <span>%</span> Promos
+                </a>
+                <a href="{% url 'order-history' %}" class="nav-item {% if request.resolver_match.url_name == 'order-history' %}is-active{% endif %}">
+                    <span>🕓</span> History
+                </a>
+                <a href="#" class="nav-item">
+                    <span>⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+            <div class="content-wrapper"> <!-- ADD THIS WRAPPER DIV -->
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

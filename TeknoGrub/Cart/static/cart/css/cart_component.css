@@ -1,0 +1,229 @@
+/* --- Variables from your design --- */
+:root {
+    --bg-red: #550508;
+    --button-yellow: #FBCD36;
+    --text-dark: #333;
+}
+
+/* --- Floating Button --- */
+.floating-basket-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background-color: var(--button-yellow);
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 999;
+    transition: transform 0.2s ease;
+}
+.floating-basket-btn:hover {
+    transform: scale(1.1);
+}
+.floating-basket-btn svg {
+    color: var(--bg-red);
+    width: 28px;
+    height: 28px;
+}
+
+/* --- Overlay --- */
+.basket-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.basket-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- Sidebar --- */
+.basket-sidebar {
+    position: fixed;
+    bottom: calc(3rem + 60px);
+    right: 2rem;
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 4.5rem - 60px);
+    background-color: #ffffff;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+
+    /* --- NEW ANIMATION PROPERTIES --- */
+    /* 1. Set the anchor point for the transform to the bottom-right corner */
+    transform-origin: bottom right;
+
+    /* 2. Initial state: Invisible and scaled down to nothing */
+    opacity: 0;
+    transform: scale(0.1); /* Start slightly larger than 0 for a smoother feel */
+
+    /* 3. Make sure the transition animates both opacity and transform */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-out;
+}
+
+.basket-sidebar.is-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.basket-header {
+    background-color: var(--button-yellow);
+    padding: 1.5rem;
+    /*border-top-left-radius: 12px;*/
+    /*border-bottom-left-radius: 12px;*/
+}
+.basket-header h3 {
+    font-size: 1.5rem;
+    color: var(--bg-red);
+    text-align: center;
+}
+
+.basket-body {
+    flex-grow: 1;
+    padding: 1rem 1.5rem;
+    overflow-y: auto; /* Makes item list scrollable if it gets long */
+}
+.canteen-name {
+    font-weight: bold;
+    color: #888;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+.basket-item-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* --- Individual Basket Item Styling --- */
+.basket-item {
+    /* THIS IS THE CORE FIX: Use Flexbox for layout */
+    display: flex;
+    align-items: center; /* Vertically aligns the content of all columns */
+    gap: 1rem; /* Creates space between the columns */
+    margin-bottom: 1.5rem; /* Space between each item in the list */
+}
+
+.item-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0; /* Prevents the image from shrinking if the container is narrow */
+}
+
+.item-details {
+    /* This column will grow to take up all available space */
+    flex-grow: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-dark); /* Ensure text color is dark */
+}
+
+.item-subtext, .item-edit {
+    font-size: 0.9rem;
+    color: #666;
+    text-decoration: none;
+    display: block; /* Ensures they stack vertically */
+}
+.item-edit {
+    text-decoration: underline;
+}
+
+.item-actions {
+    /* This column will align its content to the right */
+    text-align: right;
+}
+
+.item-price {
+    font-weight: bold;
+    color: var(--bg-red);
+    margin-bottom: 0.5rem;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    /* Pushes the selector to the right edge of its column */
+    justify-content: flex-end;
+}
+
+.quantity-btn {
+    width: 28px;
+    height: 28px;
+    background-color: var(--button-yellow);
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+
+.quantity-value {
+    padding: 0 0.75rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+
+/* --- Footer --- */
+.basket-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #eee;
+}
+.total-amount {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+.payment-options { margin-bottom: 1.5rem; }
+.payment-option {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+.payment-option input[type="radio"] { display: none; }
+.radio-check { /* Custom radio button styles */ }
+
+.confirm-order-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--button-yellow);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- Prevent body scroll when overlay is active --- */
+body.basket-open {
+    overflow: hidden;
+}

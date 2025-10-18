@@ -1,0 +1,79 @@
+{% load static %}
+
+<!-- The Floating Basket Button -->
+<button class="floating-basket-btn" id="open-basket-btn" aria-label="Open Basket">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+</button>
+
+<!-- The semi-transparent overlay that covers the page -->
+<div class="basket-overlay" id="basket-overlay"></div>
+
+<!-- The Basket Sidebar (Initially Hidden) -->
+<aside class="basket-sidebar" id="basket-sidebar">
+    <!-- Header -->
+    <div class="basket-header">
+        <h3>My Basket</h3>
+    </div>
+
+    <!-- Body / Item List -->
+    <div class="basket-body">
+        <p class="canteen-name">MAIN CANTEEN ORDER</p>
+        <ul class="basket-item-list">
+            <!-- Item 1 -->
+            <li class="basket-item">
+                <img src="{% static 'images/food_beepstek.png' %}" alt="Biggest Beepstek" class="item-image">
+                <div class="item-details">
+                    <p class="item-name">Biggest beepstek</p>
+                    <span class="item-subtext">Take out</span>
+                    <a href="#" class="item-edit">Edit</a>
+                </div>
+                <div class="item-actions">
+                    <p class="item-price">₱ 1,000,000,000.00</p>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity-value">2</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                </div>
+            </li>
+            <!-- Item 2 -->
+            <li class="basket-item">
+                <img src="{% static 'images/food_kare.png' %}" alt="Stephen Kare" class="item-image">
+                <div class="item-details">
+                    <p class="item-name">Stephen Kare</p>
+                    <span class="item-subtext">Dine in</span>
+                    <a href="#" class="item-edit">Edit</a>
+                </div>
+                <div class="item-actions">
+                    <p class="item-price">₱ 1 million dollars</p>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity-value">1</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Footer / Order Summary -->
+    <div class="basket-footer">
+        <div class="total-amount">
+            <span>Total Amount:</span>
+            <span>₱ 1,001,000,150.00</span>
+        </div>
+        <div class="payment-options">
+            <label class="payment-option">
+                Cash
+                <input type="radio" name="payment" value="cash">
+                <span class="radio-check"></span>
+            </label>
+            <label class="payment-option">
+                Gcash 0945 *** **47
+                <input type="radio" name="payment" value="gcash" checked>
+                <span class="radio-check"></span>
+            </label>
+        </div>
+        <button class="confirm-order-btn">Confirm Order</button>
+    </div>
+</aside>
