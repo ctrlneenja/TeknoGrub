@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TEKNOGRUB</title>
+    <link rel="stylesheet" href="{% static 'User/css/styles.css' %}">
+    <!-- google fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- font awesome - Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="page-container">
+        <!-- left sidebar (desktop) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">TEKNOGRUB</h1>
+            </div>
+            <div class="user-profile">
+                <h2>Libeth Bileth</h2>
+                <p>11-1111-111</p>
+            </div>
+            <!-- canteen choices -->
+            <div class="canteen-selector-wrapper">
+                <label for="canteen-desktop" class="sr-only">Select Canteen</label>
+                <select id="canteen-desktop" class="canteen-selector">
+                    <option value="main">Main Canteen</option>
+                    <option value="annex">Annex Canteen</option>
+                    <option value="engineering">Engineering Cafe</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#"><i class="fa-solid fa-utensils"></i><span>Menu</span></a></li>
+                    <li><a href="#"><i class="fa-solid fa-star"></i><span>Favorites</span></a></li>
+                    <li><a href="#"><i class="fa-solid fa-percent"></i><span>Promos</span></a></li>
+                    <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i><span>History</span></a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- main menu -->
+        <main class="main-content">
+            <!-- deader for desktop -->
+            <header class="main-header-desktop">
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="">
+                </div>
+                <button class="search-btn">Search</button>
+                <div class="header-icons">
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </header>
+
+            <!-- header for mobile -->
+            <header class="main-header-mobile">
+                <h1 class="logo">TEKNOGRUB</h1>
+                <div class="header-icons">
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </header>
+
+            <div class="mobile-controls">
+                <div class="user-profile">
+                    <h2>Libeth Bileth</h2>
+                    <p>11-1111-111</p>
+                </div>
+                <!-- mobile canteen choices -->
+                <div class="canteen-selector-wrapper">
+                    <label for="canteen-mobile" class="sr-only">Select Canteen</label>
+                    <select id="canteen-mobile" class="canteen-selector">
+                        <option value="main">Main Canteen</option>
+                        <option value="annex">Annex Canteen</option>
+                        <option value="engineering">Engineering Cafe</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+                <div class="search-bar-mobile">
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="">
+                    </div>
+                    <button class="search-btn">Search</button>
+                </div>
+            </div>
+
+            <!-- settings -->
+            <section class="settings-section">
+                <h1>Settings</h1>
+
+                <div class="card">
+                    <div class="card-section personal-info">
+                        <h3>Personal Info</h3>
+                        <div class="info-item">
+                            <span>ID Number</span>
+                            <span>11-1111-11</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Full Name</span>
+                            <span>Libeth Bileth</span>
+                        </div>
+                        <div class="info-item">
+                            <span>School Email</span>
+                            <span>libeth.belith@cit.edu</span>
+                        </div>
+                    </div>
+                    <div class="card-section account-settings">
+                        <h3>Account Settings</h3>
+                        <a href="#" class="setting-link">Change Password <i class="fa-solid fa-pen"></i></a>
+                        <a href="#" class="setting-link">Payment Methods <i class="fa-solid fa-pen"></i></a>
+                        <a href="#" class="setting-link delete-account">Delete Account</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-section activity-summary">
+                        <h3>Activity Summary</h3>
+                        <div class="info-item">
+                            <span>Total Orders</span>
+                            <span>23</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Favorites</span>
+                            <span>23</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logout-container">
+                    <button class="logout-btn">Logout</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
