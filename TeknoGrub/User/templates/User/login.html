@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Log In{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-grid">
+    <!-- Left Side: Welcome Text -->
+    <div class="welcome-section">
+        <h1>Welcome back, teknoy!</h1>
+        <p>Feeling hungry? Queue up your grub now!</p>
+    </div>
+
+    <!-- Right Side: Login Form Card -->
+    <div class="form-container">
+        <h2>Log in to your account!</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <input type="text" id="id_number" name="id_number" placeholder="ID Number" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <!-- This is the little eye icon. You can add JS later to make it work -->
+                <span class="password-toggle-icon">👁️</span>
+            </div>
+
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Log In</button>
+        </form>
+        <p class="signup-link">
+            Don't have an account? <a href="#">Create one!</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

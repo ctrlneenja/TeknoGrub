@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeknoGrub - {% block title %}Welcome{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+    <!-- You can add a link to Google Fonts here if you want a specific font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-container">
+        <!-- This header will appear on all pages -->
+        <header class="main-header">
+            <div class="logo">
+                TEKNO<span class="logo-yellow">GRUB</span>
+            </div>
+            <nav class="main-nav">
+                <a href="#">Sign Up</a>
+                <a href="#">About Us</a>
+<!--                <a href="#">About the Developers</a>-->
+            </nav>
+        </header>
+
+        <!-- Main content will be injected here from other templates -->
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>
