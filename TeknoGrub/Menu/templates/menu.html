@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TeknoGrub | Menu</title>
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo">
+        <h1>TEKNO<span>GRUB</span></h1>
+      </div>
+      <div class="header-icons">
+        <i class="fa-solid fa-bell"></i>
+        <i class="fa-solid fa-bars"></i>
+      </div>
+    </header>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="user">
+    <p class="name">Libeth Bileth</p>
+    <p class="id">11-1111-111</p>
+  </div>
+
+  <div class="canteen-selection">
+    <select id="canteen" name="canteen">
+      <option value="main">Main Canteen</option>
+      <option value="elementary">Elementary Canteen</option>
+      <option value="rtl">RTL Canteen</option>
+    </select>
+  </div>
+
+  <!-- White section for menu -->
+  <div class="menu-section">
+    <nav>
+      <ul>
+        <li class="active"><i class="fa-solid fa-bars"></i> Menu</li>
+        <li><i class="fa-solid fa-heart"></i> Favorites</li>
+        <li><i class="fa-solid fa-tag"></i> Promos</li>
+        <li><i class="fa-solid fa-clock-rotate-left"></i> History</li>
+        <li><i class="fa-solid fa-gear"></i> Settings</li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="topbar">
+        <input type="text" placeholder="Search..." />
+        <button><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+      </div>
+
+      <section class="popular">
+        <h3>Most Popular</h3>
+        <div class="popular-holder">
+          <div class="scroll-container">
+            <!-- Card 1 -->
+            <div class="card">
+              <div class="favorite">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <img
+                src="{% static '/images/food.png' %}"
+                alt="Burger Steak"
+              />
+              <div class="details">
+                <p class="food-name">Burger Steak</p>
+                <p class="price">₱ 50.00</p>
+                <button class="add-cart">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+              <div class="favorite">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <img
+                src="{% static '/images/food (2).png' %}"
+                alt="Pork Humba"
+              />
+              <div class="details">
+                <p class="food-name">Pork Humba</p>
+                <p class="price">₱ 80.00</p>
+                <button class="add-cart">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+              <div class="favorite">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <img
+                src="{% static '/images/food.png' %}"
+                alt="Chicken Inasal"
+              />
+              <div class="details">
+                <p class="food-name">Chicken Inasal</p>
+                <p class="price">₱ 90.00</p>
+                <button class="add-cart">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+
+              <div class="card">
+              <div class="favorite">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <img
+                src="{% static '/images/food.png' %}"
+                alt="Chicken Inasal"
+              />
+              <div class="details">
+                <p class="food-name">Chicken Inasal</p>
+                <p class="price">₱ 90.00</p>
+                <button class="add-cart">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+        <!-- CATEGORICAL DISHES -->
+<section class="categorical-dishes">
+  <div class="category-header">
+    <button class="arrow left"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="categories">
+      <button class="category">Rice</button>
+      <button class="category active">Dish</button>
+      <button class="category">Others</button>
+    </div>
+    <button class="arrow right"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+
+  <div class="category-holder">
+    <div class="dish-grid">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food (2).png' %}" alt="Burglar Steak">
+        <div class="details">
+          <p class="food-name">Burglar Steak</p>
+          <p class="price">₱ 500,000,000.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food.png' %}" alt="Pork Humba">
+        <div class="details">
+          <p class="food-name">Pork Humba</p>
+          <p class="price">₱ 69.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food (2).png' %}" alt="Chicken Inasal">
+        <div class="details">
+          <p class="food-name">Chicken Inasal</p>
+          <p class="price">₱ 100.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food (7).png' %}" alt="Utan Tagalog">
+        <div class="details">
+          <p class="food-name">Utan Tagalog</p>
+          <p class="price">₱ 50.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food.png' %}" alt="Sweet and Sour Fish">
+        <div class="details">
+          <p class="food-name">Sweet and Sour Fish</p>
+          <p class="price">₱ 80.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <div class="favorite"><i class="fa-solid fa-star"></i></div>
+        <img src="{% static '/images/food (10).png' %}" alt="BBQ ko <3">
+        <div class="details">
+          <p class="food-name">BBQ ko &lt;3</p>
+          <p class="price">₱ 143.00</p>
+          <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    </main>
+<img src="{% static 'images/basket_icon.png' %}" alt="Basket" class="floating-basket">
+  </body>
+</html>
