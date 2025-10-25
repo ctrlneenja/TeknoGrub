@@ -26,9 +26,4 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="order_items")
 
-class Staff(models.Model):
-    staff_id = models.AutoField(primary_key=True)
-    login_logs = models.TextField(blank=True, null=True)
-    attendance_logs = models.TextField(blank=True, null=True)
-
-    #order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="processed_by")
+    # staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name="processed_by")

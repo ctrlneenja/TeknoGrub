@@ -1,6 +1,10 @@
 from django.db import models
 
 from Canteen.models import Canteen
+from Menu.models import MenuItem
+
+from TeknoGrub.Menu.models import Inventory
+
 
 # Create your models here.
 class Role(models.Model):
@@ -23,4 +27,9 @@ class Staff(models.Model):
     canteen_id = models.ForeignKey(Canteen, on_delete=models.CASCADE, related_name='staff')
     login_logs = models.DateTimeField(auto_now_add=True)
     attendance_logs = models.DateTimeField()
+
+class Favorites(models.Model):
+    favorite_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
+    menu_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
 
