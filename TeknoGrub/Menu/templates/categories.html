@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>Category Management - TeknoGrub</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="{% static 'css/category.css' %}" />
+  </head>
+  <body>
+    <div class="category-management">
+      <aside class="sidebar" role="navigation" aria-label="Main navigation">
+        <div class="sidebar-container">
+          <header class="brand-header">
+            <h1 class="brand-logo">
+              <span class="brand-tekno">TEKNO</span>
+              <span class="brand-grub">GRUB</span>
+            </h1>
+          </header>
+          <section class="user-info">
+            <h2 class="user-name">Susan Maru</h2>
+            <p class="user-id">00-0000-000</p>
+          </section>
+          <div class="canteen-selector">
+            <button class="canteen-button" aria-expanded="false" aria-haspopup="true">
+              <img class="canteen-icon" src="img/vector-9.svg" alt="" aria-hidden="true" />
+              <span class="canteen-name">Main Canteen</span>
+              <img class="dropdown-icon" src="img/vector-3.svg" alt="" aria-hidden="true" />
+            </button>
+          </div>
+          <nav class="main-nav">
+            <ul class="nav-list">
+              <li class="nav-item nav-item-active">
+                <a href="#dashboard" class="nav-link">
+                  <img class="nav-icon" src="img/vector-7.svg" alt="" aria-hidden="true" />
+                  <span class="nav-text">Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#orders" class="nav-link">
+                  <img class="nav-icon" src="img/vector.svg" alt="" aria-hidden="true" />
+                  <span class="nav-text">Orders</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#menu" class="nav-link">
+                  <img class="nav-icon" src="img/vector-6.svg" alt="" aria-hidden="true" />
+                  <span class="nav-text">Menu</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#notifications" class="nav-link">
+                  <img class="nav-icon" src="img/vector-5.svg" alt="" aria-hidden="true" />
+                  <span class="nav-text">Notifications</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#settings" class="nav-link">
+                  <img class="nav-icon" src="img/vector-4.svg" alt="" aria-hidden="true" />
+                  <span class="nav-text">Settings</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      <main class="main-content" role="main">
+        <header class="page-header">
+          <h1 class="page-title">Category Management</h1>
+          <div class="header-actions">
+            <button class="btn-add-item" aria-label="Add new category item">
+              <span class="btn-text">Add New Item</span>
+            </button>
+            <button class="icon-button" aria-label="Search">
+              <img class="header-icon" src="img/vector-2.svg" alt="" aria-hidden="true" />
+              <span class="search-label">Search</span>
+            </button>
+            <button class="icon-button" aria-label="Notifications">
+              <img class="header-icon" src="img/vector-8.svg" alt="" aria-hidden="true" />
+            </button>
+            <button class="icon-button" aria-label="Menu">
+              <img class="header-icon" src="img/vector-6.svg" alt="" aria-hidden="true" />
+            </button>
+          </div>
+        </header>
+        <section class="content-section">
+          <div class="filter-container">
+            <label for="category-filter" class="filter-label">Filter by Category Name</label>
+            <input
+              type="text"
+              id="category-filter"
+              class="filter-input"
+              placeholder="Filter by Category Name"
+              aria-label="Filter categories by name"
+            />
+          </div>
+          <div class="categories-list">
+            <article class="category-card">
+              <div class="category-header">
+                <h2 class="category-title">Rice &amp; Noodles</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count">12 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Rice & Noodles category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Rice & Noodles category">Delete</button>
+              </div>
+            </article>
+            <article class="category-card category-card-main">
+              <div class="category-header category-header-main">
+                <h2 class="category-title">Main Dishes</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count">15 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Main Dishes category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Main Dishes category">Delete</button>
+              </div>
+            </article>
+            <article class="category-card">
+              <div class="category-header">
+                <h2 class="category-title">Desserts</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count">8 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Desserts category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Desserts category">Delete</button>
+              </div>
+            </article>
+            <article class="category-card">
+              <div class="category-header">
+                <h2 class="category-title">Ulam/Savory</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count">8 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Ulam/Savory category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Ulam/Savory category">Delete</button>
+              </div>
+            </article>
+            <article class="category-card category-card-snacks">
+              <div class="category-header category-header-snacks">
+                <h2 class="category-title">Snacks</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count category-count-hidden">15 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Snacks category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Snacks category">Delete</button>
+              </div>
+            </article>
+            <article class="category-card category-card-drinks">
+              <div class="category-header category-header-drinks">
+                <h2 class="category-title">Drinks</h2>
+              </div>
+              <div class="category-body">
+                <p class="category-count category-count-hidden">15 Items</p>
+              </div>
+              <div class="category-actions">
+                <button class="action-link" aria-label="Edit Drinks category">Edit</button>
+                <span class="action-separator">|</span>
+                <button class="action-link" aria-label="Delete Drinks category">Delete</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
