@@ -1,194 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Category: Rice & Noodles - TEKNOGRUB</title>
-    <link rel="stylesheet" href="globals.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/edit_category.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <main class="category-management">
-      <header class="site-header">
-        <h1 class="TEKNOGRUB"><span class="text-wrapper">TEKNO</span><span class="span">GRUB</span></h1>
-        <nav class="user-nav" aria-label="User navigation">
-          <button class="mingcute" aria-label="Notifications">
-            <span class="group-2">
-              <img class="img" src="img/vector.svg" alt="" aria-hidden="true" />
-              <img class="vector-2" src="img/image.svg" alt="" aria-hidden="true" />
-            </span>
-          </button>
-          <button class="stash-burger-classic" aria-label="Menu">
-            <img class="vector-3" src="img/vector-2.svg" alt="" aria-hidden="true" />
-          </button>
-        </nav>
-      </header>
-      <section class="user-info">
-        <div class="group">
-          <div class="text-wrapper-2">Susan Maru</div>
-          <div class="text-wrapper-3">00-0000-000</div>
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-tekno">TEKNO</span
+        ><span class="brand-grub">GRUB</span>
+      </div>
+
+      <div class="user-controls">
+        <div class="user-profile">
+          <span class="user-name">Susan Maru</span>
+          <span class="user-id">00-0000-000</span>
         </div>
-        <button class="div" aria-label="Search">Search</button>
-      </section>
-      <h2 class="category-managem">Edit Category: Rice &amp; Noodles</h2>
-      <img class="background" src="img/background-7.png" alt="" aria-hidden="true" />
-      <form class="category-form">
-        <div class="form-group">
-          <label for="category-name" class="category-name">Category Name:</label>
-          <div class="text">
-            <div class="background-2"></div>
+        <button class="icon-btn notification-btn" aria-label="Notifications">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <button class="icon-btn menu-btn" aria-label="Menu">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="page-title-area">
+        <h1>Edit Category: Rice & Noodles</h1>
+        <hr class="divider" />
+      </div>
+
+      <div class="editor-grid">
+        <section class="left-panel">
+          <div class="form-group">
+            <label for="category-name">Category Name:</label>
             <input
               type="text"
               id="category-name"
-              class="eaterit-by-rice"
-              placeholder="Search items under Rice &amp; Noodles"
-              aria-label="Category name"
+              value="Rice & Noodles"
+              placeholder="Enter Category Name"
             />
-            <img class="image" src="img/image-4.png" alt="" aria-hidden="true" />
           </div>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="button">
-            <span class="background-3"></span>
-            <span class="text-wrapper-4">Cancel</span>
-          </button>
-          <button type="submit" class="button-2">
-            <span class="background-4"></span>
-            <span class="text-wrapper-5">Save Changes</span>
-          </button>
-        </div>
-      </form>
-      <section class="assigned-section" aria-labelledby="assigned-heading">
-        <img class="background-5" src="img/background-9.png" alt="" aria-hidden="true" />
-        <div class="background-6"></div>
-        <h3 id="assigned-heading" class="assigned-menu-it">Assigned Menu Items (12)</h3>
-        <ul class="assigned-items-list">
-          <li class="menu-item">
-            <div class="background-21"></div>
-            <img class="image-15" src="img/image-5.png" alt="Pancit Canton" />
-            <span class="text-wrapper-29">Pancit Canton</span>
-            <button class="background-32" aria-label="Remove Pancit Canton">
-              <span class="text-wrapper-28">Remove</span>
-            </button>
-            <div class="background-31"></div>
-          </li>
-          <li class="menu-item">
-            <div class="background-29"></div>
-            <img class="image-14" src="img/image-6.png" alt="Pamic" />
-            <span class="text-wrapper-27">Pamic</span>
-            <button class="background-30" aria-label="Remove Pamic">
-              <span class="text-wrapper-26">Remove</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="background-27" src="img/background-10.png" alt="" aria-hidden="true" />
-            <div class="background-25"></div>
-            <img class="image-13" src="img/image-13.png" alt="Spaghetti w/ Meat Sauce" />
-            <span class="spaghetti-w-mea">Spaghetti w/ Meat Sauce</span>
-            <button class="background-28" aria-label="Remove Spaghetti w/ Meat Sauce">
-              <span class="text-wrapper-25">Remove</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <div class="background-25"></div>
-            <img class="image-12" src="img/image-7.png" alt="Palabok" />
-            <span class="text-wrapper-24">Palabok</span>
-            <button class="background-26" aria-label="Remove Palabok">
-              <span class="text-wrapper-23">Remove</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <div class="background-23"></div>
-            <img class="image-11" src="img/image-12.png" alt="Lomi" />
-            <span class="text-wrapper-22">Lomi</span>
-            <button class="background-24" aria-label="Remove Lomi">
-              <span class="text-wrapper-21">Remove</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <div class="background-21"></div>
-            <img class="image-10" src="img/image.png" alt="Batchoy" />
-            <span class="text-wrapper-20">Batchoy</span>
-            <button class="background-22" aria-label="Remove Batchoy">
-              <span class="text-wrapper-19">Remove</span>
-            </button>
-          </li>
-        </ul>
-      </section>
-      <section class="assign-section" aria-labelledby="assign-heading">
-        <img class="background-20" src="img/background-11.png" alt="" aria-hidden="true" />
-        <div class="background-6"></div>
-        <h3 id="assign-heading" class="assign-more-item">Assign More Items</h3>
-        <div class="search-container">
-          <div class="background-19"></div>
-          <label for="search-menu" class="search-menu-item">Search Menu Items</label>
-          <input
-            type="search"
-            id="search-menu"
-            class="search-menu-item"
-            placeholder="Search Menu Items"
-            aria-label="Search menu items"
-          />
-          <img class="image-9" src="img/image-3.png" alt="" aria-hidden="true" />
-        </div>
-        <ul class="available-items-list">
-          <li class="menu-item">
-            <img class="image-8" src="img/image-11.png" alt="Adobo" />
-            <span class="text-wrapper-18">Adobo</span>
-            <img class="background-18" src="img/background-2.png" alt="" aria-hidden="true" />
-          </li>
-          <li class="menu-item">
-            <img class="background-16" src="img/background-6.png" alt="" aria-hidden="true" />
-            <img class="image-7" src="img/image-8.png" alt="Sinigo" />
-            <span class="text-wrapper-17">Sinigo</span>
-            <button class="background-17" aria-label="Add Sinigo">
-              <span class="text-wrapper-16">Add</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="background-14" src="img/background-4.png" alt="" aria-hidden="true" />
-            <img class="image-6" src="img/image-10.png" alt="Adobo" />
-            <span class="text-wrapper-15">Adobo</span>
-            <button class="background-15" aria-label="Add Adobo">
-              <span class="text-wrapper-14">Add</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="background-12" src="img/background.png" alt="" aria-hidden="true" />
-            <img class="image-5" src="img/image-9.png" alt="Sinigo" />
-            <span class="text-wrapper-13">Sinigo</span>
-            <button class="background-13" aria-label="Add Sinigo">
-              <span class="text-wrapper-12">Add</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="background-10" src="img/background-5.png" alt="" aria-hidden="true" />
-            <img class="image-4" src="img/image-14.png" alt="Lechon Kawali" />
-            <span class="text-wrapper-11">Lechon Kawali</span>
-            <button class="background-11" aria-label="Add Lechon Kawali">
-              <span class="text-wrapper-10">Add</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="background-8" src="img/background-3.png" alt="" aria-hidden="true" />
-            <img class="image-3" src="img/image-2.png" alt="Lechon Kawali" />
-            <span class="text-wrapper-9">Lechon Kawali</span>
-            <button class="background-9" aria-label="Add Lechon Kawali">
-              <span class="text-wrapper-8">Add</span>
-            </button>
-          </li>
-          <li class="menu-item">
-            <img class="image-2" src="img/image-15.png" alt="Halo-Halo" />
-            <span class="text-wrapper-7">Halo-Halo</span>
-            <button class="background-7" aria-label="Add Halo-Halo">
-              <span class="text-wrapper-6">Add</span>
-            </button>
-          </li>
-        </ul>
-      </section>
-      <button class="material-symbols" aria-label="Back">
-        <img class="vector" src="img/vector-3.svg" alt="" aria-hidden="true" />
-      </button>
+
+          <div class="card assigned-card">
+            <div class="card-header">
+              <h3>Assigned Menu Items (12)</h3>
+            </div>
+
+            <ul class="item-list">
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/orange/white?text=PC"
+                    alt="Food"
+                  />
+                  <span>Pancit Canton</span>
+                </div>
+                <button class="btn-remove">Remove</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/red/white?text=P"
+                    alt="Food"
+                  />
+                  <span>Pancit</span>
+                </div>
+                <button class="btn-remove">Remove</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/brown/white?text=S"
+                    alt="Food"
+                  />
+                  <span>Spaghetti w/ Meat Sauce</span>
+                </div>
+                <button class="btn-remove">Remove</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/orange/white?text=PB"
+                    alt="Food"
+                  />
+                  <span>Palabok</span>
+                </div>
+                <button class="btn-remove">Remove</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/yellow/black?text=L"
+                    alt="Food"
+                  />
+                  <span>Lomi</span>
+                </div>
+                <button class="btn-remove">Remove</button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-save">Save Changes</button>
+            <button class="btn btn-cancel">Cancel</button>
+          </div>
+        </section>
+
+        <section class="right-panel">
+          <div class="search-header">
+            <h3>Assign More Items</h3>
+          </div>
+
+          <div class="card inventory-card">
+            <div class="search-bar-wrapper">
+              <svg
+                class="search-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" placeholder="Search Menu Items" />
+            </div>
+
+            <ul class="item-list scrollable-list">
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/brown/white?text=A"
+                    alt="Food"
+                  />
+                  <span>Adobo</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/orange/white?text=S"
+                    alt="Food"
+                  />
+                  <span>Sinigang</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/brown/white?text=A"
+                    alt="Food"
+                  />
+                  <span>Adobo</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/orange/white?text=S"
+                    alt="Food"
+                  />
+                  <span>Sinigang</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/brown/white?text=LK"
+                    alt="Food"
+                  />
+                  <span>Lechon Kawali</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+              <li class="list-item">
+                <div class="item-info">
+                  <img
+                    src="https://placehold.co/40x40/purple/white?text=HH"
+                    alt="Food"
+                  />
+                  <span>Halo-Halo</span>
+                </div>
+                <button class="btn-add">Add</button>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
     </main>
   </body>
 </html>
