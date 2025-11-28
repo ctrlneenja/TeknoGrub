@@ -17,6 +17,64 @@ a {
   text-decoration: none;
 }
 
+/* White background starts here */
+.menu-section {
+  flex-grow: 1;
+  background-color: #ffffff;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
+.menu-section nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-section nav li {
+      font-size: 16px;
+  color: #520000;
+  cursor: pointer;
+  font-weight: 500;
+padding: 20px 0 20px 15px;
+}
+
+.menu-section nav li i {
+  margin-right: 8px;
+}
+
+.menu-section nav li.active {
+  background-image: linear-gradient(to right, maroon, firebrick);
+  color: rgb(102, 5, 5);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/*CANTEEN*/
+        .canteen-selection {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  margin-bottom: 50px;
+}
+
+.canteen-selection label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.canteen-selection select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+}
+
 
 .category-management {
   background: radial-gradient(
@@ -1140,7 +1198,7 @@ a {
 }
 
 .nav-item-active {
-  background-color: rgba(85, 5, 8, 0.1);
+  background-color: maroon;
 }
 
 .nav-link {
@@ -1204,6 +1262,7 @@ a {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+  padding-left: 150px;
 }
 
 .header-actions {
@@ -1230,6 +1289,8 @@ a {
   line-height: normal;
   white-space: nowrap;
   box-shadow: 0px 4px 4px #00000040;
+  margin-left: 500px;
+  margin-top: 415px;
 }
 
 .btn-text {
