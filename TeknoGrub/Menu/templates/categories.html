@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Category Management - TeknoGrub</title>
     <link rel="stylesheet" href="globals.css" />
-    <link rel="stylesheet" href="{% static 'css/category.css' %}" />
+    <link rel="stylesheet" href="css/category.css" />
   </head>
   <body>
     <div class="category-management">
@@ -21,42 +21,56 @@
             <h2 class="user-name">Susan Maru</h2>
             <p class="user-id">00-0000-000</p>
           </section>
-          <div class="canteen-selector">
-            <button class="canteen-button" aria-expanded="false" aria-haspopup="true">
-              <img class="canteen-icon" src="img/vector-9.svg" alt="" aria-hidden="true" />
-              <span class="canteen-name">Main Canteen</span>
-              <img class="dropdown-icon" src="img/vector-3.svg" alt="" aria-hidden="true" />
-            </button>
+          <div class="canteen-selection">
+            <select id="canteen" name="canteen">
+              <option value="main">Main Canteen</option>
+              <option value="elementary">Elementary Canteen</option>
+              <option value="rtl">RTL Canteen</option>
+            </select>
           </div>
           <nav class="main-nav">
             <ul class="nav-list">
               <li class="nav-item nav-item-active">
                 <a href="#dashboard" class="nav-link">
-                  <img class="nav-icon" src="img/vector-7.svg" alt="" aria-hidden="true" />
+                  <img
+                    class="nav-icon"
+                    src="img/menu.png"
+                    alt=""
+                    aria-hidden="true"
+                  />
                   <span class="nav-text">Dashboard</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#orders" class="nav-link">
-                  <img class="nav-icon" src="img/vector.svg" alt="" aria-hidden="true" />
-                  <span class="nav-text">Orders</span>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="#menu" class="nav-link">
-                  <img class="nav-icon" src="img/vector-6.svg" alt="" aria-hidden="true" />
+                  <img
+                    class="nav-icon"
+                    src="img/menu.png"
+                    alt=""
+                    aria-hidden="true"
+                  />
                   <span class="nav-text">Menu</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#notifications" class="nav-link">
-                  <img class="nav-icon" src="img/vector-5.svg" alt="" aria-hidden="true" />
+                  <img
+                    class="nav-icon"
+                    src="img/notification.png"
+                    alt=""
+                    aria-hidden="true"
+                  />
                   <span class="nav-text">Notifications</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#settings" class="nav-link">
-                  <img class="nav-icon" src="img/vector-4.svg" alt="" aria-hidden="true" />
+                  <img
+                    class="nav-icon"
+                    src="img/settings.png"
+                    alt=""
+                    aria-hidden="true"
+                  />
                   <span class="nav-text">Settings</span>
                 </a>
               </li>
@@ -71,21 +85,13 @@
             <button class="btn-add-item" aria-label="Add new category item">
               <span class="btn-text">Add New Item</span>
             </button>
-            <button class="icon-button" aria-label="Search">
-              <img class="header-icon" src="img/vector-2.svg" alt="" aria-hidden="true" />
-              <span class="search-label">Search</span>
-            </button>
-            <button class="icon-button" aria-label="Notifications">
-              <img class="header-icon" src="img/vector-8.svg" alt="" aria-hidden="true" />
-            </button>
-            <button class="icon-button" aria-label="Menu">
-              <img class="header-icon" src="img/vector-6.svg" alt="" aria-hidden="true" />
-            </button>
           </div>
         </header>
         <section class="content-section">
           <div class="filter-container">
-            <label for="category-filter" class="filter-label">Filter by Category Name</label>
+            <label for="category-filter" class="filter-label"
+              >Filter by Category Name</label
+            >
             <input
               type="text"
               id="category-filter"
@@ -103,22 +109,19 @@
                 <p class="category-count">12 Items</p>
               </div>
               <div class="category-actions">
-                <button class="action-link" aria-label="Edit Rice & Noodles category">Edit</button>
+                <button
+                  class="action-link"
+                  aria-label="Edit Rice & Noodles category"
+                >
+                  Edit
+                </button>
                 <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Rice & Noodles category">Delete</button>
-              </div>
-            </article>
-            <article class="category-card category-card-main">
-              <div class="category-header category-header-main">
-                <h2 class="category-title">Main Dishes</h2>
-              </div>
-              <div class="category-body">
-                <p class="category-count">15 Items</p>
-              </div>
-              <div class="category-actions">
-                <button class="action-link" aria-label="Edit Main Dishes category">Edit</button>
-                <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Main Dishes category">Delete</button>
+                <button
+                  class="action-link"
+                  aria-label="Delete Rice & Noodles category"
+                >
+                  Delete
+                </button>
               </div>
             </article>
             <article class="category-card">
@@ -129,9 +132,16 @@
                 <p class="category-count">8 Items</p>
               </div>
               <div class="category-actions">
-                <button class="action-link" aria-label="Edit Desserts category">Edit</button>
+                <button class="action-link" aria-label="Edit Desserts category">
+                  Edit
+                </button>
                 <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Desserts category">Delete</button>
+                <button
+                  class="action-link"
+                  aria-label="Delete Desserts category"
+                >
+                  Delete
+                </button>
               </div>
             </article>
             <article class="category-card">
@@ -142,9 +152,19 @@
                 <p class="category-count">8 Items</p>
               </div>
               <div class="category-actions">
-                <button class="action-link" aria-label="Edit Ulam/Savory category">Edit</button>
+                <button
+                  class="action-link"
+                  aria-label="Edit Ulam/Savory category"
+                >
+                  Edit
+                </button>
                 <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Ulam/Savory category">Delete</button>
+                <button
+                  class="action-link"
+                  aria-label="Delete Ulam/Savory category"
+                >
+                  Delete
+                </button>
               </div>
             </article>
             <article class="category-card category-card-snacks">
@@ -155,9 +175,13 @@
                 <p class="category-count category-count-hidden">15 Items</p>
               </div>
               <div class="category-actions">
-                <button class="action-link" aria-label="Edit Snacks category">Edit</button>
+                <button class="action-link" aria-label="Edit Snacks category">
+                  Edit
+                </button>
                 <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Snacks category">Delete</button>
+                <button class="action-link" aria-label="Delete Snacks category">
+                  Delete
+                </button>
               </div>
             </article>
             <article class="category-card category-card-drinks">
@@ -168,9 +192,13 @@
                 <p class="category-count category-count-hidden">15 Items</p>
               </div>
               <div class="category-actions">
-                <button class="action-link" aria-label="Edit Drinks category">Edit</button>
+                <button class="action-link" aria-label="Edit Drinks category">
+                  Edit
+                </button>
                 <span class="action-separator">|</span>
-                <button class="action-link" aria-label="Delete Drinks category">Delete</button>
+                <button class="action-link" aria-label="Delete Drinks category">
+                  Delete
+                </button>
               </div>
             </article>
           </div>
