@@ -19,6 +19,7 @@ from django.urls import path, include
 from User.views import login_view, signup_view, settings_view
 from Order.views import order_history_view
 from Menu.views import menu_view, favorites_view
+from Payment.views import payment_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +32,5 @@ urlpatterns = [
 
     path('payment/', include('Payment.urls')),
 
-
+    # path('cart/', include('Cart.urls')),
 ]
