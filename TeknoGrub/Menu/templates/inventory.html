@@ -1,363 +1,300 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Inventory Management - TeknoGrub</title>
-    <link rel="stylesheet" href="{% static 'css/inventory.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      /* --- ADMIN THEME STYLES --- */
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #4a0a18; /* Burgundy Background */
+        color: white;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        width: 260px;
+        background-color: #5d0c1d;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid rgba(255,255,255,0.1);
+      }
+      .brand-logo h1 { color: white; margin-bottom: 30px; }
+      .brand-tekno { font-weight: bold; }
+      .brand-grub { color: #F4C430; font-weight: bold; }
+
+      .nav-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+      .nav-link {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        display: flex;
+        gap: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        transition: 0.2s;
+        align-items: center;
+      }
+      .nav-link:hover, .nav-link.active {
+        background-color: rgba(255,255,255,0.1);
+        color: #F4C430;
+      }
+      .nav-link i { width: 20px; text-align: center; }
+
+      /* MAIN CONTENT */
+      .main-content {
+        flex: 1;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+
+      /* Header Section */
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+      .page-title { font-size: 2rem; font-weight: bold; color: white; }
+
+      .user-info {
+        text-align: right;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.8);
+      }
+      .user-name { font-weight: bold; color: #F4C430; }
+
+      /* CONTENT CARD */
+      .content-card {
+        background: white;
+        color: #333;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      }
+
+      /* Toolbar (Search + Add) */
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 20px;
+      }
+
+      .search-container {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+      }
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+      }
+      .search-input {
+        width: 100%;
+        padding: 10px 10px 10px 35px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+      }
+
+      /* Add Button (Now an Anchor tag) */
+      .btn-add {
+        background-color: #2e7d32;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .btn-add:hover { background-color: #1b5e20; }
+
+      /* INVENTORY TABLE */
+      .table-container {
+        overflow-x: auto;
+      }
+
+      .inventory-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      .inventory-table th {
+        text-align: left;
+        padding: 15px;
+        background-color: #f8f9fa;
+        color: #5d0c1d;
+        font-weight: bold;
+        border-bottom: 2px solid #5d0c1d;
+      }
+
+      .inventory-table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+      }
+
+      .inventory-table tr:hover {
+        background-color: #ffffec;
+      }
+
+      /* Stock Level Badges */
+      .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: bold;
+      }
+      .badge-low { background: #ffebee; color: #c62828; }
+      .badge-ok { background: #e8f5e9; color: #2e7d32; }
+
+      /* Action Buttons */
+      .actions { display: flex; gap: 8px; }
+
+      .btn-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+      }
+
+      .btn-edit { background: #e3f2fd; color: #1565c0; }
+      .btn-edit:hover { background: #bbdefb; }
+
+      .btn-delete { background: #ffebee; color: #c62828; }
+      .btn-delete:hover { background: #ffcdd2; }
+
+    </style>
   </head>
   <body>
-    <div class="inventory-management">
-      <aside class="sidebar" role="navigation" aria-label="Main navigation">
-        <div class="sidebar-container">
-          <header class="sidebar-header">
-            <h1 class="logo">
-              <span class="logo-tekno">TEKNO</span>
-              <span class="logo-grub">GRUB</span>
-            </h1>
-            <div class="user-info">
-              <p class="user-name">Susan Maru</p>
-              <p class="user-id">00-0000-000</p>
-            </div>
-          </header>
-          <div class="canteen-selector">
-            <button class="canteen-button" aria-label="Select canteen" aria-expanded="false">
-              <svg
-                class="canteen-icon"
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <use href="img/vector-6.svg#vector"></use>
-              </svg>
-              <span class="canteen-name">Main Canteen</span>
-              <svg
-                class="dropdown-icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <use href="img/vector-9.svg#vector"></use>
-              </svg>
-            </button>
-          </div>
-          <nav class="main-nav">
-            <ul class="nav-list">
-              <li class="nav-item nav-item-active">
-                <a href="#dashboard" class="nav-link" aria-current="page">
-                  <svg
-                    class="nav-icon"
-                    width="34"
-                    height="34"
-                    viewBox="0 0 34 34"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <use href="img/vector-11.svg#vector"></use>
-                  </svg>
-                  <span class="nav-text">Dashboard</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#orders" class="nav-link">
-                  <svg
-                    class="nav-icon"
-                    width="34"
-                    height="34"
-                    viewBox="0 0 34 34"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <use href="img/vector-4.svg#vector"></use>
-                  </svg>
-                  <span class="nav-text">Orders</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#menu" class="nav-link">
-                  <svg
-                    class="nav-icon"
-                    width="33"
-                    height="33"
-                    viewBox="0 0 33 33"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <use href="img/vector-3.svg#vector"></use>
-                  </svg>
-                  <span class="nav-text">Menu</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#notifications" class="nav-link">
-                  <svg
-                    class="nav-icon"
-                    width="34"
-                    height="35"
-                    viewBox="0 0 34 35"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <use href="img/vector-5.svg#vector"></use>
-                  </svg>
-                  <span class="nav-text">Notifications</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#settings" class="nav-link">
-                  <svg
-                    class="nav-icon"
-                    width="34"
-                    height="34"
-                    viewBox="0 0 34 34"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <use href="img/vector-2.svg#vector"></use>
-                  </svg>
-                  <span class="nav-text">Settings</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand-logo">
+            <h1><span class="brand-tekno">TEKNO</span><span class="brand-grub">GRUB</span></h1>
         </div>
-      </aside>
-      <main class="main-content">
-        <header class="top-bar">
-          <div class="search-container">
-            <label for="search-input" class="visually-hidden">Search</label>
-            <input
-              type="search"
-              id="search-input"
-              class="search-input"
-              placeholder="Search"
-              aria-label="Search inventory"
-            />
-            <svg
-              class="search-icon"
-              width="30"
-              height="30"
-              viewBox="0 0 30 30"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <use href="img/vector-10.svg#vector"></use>
-            </svg>
-          </div>
-          <div class="top-bar-actions">
-            <button class="icon-button" aria-label="Notifications">
-              <svg
-                class="icon"
-                width="48"
-                height="48"
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <use href="img/vector.svg#vector1"></use>
-                <use href="img/vector-7.svg#vector2"></use>
-              </svg>
-            </button>
-            <button class="icon-button" aria-label="Menu">
-              <svg
-                class="icon"
-                width="55"
-                height="55"
-                viewBox="0 0 55 55"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <use href="img/image.svg#vector"></use>
-              </svg>
-            </button>
-          </div>
+        <ul class="nav-list">
+            <li><a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#" class="nav-link"><i class="fa-solid fa-receipt"></i> Orders</a></li>
+            <li><a href="{% url 'categories' %}" class="nav-link"><i class="fa-solid fa-utensils"></i> Menu Categories</a></li>
+            <li><a href="{% url 'inventory' %}" class="nav-link active"><i class="fa-solid fa-box"></i> Inventory</a></li>
+            <li><a href="#" class="nav-link"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+            <li><a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="page-header">
+            <h2 class="page-title">Inventory Management</h2>
+            <div class="user-info">
+                <div class="user-name">Susan Maru</div>
+                <div>00-0000-000</div>
+            </div>
         </header>
-        <section class="content-section">
-          <header class="section-header">
-            <h2 class="section-title">Inventory Management</h2>
-            <div class="section-actions">
-              <button class="search-button" aria-label="Search inventory">
-                <svg
-                  class="button-icon"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <use href="img/vector-8.svg#vector"></use>
-                </svg>
-              </button>
-              <button class="add-item-button">
-                <span class="button-text">Add New Item</span>
-              </button>
+
+        <div class="content-card">
+
+            <div class="toolbar">
+                <div class="search-container">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search inventory items...">
+                </div>
+                <a href="{% url 'add_item' %}" class="btn-add">
+                    <i class="fa-solid fa-plus"></i> Add New Item
+                </a>
             </div>
-          </header>
-          <div class="inventory-table-container">
-            <div class="inventory-table" role="region" aria-label="Inventory items table">
-              <div class="table-header">
-                <div class="table-header-cell table-cell-name">
-                  <span class="header-text">Item Name</span>
-                </div>
-                <div class="table-header-cell table-cell-stock">
-                  <span class="header-text">Current Stock</span>
-                </div>
-                <div class="table-header-cell table-cell-threshold">
-                  <span class="header-text">Threshold Level</span>
-                </div>
-                <div class="table-header-cell table-cell-action">
-                  <span class="header-text">Action</span>
-                </div>
-              </div>
-              <div class="table-body">
-                <div class="table-row table-row-alternate">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row table-row-alternate">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row table-row-alternate">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row table-row-alternate">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-                <div class="table-row">
-                  <div class="table-cell table-cell-name">
-                    <span class="cell-text">Rice</span>
-                  </div>
-                  <div class="table-cell table-cell-stock">
-                    <span class="cell-text">20</span>
-                  </div>
-                  <div class="table-cell table-cell-threshold">
-                    <span class="cell-text">100</span>
-                  </div>
-                  <div class="table-cell table-cell-action">
-                    <button class="action-link action-edit" aria-label="Edit Rice">Edit</button>
-                    <span class="action-separator" aria-hidden="true">|</span>
-                    <button class="action-link action-delete" aria-label="Delete Rice">Delete</button>
-                  </div>
-                </div>
-              </div>
+
+            <div class="table-container">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Current Stock</th>
+                            <th>Threshold Level</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inventory_list %}
+                        <tr>
+                            <td><strong>{{ item.name|default:"Rice" }}</strong></td>
+                            <td>{{ item.stock|default:"20" }}</td>
+                            <td>{{ item.threshold|default:"100" }}</td>
+                            <td>
+                                {% if item.stock < item.threshold %}
+                                    <span class="badge badge-low">Low Stock</span>
+                                {% else %}
+                                    <span class="badge badge-ok">In Stock</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <!-- FIX: Switched from item.id to item.pk to safely get the ID -->
+                                    <a href="{% url 'edit_item' item.pk %}" class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                                    <button class="btn-icon btn-delete" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <!-- Fallback Data -->
+                         <tr>
+                            <td><strong>Rice</strong></td>
+                            <td>20</td>
+                            <td>100</td>
+                            <td><span class="badge badge-low">Low Stock</span></td>
+                            <td>
+                                <div class="actions">
+                                    <a href="#" class="btn-icon btn-edit"><i class="fa-solid fa-pen"></i></a>
+                                    <button class="btn-icon btn-delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chicken</strong></td>
+                            <td>150</td>
+                            <td>50</td>
+                            <td><span class="badge badge-ok">In Stock</span></td>
+                            <td>
+                                <div class="actions">
+                                    <a href="#" class="btn-icon btn-edit"><i class="fa-solid fa-pen"></i></a>
+                                    <button class="btn-icon btn-delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-          </div>
-        </section>
-      </main>
-    </div>
+
+        </div>
+    </main>
+
   </body>
 </html>

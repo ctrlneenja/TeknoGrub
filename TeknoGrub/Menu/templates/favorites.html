@@ -1,419 +1,141 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeknoGrub</title>
-    
+    <title>TeknoGrub | Favorites</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
+
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+
     <style>
-        /* --- 1. Variables and Base Setup --- */
-        :root {
-            --bg-red: #550508;
-            --button-yellow: #FBCD36;
-            --text-yellow: #FBD436;
-            --delete-red: #FF161E;
-            --logout-red: #A22025;
-            --corner-radius: 9px;
-            --text-white: #FFFFFF;
-            --text-dark: #333333;
-            --text-light-gray: #888;
-            --border-light: #E0E0E0;
+        /* Extra styles specific to Favorites Grid if needed,
+           inheriting from menu.css where possible */
+
+        .favorites-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 26px;
         }
 
-        * {
+        .favorites-title {
+            font-family: "Inter-Bold", Helvetica;
+            font-weight: 700;
+            color: #fbd436; /* Yellow title like user name */
+            font-size: 32px;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-red);
-            color: var(--text-white);
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* --- 2. Top Header --- */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-        }
-
-        .top-bar .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-yellow);
-        }
-
-        .top-bar .header-icons {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            font-size: 1.25rem;
-        }
-
-        /* --- 3. Main Page Layout --- */
-        .page-container {
+        /* Reusing dish-grid from menu.css but ensuring it wraps nicely */
+        .favorites-grid {
             display: grid;
-            /* Sidebar is visible on desktop */
-            grid-template-columns: 280px 1fr;
-            gap: 1.5rem;
-            padding: 0 1.5rem 1.5rem;
+            grid-template-columns: repeat(auto-fill, 210px);
+            gap: 30px;
+            /* justify-content: start; Aligns items to left */
         }
-
-        /* --- 4. Content Header (User + Search) --- */
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            gap: 1rem;
-        }
-
-        .user-info h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .user-info p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .search-form {
-            display: flex;
-            flex-grow: 1;
-            max-width: 500px;
-        }
-
-        .search-form input {
-            width: 100%;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: var(--corner-radius) 0 0 var(--corner-radius);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            background-color: rgba(0, 0, 0, 0.2);
-            color: var(--text-white);
-        }
-
-        .search-form input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .search-form button {
-            border: none;
-            background-color: var(--button-yellow);
-            color: var(--text-dark);
-            padding: 0.75rem 1.25rem;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 0 var(--corner-radius) var(--corner-radius) 0;
-        }
-
-        /* --- 5. Sidebar (Canteen + Nav) --- */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .canteen-selector {
-            background-color: var(--text-white);
-            color: var(--text-dark);
-            padding: 0.75rem 1rem;
-            border-radius: var(--corner-radius);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            border: none;
-            width: 100%;
-            font-size: 1rem;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333333'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.5em;
-            cursor: pointer;
-        }
-
-        .main-nav {
-            background-color: var(--text-white);
-            border-radius: var(--corner-radius);
-            padding: 1rem;
-        }
-
-        .main-nav ul {
-            list-style: none;
-        }
-
-        .main-nav li a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem 1rem;
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            border-radius: var(--corner-radius);
-        }
-
-        .main-nav li a i {
-            width: 20px;
-            text-align: center;
-            color: var(--text-light-gray);
-        }
-
-        .main-nav li a:hover {
-            background-color: #f0f0f0;
-        }
-        
-        /* Active link style from image */
-        .main-nav li.active a {
-            background-color: var(--logout-red);
-            color: var(--text-white);
-        }
-
-        .main-nav li.active a i {
-            color: var(--text-white);
-        }
-
-        /* --- 6. Main Content (Menu Grid) --- */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .menu-card {
-            background-color: var(--text-white);
-            color: var(--text-dark);
-            border-radius: var(--corner-radius);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .card-image-container {
-            position: relative;
-        }
-
-        .card-image-container img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .promo-tag {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: var(--delete-red);
-            color: var(--text-white);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 5px;
-        }
-
-        .card-body {
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .card-body h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto; /* Pushes footer to the bottom */
-            padding-top: 1rem;
-        }
-        
-        .card-footer .price {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--bg-red);
-        }
-
-        .add-btn {
-            background-color: var(--button-yellow);
-            color: var(--text-dark);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            font-weight: bold;
-            line-height: 36px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-
-        /* --- 7. Mobile Responsiveness --- */
-        
-        /* Tablet & Mobile */
-        @media (max-width: 992px) {
-            .page-container {
-                /* Stack sidebar and main content */
-                grid-template-columns: 1fr;
-            }
-
-            .content-header {
-                /* Stack user info and search bar */
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-form {
-                max-width: none; /* Allow search to be full width */
-            }
-
-            .sidebar {
-                /* By default, hide the sidebar on mobile */
-                /* It would be toggled by the hamburger icon with JavaScript */
-                display: none; 
-            }
-            
-            /* Show the hamburger icon, hide the bell */
-            .top-bar .header-icons .fa-bell {
-                display: none;
-            }
-
-            /* We'll use a class 'sidebar-open' to show the menu */
-            /* For this demo, I'll force it to be visible */
-            .sidebar {
-                 display: flex;
-            }
-        }
-        
-        /* Small Mobile */
-        @media (max-width: 576px) {
-            .menu-grid {
-                /* Single column of cards on small phones */
-                grid-template-columns: 1fr;
-            }
-
-            .top-bar, .page-container, .content-header {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-            
-            .content-header {
-                align-items: center;
-                text-align: center;
-            }
-        }
-
     </style>
 </head>
 <body>
 
-    <header class="top-bar">
-        <div class="logo">TEKNOGRUB</div>
+    <header class="header">
+        <div class="logo">
+            <h1>TEKNO<span>GRUB</span></h1>
+        </div>
         <div class="header-icons">
             <i class="fa-solid fa-bell"></i>
             <i class="fa-solid fa-bars"></i>
         </div>
     </header>
 
-    <div class="page-container">
+    <div class="sidebar">
+        <div class="user">
+            <p class="name">Libeth Bileth</p>
+            <p class="id">11-1111-111</p>
+        </div>
 
-        <aside class="sidebar">
-            <select class="canteen-selector" name="canteen">
+        <div class="canteen-selection">
+            <select id="canteen" name="canteen">
                 <option value="main">Main Canteen</option>
-                <option value="other">Other Canteen</option>
+                <option value="elementary">Elementary Canteen</option>
+                <option value="rtl">RTL Canteen</option>
             </select>
+        </div>
 
-            <nav class="main-nav">
+        <div class="menu-section">
+            <nav>
                 <ul>
-                    <li><a href="#"><i class="fa-solid fa-utensils"></i> Menu</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-star"></i> Favorites</a></li>
-                    <li><a href="#"><i class="fa-solid fa-tags"></i> Promos</a></li>
+                    <li>
+                        <a href="{% url 'menu' %}">
+                            <i class="fa-solid fa-utensils"></i> Menu
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="{% url 'favorites' %}">
+                            <i class="fa-solid fa-star"></i> Favorites
+                        </a>
+                    </li>
+
+                    <li><a href="#"><i class="fa-solid fa-tag"></i> Promos</a></li>
                     <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> History</a></li>
                     <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
                 </ul>
             </nav>
-        </aside>
-
-        <main class="main-content">
-            
-            <header class="content-header">
-                <div class="user-info">
-                    <h2>Libeth Bileth</h2>
-                    <p>11-1111-111</p>
-                </div>
-                <form class="search-form">
-                    <input type="search" placeholder="Search for food...">
-                    <button type="submit">Search</button>
-                </form>
-            </header>
-
-            <div class="menu-grid">
-                
-                <div class="menu-card">
-                    <div class="card-image-container">
-                        <img src="https://deliciouslyrushed.com/wp-content/uploads/2024/01/burger-steak-on-a-sizzling-plate.jpg" alt="Higad-higad">
-                        <span class="promo-tag">PROMO</span>
-                    </div>
-                    <div class="card-body">
-                        <h3>Biggest beepsteak</h3>
-                        <div class="card-footer">
-                            <span class="price">₱ 100.00</span>
-                            <button class="add-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="menu-card">
-                    <div class="card-image-container">
-                        <img src="https://deliciouslyrushed.com/wp-content/uploads/2024/01/burger-steak-on-a-sizzling-plate.jpg" alt="Burger Steak">
-                    </div>
-                    <div class="card-body">
-                        <h3>Burglar Steak</h3>
-                        <div class="card-footer">
-                            <span class="price">₱ 75.00</span>
-                            <button class="add-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card">
-                    <div class="card-image-container">
-                        <img src="https://i.imgur.com/qEwBwYF.png" alt="Utan Tsopsuy">
-                    </div>
-                    <div class="card-body">
-                        <h3>Utan Tagalog</h3>
-                        <div class="card-footer">
-                            <span class="price">₱ 50.00</span>
-                            <button class="add-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                </div>
-        </main>
+        </div>
     </div>
+
+    <main class="main-content">
+
+        <div class="favorites-header">
+            <h2 class="favorites-title">My Favorites</h2>
+
+            <div class="topbar" style="margin-top: 0; width: 400px;">
+                <input type="text" placeholder="Search favorites...">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <div class="dish-grid favorites-grid">
+
+            <div class="card">
+                <div class="favorite"><i class="fa-solid fa-star"></i></div>
+                <img src="{% static 'images/food.png' %}" alt="Biggest Beepsteak">
+                <div class="details">
+                    <p class="food-name">Biggest Beepsteak</p>
+                    <p class="price">₱ 100.00</p>
+                    <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="favorite"><i class="fa-solid fa-star"></i></div>
+                <img src="{% static 'images/food (2).png' %}" alt="Burglar Steak">
+                <div class="details">
+                    <p class="food-name">Burglar Steak</p>
+                    <p class="price">₱ 75.00</p>
+                    <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="favorite"><i class="fa-solid fa-star"></i></div>
+                <img src="{% static 'images/food (7).png' %}" alt="Utan Tagalog">
+                <div class="details">
+                    <p class="food-name">Utan Tagalog</p>
+                    <p class="price">₱ 50.00</p>
+                    <button class="add-cart"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </main>
 
 </body>
 </html>

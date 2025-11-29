@@ -51,7 +51,7 @@ padding: 20px 0 20px 15px;
 }
 
 /*CANTEEN*/
-        .canteen-selection {
+.canteen-selection {
   margin: 20px;
   display: flex;
   flex-direction: column;

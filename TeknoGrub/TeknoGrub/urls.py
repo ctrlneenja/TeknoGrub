@@ -29,5 +29,6 @@ urlpatterns = [
 
     path('menu/', include('Menu.urls')),
 
-    # path('cart/', include('Cart.urls')),
+
+
 ]
