@@ -1,0 +1,1061 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>Settings</title>
+
+    <link rel="stylesheet" href="{% static 'css/globals.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <style>
+      @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+      * {
+        -webkit-font-smoothing: antialiased;
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0px;
+        height: 100%;
+        font-family: "Inter", Helvetica, Arial, sans-serif;
+      }
+      button:focus-visible {
+        outline: 2px solid #4a90e2 !important;
+        outline: -webkit-focus-ring-color auto 5px !important;
+      }
+      a {
+        text-decoration: none;
+      }
+
+      /* ============================================================
+         1. YOUR ORIGINAL SETTINGS PAGE STYLES (Restored)
+         ============================================================ */
+      .settings {
+        background: radial-gradient(
+            50% 50% at 50% 50%,
+            rgba(148, 24, 29, 1) 0%,
+            rgba(85, 5, 8, 1) 100%
+          ),
+          linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 1) 100%
+          );
+        width: 100%;
+        min-width: 1440px;
+        min-height: 2125px;
+        position: relative;
+      }
+
+      /* Helper class for absolute elements on main page */
+      .abs { position: absolute; }
+
+      /* TEKNOGRUB LOGO STYLE */
+      .teknogrub-logo {
+        top: 35px;
+        left: 45px;
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        letter-spacing: 0.5px;
+        z-index: 20;
+        text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+      }
+
+      .settings .rectangle {
+        position: absolute;
+        top: 330px;
+        left: 37px;
+        width: 410px;
+        height: 1274px;
+        background-color: #ffffff;
+        border-radius: 9px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .img {
+        position: absolute;
+        top: 629px;
+        left: 32px;
+        width: 420px;
+        height: 85px;
+      }
+
+      .settings .text-wrapper {
+        top: 441px;
+        left: 110px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-size: 20px;
+        white-space: nowrap;
+        position: absolute;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        letter-spacing: 0;
+        line-height: normal;
+      }
+
+      .settings .div {
+        position: absolute;
+        top: 584px;
+        left: 110px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-2 {
+        top: 660px;
+        left: 103px;
+        font-size: 20px;
+        line-height: normal;
+        position: absolute;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: 0;
+        white-space: nowrap;
+      }
+
+      .settings .lsicon-badge {
+        position: absolute;
+        top: 509px;
+        left: 59px;
+        width: 33px;
+        height: 33px;
+        aspect-ratio: 1;
+      }
+
+      .settings .text-wrapper-3 {
+        position: absolute;
+        top: 510px;
+        left: 110px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .rectangle-2 {
+        position: absolute;
+        top: 145px;
+        left: 1213px;
+        width: 196px;
+        height: 68px;
+      }
+
+      .settings .rectangle-3 {
+        top: 143px;
+        left: 471px;
+        width: 728px;
+        height: 65px;
+        border: 2px solid;
+        border-color: #000000;
+        opacity: 0.28;
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 9px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .search {
+        position: absolute;
+        top: 167px;
+        left: 1277px;
+        width: 67px;
+        height: 15px;
+      }
+
+      .settings .group {
+        position: absolute;
+        top: 721px;
+        left: 1211px;
+        width: 196px;
+        height: 68px;
+      }
+
+      .settings .material-symbols {
+        position: absolute;
+        top: 161px;
+        left: 491px;
+        width: 30px;
+        height: 30px;
+        aspect-ratio: 1;
+      }
+
+      .settings .text-wrapper-4 {
+        position: absolute;
+        top: 142px;
+        left: 44px;
+        width: 319px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #fbd436;
+        font-size: 36px;
+        letter-spacing: 0;
+        line-height: 39.4px;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-5 {
+        position: absolute;
+        top: 182px;
+        left: 44px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #ffffff;
+        font-size: 24px;
+        letter-spacing: 0;
+        line-height: 26.3px;
+        white-space: nowrap;
+      }
+
+      .settings .group-2 {
+        position: absolute;
+        top: 235px;
+        left: 37px;
+        width: 412px;
+        height: 74px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .rectangle-4 {
+        top: 0;
+        left: 0;
+        width: 410px;
+        height: 74px;
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 9px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .text-wrapper-6 {
+        position: absolute;
+        top: 25px;
+        left: 73px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .material-symbols-2 {
+        position: absolute;
+        top: 255px;
+        left: 400px;
+        width: 24px;
+        height: 24px;
+        aspect-ratio: 1;
+      }
+
+      .settings .material-symbols-3 {
+        position: absolute;
+        top: 579px;
+        left: 58px;
+        width: 34px;
+        height: 35px;
+        aspect-ratio: 1;
+      }
+
+      .settings .streamline-plump {
+        position: absolute;
+        top: 258px;
+        left: 60px;
+        width: 28px;
+        height: 28px;
+        aspect-ratio: 1;
+      }
+
+      .settings .material-symbols-4 {
+        position: absolute;
+        width: 2.36%;
+        top: 436px;
+        left: 4.03%;
+        height: 34px;
+        aspect-ratio: 1;
+      }
+
+      .settings .mingcute {
+        position: absolute;
+        top: 32px;
+        left: 1255px;
+        width: 48px;
+        height: 48px;
+        aspect-ratio: 1;
+      }
+
+      .settings .group-3 {
+        position: relative;
+        width: 74.48%;
+        height: 90.29%;
+        top: 8.33%;
+        left: 12.76%;
+      }
+
+      .settings .vector {
+        position: absolute;
+        width: 4.68%;
+        height: 3.09%;
+        top: 23.07%;
+        left: -28280.34%;
+      }
+
+      .settings .vector-2 {
+        position: absolute;
+        width: 100%;
+        height: 87.68%;
+        top: 0;
+        left: 0;
+      }
+
+      .settings .stash-burger-classic {
+        position: absolute;
+        top: 28px;
+        left: 1345px;
+        width: 55px;
+        height: 55px;
+        aspect-ratio: 1;
+      }
+
+      .settings .text-wrapper-7 {
+        position: absolute;
+        top: 369px;
+        left: 110px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .material-symbols-5 {
+        position: absolute;
+        top: 364px;
+        left: 58px;
+        width: 34px;
+        height: 34px;
+        aspect-ratio: 1;
+      }
+
+      .settings .rectangle-5 {
+        position: absolute;
+        top: 330px;
+        left: 469px;
+        width: 934px;
+        height: 186px;
+        background-color: #ffffff;
+        border-radius: 9px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .rectangle-6 {
+        position: absolute;
+        top: 531px;
+        left: 469px;
+        width: 934px;
+        height: 164px;
+        background-color: #ffffff;
+        border-radius: 9px;
+        box-shadow: 0px 4px 4px #00000040;
+      }
+
+      .settings .text-wrapper-8 {
+        top: 616px;
+        position: absolute;
+        left: 697px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.75;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #550508;
+        font-size: 14px;
+        letter-spacing: 0.56px;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-9 {
+        top: 642px;
+        position: absolute;
+        left: 697px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.75;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #550508;
+        font-size: 14px;
+        letter-spacing: 0.56px;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-10 {
+        position: absolute;
+        top: 365px;
+        left: 509px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-11 {
+        position: absolute;
+        top: 365px;
+        left: 990px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-12 {
+        position: absolute;
+        top: 413px;
+        left: 509px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-13 {
+        position: absolute;
+        top: 441px;
+        left: 510px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-14 {
+        position: absolute;
+        top: 469px;
+        left: 510px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-15 {
+        position: absolute;
+        top: 568px;
+        left: 509px;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 20px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-16 {
+        position: absolute;
+        top: 413px;
+        left: 990px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-17 {
+        position: absolute;
+        top: 441px;
+        left: 991px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-18 {
+        position: absolute;
+        top: 474px;
+        left: 990px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #ff151e;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      }
+
+      .settings .text-wrapper-19 {
+        position: absolute;
+        top: 616px;
+        left: 510px;
+        width: 165px;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-20 {
+        top: 645px;
+        left: 510px;
+        width: 165px;
+        font-size: 15px;
+        position: absolute;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #550508;
+        letter-spacing: 0;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-21 {
+        position: absolute;
+        top: 441px;
+        left: 666px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.75;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #550508;
+        font-size: 14px;
+        text-align: center;
+        letter-spacing: 0.56px;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-22 {
+        position: absolute;
+        top: 469px;
+        left: 667px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.75;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #550508;
+        font-size: 14px;
+        letter-spacing: 0.56px;
+        line-height: normal;
+      }
+
+      .settings .text-wrapper-23 {
+        position: absolute;
+        top: 413px;
+        left: 665px;
+        height: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.75;
+        font-family: "Inter-Regular", Helvetica;
+        font-weight: 400;
+        color: #550508;
+        font-size: 14px;
+        text-align: center;
+        letter-spacing: 0.56px;
+        line-height: normal;
+      }
+
+      .settings .iconamoon-profile {
+        position: absolute;
+        width: 2.36%;
+        top: 655px;
+        left: 3.68%;
+        height: 34px;
+        aspect-ratio: 1;
+      }
+
+      .settings .mdi-pencil-outline {
+        position: absolute;
+        top: 414px;
+        left: 1132px;
+        width: 16px;
+        height: 16px;
+        aspect-ratio: 1;
+      }
+
+      .settings .vector-wrapper {
+        position: absolute;
+        top: 442px;
+        left: 1132px;
+        width: 16px;
+        height: 16px;
+        aspect-ratio: 1;
+      }
+
+      .settings .vector-3 {
+        position: absolute;
+        width: 75.01%;
+        height: 75.00%;
+        top: 12.50%;
+        left: 12.50%;
+      }
+
+      .settings .text-wrapper-24 {
+        top: 245px;
+        left: 859px;
+        font-size: 48px;
+        text-align: center;
+        line-height: 52.5px;
+        position: absolute;
+        text-shadow: 0px 4px 4px #00000040;
+        font-family: "Inter-Bold", Helvetica;
+        font-weight: 700;
+        color: #ffffff;
+        letter-spacing: 0;
+        white-space: nowrap;
+      }
+
+      /* =========================================
+         2. NEW POPUP STYLES (Flexbox Layout)
+         ========================================= */
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Center Box */
+      .modal-box {
+        background: white;
+        width: 650px;
+        border-radius: 12px;
+        padding: 30px;
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .close-x {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+      }
+      .close-x:hover { color: red; }
+
+      /* Payment Cards */
+      .payment-card {
+        background-color: #F8F8F8;
+        border-radius: 8px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .card-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .card-logo {
+        width: 50px;
+        height: 35px;
+        object-fit: contain;
+      }
+
+      .card-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-title {
+        font-weight: 700;
+        color: #550508;
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+
+      .card-subtitle {
+        font-size: 12px;
+        color: #8B0000;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .action-icon {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .action-icon:hover { opacity: 1; }
+      .icon-red { filter: invert(15%) sepia(95%) saturate(6932%) hue-rotate(358deg) brightness(95%) contrast(112%); }
+
+      /* Header */
+      .section-header {
+        font-size: 20px;
+        font-weight: 700;
+        color: #3E0000;
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+
+      /* Form */
+      .form-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .input-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .styled-input {
+        width: 100%;
+        background-color: #D9D9D9;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 12px 15px;
+        font-size: 16px;
+        color: #333;
+        font-weight: 600;
+        outline: none;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      }
+      .styled-input::placeholder {
+        color: #777;
+        font-weight: 600;
+      }
+
+      .row-inputs {
+        display: flex;
+        gap: 15px;
+      }
+
+      /* Add Button */
+      .btn-add {
+        background-color: #FBCD36;
+        color: #550508;
+        font-weight: 700;
+        font-size: 18px;
+        padding: 12px;
+        border-radius: 25px;
+        width: 200px;
+        align-self: center;
+        text-align: center;
+        margin-top: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        transition: transform 0.1s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-add:active {
+        transform: scale(0.98);
+      }
+
+      /* Delete Modal Styles */
+      #delete-modal { z-index: 10000; }
+
+      .delete-box {
+        background: white;
+        width: 600px;
+        height: 250px;
+        border-radius: 10px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+      }
+
+      .delete-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #550508;
+      }
+
+      .delete-actions {
+        display: flex;
+        gap: 30px;
+      }
+
+      .btn-modal {
+        width: 180px;
+        height: 60px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        border: 2px solid;
+        cursor: pointer;
+      }
+
+      .btn-delete { border-color: #ff151e; color: #ff151e; background: white; }
+      .btn-cancel { border-color: #fbcd36; color: #fbcd36; background: white; }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="settings">
+      <div class="rectangle"></div>
+
+      <div class="abs" style="top:35px; left:45px; font-weight:700; font-size:55px; letter-spacing:0.5px; z-index:20; text-shadow:0px 4px 4px rgba(0,0,0,0.25);">
+         <span style="color:#FFF;">TEKNO</span><span style="color:#FBCD36;">GRUB</span>
+      </div>
+
+      <img class="img" src="{% static 'img/rectangle-21.svg' %}" />
+
+      <div class="text-wrapper">Favorites</div>
+      <div class="div">History</div>
+      <div class="text-wrapper-2">Settings</div>
+
+      <img class="lsicon-badge" src="{% static 'img/lsicon-badge-promotion-filled.svg' %}" />
+      <div class="text-wrapper-3">Promos</div>
+      <img class="rectangle-2" src="{% static 'img/rectangle-4.svg' %}" />
+      <div class="rectangle-3"></div>
+      <img class="search" src="{% static 'img/search.svg' %}" />
+      <img class="group" src="{% static 'img/group-27.svg' %}" />
+      <img class="material-symbols" src="{% static 'img/material-symbols-search.svg' %}" />
+
+      <div class="text-wrapper-4">Libeth Bileth</div>
+      <div class="text-wrapper-5">11-1111-111</div>
+      <div class="text-wrapper-4">Libeth Bileth</div>
+      <div class="text-wrapper-5">11-1111-111</div>
+
+      <div class="group-2">
+        <div class="rectangle-4"></div>
+        <div class="text-wrapper-6">Main Canteen</div>
+      </div>
+
+      <img class="material-symbols-2" src="{% static 'img/material-symbols-arrow-back-ios-rounded.svg' %}" />
+      <img class="material-symbols-3" src="{% static 'img/material-symbols-history-rounded.svg' %}" />
+      <img class="streamline-plump" src="{% static 'img/streamline-plump-store-2-solid.svg' %}" />
+      <img class="material-symbols-4" src="{% static 'img/material-symbols-star-rounded.svg' %}" />
+
+      <div class="mingcute">
+        <div class="group-3">
+          <img class="vector" src="{% static 'img/image.svg' %}" />
+          <img class="vector-2" src="{% static 'img/vector.png' %}" />
+        </div>
+      </div>
+
+      <img class="stash-burger-classic" src="{% static 'img/stash-burger-classic.svg' %}" />
+      <div class="text-wrapper-7">Menu</div>
+      <img class="material-symbols-5" src="{% static 'img/material-symbols-menu-book-2.svg' %}" />
+      <div class="rectangle-5"></div>
+      <div class="rectangle-6"></div>
+      <div class="text-wrapper-8">23</div>
+      <div class="text-wrapper-9">23</div>
+      <div class="text-wrapper-10">Personal Info</div>
+      <div class="text-wrapper-11">Account Settings</div>
+      <div class="text-wrapper-12">ID Number</div>
+      <div class="text-wrapper-13">Full Name</div>
+      <div class="text-wrapper-14">School Email</div>
+      <div class="text-wrapper-15">Activity Summary</div>
+      <div class="text-wrapper-16">Change Password</div>
+      <div class="text-wrapper-17">Payment Methods</div>
+      <div class="text-wrapper-18">Delete Account</div>
+      <div class="text-wrapper-19">Total Orders</div>
+      <div class="text-wrapper-20">Favorites</div>
+      <div class="text-wrapper-21">Libeth Bileth</div>
+      <div class="text-wrapper-22">libeth.belith@cit.edu</div>
+      <div class="text-wrapper-23">11-111-11</div>
+      <img class="iconamoon-profile" src="{% static 'img/iconamoon-profile-fill.svg' %}" />
+      <img class="mdi-pencil-outline" src="{% static 'img/mdi-pencil-outline.svg' %}" />
+
+      <!-- CLICKABLE PENCIL for Payment Popup -->
+      <div class="vector-wrapper" id="payment-btn" style="cursor: pointer;">
+        <img class="vector-3" src="{% static 'img/vector-2.svg' %}" />
+      </div>
+
+      <div class="text-wrapper-24">Settings</div>
+    </div>
+
+    <!-- NEW PAYMENT POPUP (REPLICATED DESIGN) -->
+    <div id="payment-modal" class="modal-overlay">
+      <div class="modal-box">
+        <span class="close-x" onclick="closePopup()">&times;</span>
+
+        <!-- 1. Gcash Card -->
+        <div class="payment-card">
+            <div class="card-left">
+                <!-- Replace with your Gcash Logo -->
+                <img class="card-logo" src="https://upload.wikimedia.org/wikipedia/commons/5/52/GCash_logo.svg" alt="Gcash" style="background:transparent; object-fit:contain;">
+                <div class="card-info">
+                    <div class="card-title">Gcash 0945 *** **47</div>
+                    <div class="card-subtitle">Set as Default</div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <!-- Trash Can triggers Delete Modal -->
+                <img class="action-icon icon-red" src="{% static 'img/fa7-solid_trash-can-1.png' %}" onclick="openDeletePopup()">
+                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}">
+            </div>
+        </div>
+
+        <!-- 2. Visa Card -->
+        <div class="payment-card">
+            <div class="card-left">
+                 <!-- Using text/icon for VISA -->
+                 <img class="card-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style="height:20px; width:auto;">
+                <div class="card-info">
+                    <div class="card-title">Visa 1234 *** **789</div>
+                    <div class="card-subtitle" style="opacity:0.5; color:#550508;">Set as Default</div>
+                </div>
+            </div>
+            <div class="card-actions">
+                <img class="action-icon icon-red" src="{% static 'img/fa7-solid_trash-can-1.png' %}" onclick="openDeletePopup()">
+                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}">
+            </div>
+        </div>
+
+        <!-- 3. Header -->
+        <div class="section-header">Add Payment Method</div>
+
+        <!-- 4. Form Inputs -->
+        <div class="form-grid">
+            <div class="input-wrapper">
+                <input type="text" class="styled-input" placeholder="Card Number">
+            </div>
+            <div class="row-inputs">
+                <div class="input-wrapper">
+                    <input type="text" class="styled-input" placeholder="Expiry Date">
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="styled-input" placeholder="CVV">
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Add Button -->
+        <button class="btn-add">Add</button>
+
+      </div>
+    </div>
+
+    <!-- NEW DELETE POPUP -->
+    <div id="delete-modal" class="modal-overlay">
+      <div class="delete-box">
+          <div class="delete-title">Delete 1234 *** **789 Payment Method?</div>
+
+          <div class="delete-actions">
+             <button class="btn-modal btn-delete" onclick="closeDeletePopup()">Delete</button>
+             <button class="btn-modal btn-cancel" onclick="closeDeletePopup()">Cancel</button>
+          </div>
+      </div>
+    </div>
+
+    <script>
+        // Payment Modal
+        var paymentModal = document.getElementById("payment-modal");
+        var paymentBtn = document.getElementById("payment-btn");
+
+        paymentBtn.onclick = function() {
+            paymentModal.style.display = "flex";
+        }
+        function closePopup() {
+            paymentModal.style.display = "none";
+        }
+
+        // Delete Modal
+        var deleteModal = document.getElementById("delete-modal");
+
+        function openDeletePopup() {
+            deleteModal.style.display = "flex";
+        }
+        function closeDeletePopup() {
+            deleteModal.style.display = "none";
+        }
+
+        // Close when clicking outside
+        window.onclick = function(event) {
+            if (event.target == paymentModal) {
+                paymentModal.style.display = "none";
+            }
+            if (event.target == deleteModal) {
+                deleteModal.style.display = "none";
+            }
+        }
+    </script>
+  </body>
+</html>
