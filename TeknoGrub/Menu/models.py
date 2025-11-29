@@ -6,21 +6,17 @@ class Category(models.Model):
     category_name = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
-        db_table = 'Categories'
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.category_name
 
 
 class MenuItem(models.Model):
-    # ERD specifies 'item_id', not 'menu_id'
     item_id = models.AutoField(primary_key=True)
 
-    # CARDINALITY: 1 Canteen has many Items -> ForeignKey
     canteen = models.ForeignKey('Canteen.Canteen', on_delete=models.DO_NOTHING, db_column='canteen_id')
 
-    # CARDINALITY: 1 Category has many Items -> ForeignKey
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, db_column='category_id')
 
     name = models.CharField(max_length=255)
@@ -30,9 +26,6 @@ class MenuItem(models.Model):
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        managed = False
-        db_table = 'MenuItems'
 
     def __str__(self):
         return self.name
@@ -48,8 +41,7 @@ class Inventory(models.Model):
     threshold_level = models.IntegerField(default=10)
 
     class Meta:
-        managed = False
-        db_table = 'Inventory'
+        verbose_name_plural = "Inventories"
 
 
 class Favorite(models.Model):
@@ -58,7 +50,3 @@ class Favorite(models.Model):
     user = models.ForeignKey('User.Users', on_delete=models.DO_NOTHING, db_column='user_id')
     item = models.ForeignKey(MenuItem, on_delete=models.DO_NOTHING, db_column='item_id')
     added_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        managed = False
-        db_table = 'Favorites'
