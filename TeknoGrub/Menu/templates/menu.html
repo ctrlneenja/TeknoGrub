@@ -16,16 +16,13 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <style>
-      /* =========================================
-         GLOBAL FONT OVERRIDES
-         (To match Favorites Page)
-      ========================================= */
+  </head>
+  <style>
+
       body {
-        font-family: 'Inter', sans-serif; /* Primary font set to Inter */
+          font-family: 'Inter', sans-serif; /* Primary font set to Inter */
       }
 
-      /* Ensure Headers and Bold text use Inter Bold */
       h1, h2, h3, h4,
       .logo h1,
       .sidebar .name,
@@ -34,71 +31,67 @@
       .qty-box,
       .popup-title,
       .section-title {
-        font-family: 'Inter', sans-serif;
-        font-weight: 700;
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
       }
-
-      /* =========================================
-         1. MODAL (ITEM DETAIL POPUP) STYLES
-      ========================================= */
 
       /* The Background Overlay */
       .modal-overlay {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 2000; /* Higher than basket */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.6); /* Dimmed background */
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(3px);
+          display: none; /* Hidden by default */
+          position: fixed;
+          z-index: 2000; /* Higher than basket */
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.6); /* Dimmed background */
+          justify-content: center;
+          align-items: center;
+          backdrop-filter: blur(3px);
       }
 
       /* When active, show flex to center the content */
       .modal-overlay.active {
-        display: flex;
+          display: flex;
       }
 
       /* The Detail Card Popup */
       .detail-card-popup {
-        background: white;
-        width: 90%;
-        max-width: 500px;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        position: relative;
-        animation: popIn 0.3s ease;
-        font-family: 'Inter', sans-serif; /* Ensure popup uses Inter */
+          background: white;
+          width: 90%;
+          max-width: 500px;
+          border-radius: 15px;
+          overflow: hidden;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+          position: relative;
+          animation: popIn 0.3s ease;
+          font-family: 'Inter', sans-serif; /* Ensure popup uses Inter */
       }
 
       @keyframes popIn {
-        from { transform: scale(0.8); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
+          from { transform: scale(0.8); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
       }
 
       /* Close Button */
       .close-modal-btn {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #F4C430;
-        color: #5d0c1d;
-        width: 35px;
-        height: 35px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 1.2rem;
-        z-index: 10;
-        transition: transform 0.2s;
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: #F4C430;
+          color: #5d0c1d;
+          width: 35px;
+          height: 35px;
+          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 1.2rem;
+          z-index: 10;
+          transition: transform 0.2s;
       }
       .close-modal-btn:hover { transform: scale(1.1); }
 
@@ -128,11 +121,6 @@
       .add-popup-btn { background: #F4C430; color: #5d0c1d; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; font-family: 'Inter', sans-serif; }
       .add-popup-btn:hover { background: #e0b120; }
 
-
-      /* =========================================
-         2. EXISTING MENU STYLES
-      ========================================= */
-
       /* Make the cards clickable */
       .card { cursor: pointer; transition: transform 0.2s; }
       .card:hover { transform: translateY(-5px); }
@@ -161,8 +149,7 @@
       .total-amount { font-size: 1.1rem; color: #5d0c1d; text-decoration: underline; font-style: italic; }
       .checkout-btn { width: 100%; background: #F4C430; border: none; padding: 15px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; color: #5d0c1d; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; box-shadow: 0 4px 6px rgba(244, 196, 48, 0.3); font-family: 'Inter', sans-serif;}
       .checkout-btn:hover { background-color: #e0b120; }
-    </style>
-  </head>
+  </style>
 
   <body>
     <header class="header">
@@ -182,12 +169,20 @@
       </div>
 
         <div class="canteen-selection">
-          <select id="canteen" name="canteen">
-            <option value="main">Main Canteen</option>
-            <option value="elementary">Elementary Canteen</option>
-            <option value="rtl">RTL Canteen</option>
-          </select>
+    <div class="canteen-box" onclick="toggleCanteenMenu()">
+        <div class="canteen-left">
+            <i class="fa-solid fa-store canteen-icon"></i>
+            <span class="canteen-text" id="selectedCanteen">Main Canteen</span>
         </div>
+        <i class="fa-solid fa-chevron-down canteen-arrow"></i>
+    </div>
+
+    <div class="canteen-dropdown" id="canteenDropdown">
+        <div class="canteen-option" onclick="selectCanteen('Main Canteen')">Main Canteen</div>
+        <div class="canteen-option" onclick="selectCanteen('Elementary Canteen')">Elementary Canteen</div>
+        <div class="canteen-option" onclick="selectCanteen('RTL Canteen')">RTL Canteen</div>
+    </div>
+</div>
 
       <div class="menu-section">
         <nav>
@@ -546,6 +541,28 @@
           basket.classList.remove('active');
         }
       });
+
+      function toggleCanteenMenu() {
+        const wrapper = document.querySelector('.canteen-selection');
+        wrapper.classList.toggle('open');
+    }
+
+    function selectCanteen(canteenName) {
+        // Update the text in the main box
+        document.getElementById('selectedCanteen').innerText = canteenName;
+
+        // Close the menu
+        toggleCanteenMenu();
+
+    }
+
+    // Close dropdown if clicking outside of it
+    window.addEventListener('click', function(e) {
+        const wrapper = document.querySelector('.canteen-selection');
+        if (!wrapper.contains(e.target)) {
+            wrapper.classList.remove('open');
+        }
+    });
     </script>
   </body>
 </html>

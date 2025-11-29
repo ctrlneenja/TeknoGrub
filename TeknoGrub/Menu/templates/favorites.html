@@ -10,12 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <link rel="stylesheet" href="{% static 'css/menu.css' %}">
 
     <style>
-        /* Extra styles specific to Favorites Grid if needed,
-           inheriting from menu.css where possible */
 
         .favorites-header {
             display: flex;
@@ -61,12 +58,20 @@
         </div>
 
         <div class="canteen-selection">
-            <select id="canteen" name="canteen">
-                <option value="main">Main Canteen</option>
-                <option value="elementary">Elementary Canteen</option>
-                <option value="rtl">RTL Canteen</option>
-            </select>
+    <div class="canteen-box" onclick="toggleCanteenMenu()">
+        <div class="canteen-left">
+            <i class="fa-solid fa-store canteen-icon"></i>
+            <span class="canteen-text" id="selectedCanteen">Main Canteen</span>
         </div>
+        <i class="fa-solid fa-chevron-down canteen-arrow"></i>
+    </div>
+
+    <div class="canteen-dropdown" id="canteenDropdown">
+        <div class="canteen-option" onclick="selectCanteen('Main Canteen')">Main Canteen</div>
+        <div class="canteen-option" onclick="selectCanteen('Elementary Canteen')">Elementary Canteen</div>
+        <div class="canteen-option" onclick="selectCanteen('RTL Canteen')">RTL Canteen</div>
+    </div>
+</div>
 
         <div class="menu-section">
             <nav>
@@ -137,5 +142,30 @@
         </div>
     </main>
 
+<script>
+    function toggleCanteenMenu() {
+        const wrapper = document.querySelector('.canteen-selection');
+        wrapper.classList.toggle('open');
+    }
+
+    function selectCanteen(canteenName) {
+        // Update the text in the main box
+        document.getElementById('selectedCanteen').innerText = canteenName;
+
+        // Close the menu
+        toggleCanteenMenu();
+
+        // You can reload the page with a filter here
+        // window.location.href = "?canteen=" + encodeURIComponent(canteenName);
+    }
+
+    // Close dropdown if clicking outside of it
+    window.addEventListener('click', function(e) {
+        const wrapper = document.querySelector('.canteen-selection');
+        if (!wrapper.contains(e.target)) {
+            wrapper.classList.remove('open');
+        }
+    });
+</script>
 </body>
 </html>

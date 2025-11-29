@@ -29,6 +29,7 @@ urlpatterns = [
 
     path('menu/', include('Menu.urls')),
 
+    path('payment/', include('Payment.urls')),
 
 
 ]
