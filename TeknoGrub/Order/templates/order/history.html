@@ -8,110 +8,72 @@
 {% endblock %}
 
 {% block content %}
-    <div class="search-container">
-        <input type="text" placeholder="Search in history...">
-        <button class="search-btn">Search</button>
-    </div>
+    <div class="history-wrapper" style="width: 100%;">
 
-    <h1 class="history-title">Order History</h1>
-
-    <nav class="history-tabs">
-        <a href="?status=Ongoing" class="tab-item {% if request.GET.status == 'Ongoing' %}is-active{% endif %}">Ongoing</a>
-        <a href="?status=Completed" class="tab-item {% if not request.GET.status or request.GET.status == 'Completed' %}is-active{% endif %}">Completed</a>
-        <a href="?status=Cancelled" class="tab-item {% if request.GET.status == 'Cancelled' %}is-active{% endif %}">Cancelled</a>
-    </nav>
-
-    <div class="order-list">
-        <!-- Hardcoded Order 1 -->
-        <div class="order-card">
-            <div class="order-card-header">
-                <div>
-                    <h3 class="canteen-name">Main Canteen</h3>
-                    <p class="order-date">September 14, 2025, 3:00 PM</p>
-                </div>
-                <div class="order-price-status">
-                    <p class="order-price">₱ 150.00</p>
-                    <span class="status-badge completed">COMPLETED</span>
-                </div>
-            </div>
-            <div class="order-card-body">
-                <ul class="item-list">
-                    <li>
-                        <span>Utan Tagalog</span>
-                        <span>2x</span>
-                    </li>
-                    <li>
-                        <span>Stephen Kare</span>
-                        <span>1x</span>
-                    </li>
-                </ul>
-                <button class="reorder-btn">Reorder</button>
-            </div>
+        <div class="search-container" style="max-width: 100%;">
+            <input type="text" placeholder="Search in history...">
+            <button class="search-btn">Search</button>
         </div>
 
-        <!-- Hardcoded Order 2 -->
-        <div class="order-card">
-            <div class="order-card-header">
-                <div>
-                    <h3 class="canteen-name">JHS Canteen</h3>
-                    <p class="order-date">December 31, 2056, 12:00 PM</p>
+        <h1 class="history-title">Order History</h1>
+
+        <nav class="history-tabs">
+            <a href="?status=Ongoing" class="tab-item {% if request.GET.status == 'Ongoing' %}is-active{% endif %}">Ongoing</a>
+            <a href="?status=Completed" class="tab-item {% if not request.GET.status or request.GET.status == 'Completed' %}is-active{% endif %}">Completed</a>
+            <a href="?status=Cancelled" class="tab-item {% if request.GET.status == 'Cancelled' %}is-active{% endif %}">Cancelled</a>
+        </nav>
+
+        <div class="order-list">
+            <!-- Order 1 -->
+            <div class="order-card">
+                <div class="order-card-header">
+                    <div>
+                        <h3 class="canteen-name">Main Canteen</h3>
+                        <p class="order-date">September 14, 2025, 3:00 PM</p>
+                    </div>
+                    <div class="order-price-status">
+                        <p class="order-price">₱ 150.00</p>
+                        <span class="status-badge completed">COMPLETED</span>
+                    </div>
                 </div>
-                <div class="order-price-status">
-                    <p class="order-price">₱ 50.00</p>
-                    <span class="status-badge completed">COMPLETED</span>
+                <div class="order-card-body">
+                    <ul class="item-list">
+                        <li>
+                            <span>Utan Tagalog</span>
+                            <span>2x</span>
+                        </li>
+                        <li>
+                            <span>Stephen Kare</span>
+                            <span>1x</span>
+                        </li>
+                    </ul>
+                    <button class="reorder-btn">Reorder</button>
                 </div>
             </div>
-            <div class="order-card-body">
-                <ul class="item-list">
-                    <li>
-                        <span>Humba</span>
-                        <span>2x</span>
-                    </li>
-                </ul>
-                <button class="reorder-btn">Reorder</button>
+
+            <!-- Order 2 -->
+            <div class="order-card">
+                <div class="order-card-header">
+                    <div>
+                        <h3 class="canteen-name">JHS Canteen</h3>
+                        <p class="order-date">December 31, 2056, 12:00 PM</p>
+                    </div>
+                    <div class="order-price-status">
+                        <p class="order-price">₱ 50.00</p>
+                        <span class="status-badge completed">COMPLETED</span>
+                    </div>
+                </div>
+                <div class="order-card-body">
+                    <ul class="item-list">
+                        <li>
+                            <span>Humba</span>
+                            <span>2x</span>
+                        </li>
+                    </ul>
+                    <button class="reorder-btn">Reorder</button>
+                </div>
             </div>
+
         </div>
-
-
-<!--        {# NOTE: For a real implementation, you would have a single `orders` variable passed from the view #}-->
-<!--        {# based on the URL query param (?status=...). For now, we'll just show completed. #}-->
-
-<!--        {% for order in completed_orders %}-->
-<!--        <div class="order-card">-->
-<!--            <div class="order-card-header">-->
-<!--                <div>-->
-<!--                    {# Access the canteen name through the related cart #}-->
-<!--                    <h3 class="canteen-name">{{ order.cart.canteen.name }}</h3>-->
-
-<!--                    {# Use your 'order_time' field #}-->
-<!--                    <p class="order-date">{{ order.order_time|date:"F d, Y, g:i A" }}</p>-->
-<!--                </div>-->
-<!--                <div class="order-price-status">-->
-<!--                    {# Access the total price through the related cart #}-->
-<!--                    <p class="order-price">₱ {{ order.cart.total_price|floatformat:2 }}</p>-->
-
-<!--                    {# Use your 'status' field #}-->
-<!--                    <span class="status-badge completed">{{ order.status|upper }}</span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="order-card-body">-->
-<!--                <ul class="item-list">-->
-<!--                    {# Use the related_name 'items' you defined in your model #}-->
-<!--                    {% for item in order.items.all %}-->
-<!--                    <li>-->
-<!--                        {# Access the menu item name #}-->
-<!--                        <span>{{ item.menu_item.name }}</span>-->
-
-<!--                        {# Use your 'quantity' field #}-->
-<!--                        <span>{{ item.quantity }}x</span>-->
-<!--                    </li>-->
-<!--                    {% endfor %}-->
-<!--                </ul>-->
-<!--                <button class="reorder-btn">Reorder</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        {% empty %}-->
-<!--        <p>You have no completed orders.</p>-->
-<!--        {% endfor %}-->
     </div>
 {% endblock %}
