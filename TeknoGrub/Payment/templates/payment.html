@@ -31,7 +31,7 @@
       }
 
       /* ============================================================
-         1. YOUR ORIGINAL SETTINGS PAGE STYLES (Restored)
+         1. YOUR ORIGINAL SETTINGS PAGE STYLES
          ============================================================ */
       .settings {
         background: radial-gradient(
@@ -50,10 +50,8 @@
         position: relative;
       }
 
-      /* Helper class for absolute elements on main page */
       .abs { position: absolute; }
 
-      /* TEKNOGRUB LOGO STYLE */
       .teknogrub-logo {
         top: 35px;
         left: 45px;
@@ -666,7 +664,7 @@
       }
 
       /* =========================================
-         2. NEW POPUP STYLES (Flexbox Layout)
+         2. POPUP STYLES (Flexbox Layout)
          ========================================= */
 
       .modal-overlay {
@@ -872,13 +870,18 @@
       .btn-delete { border-color: #ff151e; color: #ff151e; background: white; }
       .btn-cancel { border-color: #fbcd36; color: #fbcd36; background: white; }
 
+      /* Edit Modal z-index (Higher than payment modal) */
+      #edit-modal { z-index: 10001; }
+
     </style>
   </head>
 
   <body>
+    <!-- ORIGINAL SETTINGS PAGE CONTENT -->
     <div class="settings">
       <div class="rectangle"></div>
 
+      <!-- TEKNOGRUB TEXT LOGO -->
       <div class="abs" style="top:35px; left:45px; font-weight:700; font-size:55px; letter-spacing:0.5px; z-index:20; text-shadow:0px 4px 4px rgba(0,0,0,0.25);">
          <span style="color:#FFF;">TEKNO</span><span style="color:#FBCD36;">GRUB</span>
       </div>
@@ -951,7 +954,7 @@
       <div class="text-wrapper-24">Settings</div>
     </div>
 
-    <!-- NEW PAYMENT POPUP (REPLICATED DESIGN) -->
+    <!-- PAYMENT POPUP (REPLICATED DESIGN) -->
     <div id="payment-modal" class="modal-overlay">
       <div class="modal-box">
         <span class="close-x" onclick="closePopup()">&times;</span>
@@ -959,7 +962,7 @@
         <!-- 1. Gcash Card -->
         <div class="payment-card">
             <div class="card-left">
-                <!-- Replace with your Gcash Logo -->
+                <!-- Using online logo for reliability -->
                 <img class="card-logo" src="https://upload.wikimedia.org/wikipedia/commons/5/52/GCash_logo.svg" alt="Gcash" style="background:transparent; object-fit:contain;">
                 <div class="card-info">
                     <div class="card-title">Gcash 0945 *** **47</div>
@@ -969,7 +972,8 @@
             <div class="card-actions">
                 <!-- Trash Can triggers Delete Modal -->
                 <img class="action-icon icon-red" src="{% static 'img/fa7-solid_trash-can-1.png' %}" onclick="openDeletePopup()">
-                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}">
+                <!-- Pencil triggers Edit Modal -->
+                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}" onclick="openEditPopup()">
             </div>
         </div>
 
@@ -985,7 +989,7 @@
             </div>
             <div class="card-actions">
                 <img class="action-icon icon-red" src="{% static 'img/fa7-solid_trash-can-1.png' %}" onclick="openDeletePopup()">
-                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}">
+                <img class="action-icon" src="{% static 'img/mdi-pencil-outline.png' %}" onclick="openEditPopup()">
             </div>
         </div>
 
@@ -1013,7 +1017,36 @@
       </div>
     </div>
 
-    <!-- NEW DELETE POPUP -->
+    <!-- NEW EDIT PAYMENT POPUP -->
+    <div id="edit-modal" class="modal-overlay">
+      <div class="modal-box">
+        <span class="close-x" onclick="closeEditPopup()">&times;</span>
+
+        <!-- Header -->
+        <div class="section-header">Edit Payment Method</div>
+
+        <!-- Form Inputs (Pre-filled example) -->
+        <div class="form-grid">
+            <div class="input-wrapper">
+                <input type="text" class="styled-input" placeholder="Card Number" value="1234 **** **** 789">
+            </div>
+            <div class="row-inputs">
+                <div class="input-wrapper">
+                    <input type="text" class="styled-input" placeholder="Expiry Date" value="12/25">
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="styled-input" placeholder="CVV" value="***">
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button class="btn-add">Save Changes</button>
+
+      </div>
+    </div>
+
+    <!-- DELETE POPUP -->
     <div id="delete-modal" class="modal-overlay">
       <div class="delete-box">
           <div class="delete-title">Delete 1234 *** **789 Payment Method?</div>
@@ -1047,6 +1080,16 @@
             deleteModal.style.display = "none";
         }
 
+        // Edit Modal
+        var editModal = document.getElementById("edit-modal");
+
+        function openEditPopup() {
+            editModal.style.display = "flex";
+        }
+        function closeEditPopup() {
+            editModal.style.display = "none";
+        }
+
         // Close when clicking outside
         window.onclick = function(event) {
             if (event.target == paymentModal) {
@@ -1054,6 +1097,9 @@
             }
             if (event.target == deleteModal) {
                 deleteModal.style.display = "none";
+            }
+            if (event.target == editModal) {
+                editModal.style.display = "none";
             }
         }
     </script>
