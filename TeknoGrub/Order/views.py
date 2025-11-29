@@ -27,3 +27,15 @@ def order_history_view(request):
         'cancelled_orders': cancelled_orders,
     }
     return render(request, 'order/history.html', context)
+
+
+def checkout_view(request):
+    return render(request, "checkout.html")
+
+
+def cart_view(request):
+    return None
+
+
+def kitchen_dashboard_view(request):
+    return None

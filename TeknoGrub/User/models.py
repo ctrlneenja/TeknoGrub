@@ -2,8 +2,7 @@ from django.db import models
 
 from Canteen.models import Canteen
 from Menu.models import MenuItem
-
-from TeknoGrub.Menu.models import Inventory
+from Menu.models import Inventory
 
 
 # Create your models here.
