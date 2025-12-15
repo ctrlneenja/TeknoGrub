@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import PromoName, PromoRedemption
+from .models import Promo
 
-# Register your models here.
-#admin.site.register(Category)
-admin.site.register(PromoName)
-# admin.site.register(PromoItem)
-# admin.site.register(PromoCategory)
-admin.site.register(PromoRedemption)
-
+# Register the new simplified model
+admin.site.register(Promo)

@@ -1,29 +1,30 @@
 from django.db import models
-from Cart.models import Cart
-#from User.models import Staff
+from django.conf import settings
+from Canteen.models import Canteen
+from Menu.models import MenuItem
 
-# Create your models here.
 
 class Order(models.Model):
-    order = models.AutoField(primary_key=True)
-    status = models.CharField(max_length=50)
-    order_time = models.DateTimeField(auto_now_add=True)
-    pickup_time = models.DateTimeField(blank=True, null=True)
-    note = models.TextField(blank=True, null=True)
-    is_reorder = models.BooleanField(default=False)
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Preparing', 'Preparing'),  # Staff Accepted
+        ('Ready', 'Ready for Pickup'),
+        ('Completed', 'Completed'),
+        ('Cancelled', 'Cancelled'),
+    ]
 
-    user = models.ForeignKey("User.Users", on_delete=models.CASCADE, related_name="orders")
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
-    staff = models.ForeignKey("User.Staff", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
+    canteen = models.ForeignKey(Canteen, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=50, default='Cash')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class OrderItem(models.Model):
-    order_item = models.AutoField(primary_key=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    menu_item = models.ForeignKey(MenuItem, on_delete=models.SET_NULL, null=True)
+    menu_item_name = models.CharField(max_length=255)  # Backup if item deleted
     quantity = models.IntegerField()
-    price_at_order = models.DecimalField(max_digits=10, decimal_places=2)
-    subtotal_price = models.DecimalField(max_digits=10, decimal_places=2)
-    note = models.TextField(blank=True, null=True)
-
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    menu_item = models.ForeignKey("Menu.MenuItem", on_delete=models.CASCADE, related_name="order_items")
-
-    # staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name="processed_by")
+    price = models.DecimalField(max_digits=10, decimal_places=2)

@@ -1,52 +1,33 @@
 from django.db import models
+from django.conf import settings
+from Canteen.models import Canteen
 
 
 class Category(models.Model):
-    category_id = models.AutoField(primary_key=True)
     category_name = models.CharField(max_length=100)
 
-    class Meta:
-        verbose_name_plural = "Categories"
-
-    def __str__(self):
-        return self.category_name
+    def __str__(self): return self.category_name
 
 
 class MenuItem(models.Model):
-    item_id = models.AutoField(primary_key=True)
-
-    canteen = models.ForeignKey('Canteen.Canteen', on_delete=models.DO_NOTHING, db_column='canteen_id')
-
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, db_column='category_id')
-
+    canteen = models.ForeignKey(Canteen, on_delete=models.CASCADE, related_name='menu_items')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
+    ingredients = models.CharField(max_length=500, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image_url = models.CharField(max_length=255, blank=True, null=True)
+    image_url = models.ImageField(upload_to='food_imgs/', blank=True, null=True)
     is_available = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-
-    def __str__(self):
-        return self.name
+    def __str__(self): return f"{self.name} ({self.canteen.name})"
 
 
 class Inventory(models.Model):
-    inventory_id = models.AutoField(primary_key=True)
-
-    # CARDINALITY: 1 Item has exactly 1 Stock Record -> OneToOneField
-    item = models.OneToOneField(MenuItem, on_delete=models.DO_NOTHING, db_column='item_id', unique=True)
-
+    item = models.OneToOneField(MenuItem, on_delete=models.CASCADE, related_name='inventory')
     current_stock = models.IntegerField(default=0)
     threshold_level = models.IntegerField(default=10)
 
-    class Meta:
-        verbose_name_plural = "Inventories"
-
 
 class Favorite(models.Model):
-    favorite_id = models.AutoField(primary_key=True)
-    # References User App via string to avoid imports
-    user = models.ForeignKey('User.Users', on_delete=models.DO_NOTHING, db_column='user_id')
-    item = models.ForeignKey(MenuItem, on_delete=models.DO_NOTHING, db_column='item_id')
-    added_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Favorites{% endblock %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/menu.css' %}"> {% endblock %}
+
+{% block content %}
+    <h2 class="page-title">My Favorites</h2>
+    <div class="dish-grid">
+        {% for item in menu_items %}
+            {% include 'Menu/item_card.html' with item=item %}
+        {% empty %}
+            <p>You haven't favorited any items yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

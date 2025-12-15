@@ -1,92 +1,76 @@
-:root {
-    --bg-red: #550508;
-    --button-yellow: #FBCD36;
-    --text-yellow: #FBD436;
-    --text-light: #ffffff;
-    --card-bg: #f8f9fa;
-    --border-color: #dee2e6;
-    --sidebar-active: #a22025;
-}
-
+/* --- ADMIN/STAFF BASE STYLES (Matches Prototype Screenshots) --- */
 .dashboard-body {
-    background-color: var(--bg-red);
-    color: var(--text-light);
-    font-family: 'Montserrat', sans-serif;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: var(--bg-red);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.header-actions { display: flex; gap: 1rem; }
-.icon-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2rem;
-    padding: 2rem;
-    height: calc(100vh - 70px);
-}
-
-.dashboard-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.dashboard-content {
-    overflow: hidden;
-}
-
-.content-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /*align-items: center;*/
-}
-.user-profile h3 { font-size: 1.5rem; font-weight: bold; }
-.user-profile p { opacity: 0.8; }
-
-.canteen-selector {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-    color: #333;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.sidebar-nav {
-    background-color: white;
-    color: #333;
-    border-radius: 8px;
-    padding: 0.5rem;
-    flex-grow: 1;
-}
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-.nav-item:hover {
-    background-color: #f1f1f1;
-}
-.nav-item.is-active {
-    background-color: var(--sidebar-active);
+    background-color: #550508; /* Deep Maroon Background */
     color: white;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden; /* Ensure no main page scroll */
 }
-.nav-item span { font-size: 1.2rem; }
+
+.dashboard-app-container {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Fixed Sidebar Width */
+    min-height: 100vh;
+}
+
+/* In dashboard.css */
+.dashboard-sidebar {
+    width: 300px;
+    background-color: var(--bg-color); /* Maroon */
+    padding: 25px;
+    position: fixed;
+    height: 100vh; /* Keep it taking up the full viewport height */
+    top: 0;        /* Start from the very top */
+    left: 0;
+    z-index: 100;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-header-admin { text-align: center; margin-bottom: 20px; }
+.logo-admin { font-size: 2rem; font-weight: 800; color: white; }
+.logo-admin span { color: #FBCD36; }
+
+.user-profile-admin h3 { font-size: 1.3rem; font-weight: 700; color: #FBCD36; margin: 0; }
+.user-profile-admin p { font-size: 0.9rem; color: white; opacity: 0.7; margin: 0; }
+
+.sidebar-nav { margin-top: 20px; }
+.nav-list-admin { list-style: none; padding: 0; margin: 0; }
+.nav-link-admin {
+    display: flex; align-items: center; gap: 15px;
+    padding: 14px 15px;
+    text-decoration: none;
+    color: #A0A0A0; /* Faded text for unselected */
+    font-weight: 600;
+    transition: 0.2s;
+}
+.nav-link-admin:hover { color: white; }
+.nav-link-admin.is-active {
+    background-color: var(--sidebar-active); /* Darker Maroon for active */
+    color: white;
+    border-radius: 6px;
+}
+.nav-link-admin .badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    margin-left: auto;
+}
+
+/* Crucial for aligning the content below the header */
+.dashboard-content {
+    grid-area: content;
+    padding: 25px; /* Matches the padding you used */
+    overflow-y: auto;
+    /* Explicitly compensate for the height of the top header */
+    height: calc(100vh - 80px);
+    margin-top: 80px; /* Pushes content down below the header */
+}
+
+/* --- HEADER (Top Right) --- */
+.dashboard-header {
+    /* This header is kept for consistency but might be minimal in your admin screenshot */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 15px 30px;
+}

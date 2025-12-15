@@ -1,4 +1,4 @@
-/* --- Variables from your design --- */
+/* --- Variables --- */
 :root {
     --bg-red: #550508;
     --button-yellow: #FBCD36;
@@ -8,222 +8,204 @@
 /* --- Floating Button --- */
 .floating-basket-btn {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 30px;
+    right: 30px;
     width: 60px;
     height: 60px;
     background-color: var(--button-yellow);
     border: none;
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    z-index: 999;
+    z-index: 1001; /* Must be higher than global sidebar */
     transition: transform 0.2s ease;
 }
+
 .floating-basket-btn:hover {
     transform: scale(1.1);
 }
-.floating-basket-btn svg {
-    color: var(--bg-red);
-    width: 28px;
-    height: 28px;
+
+.floating-basket-btn img {
+    width: 100px;
+    height: 100px;
 }
 
-/* --- Overlay --- */
+/* --- Overlay (Dark Background) --- */
 .basket-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1002;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    backdrop-filter: blur(2px);
 }
+
 .basket-overlay.is-active {
     opacity: 1;
     visibility: visible;
 }
 
-/* --- Sidebar --- */
+/* --- Sidebar Window --- */
 .basket-sidebar {
     position: fixed;
-    bottom: calc(3rem + 60px);
-    right: 2rem;
+    bottom: 100px; /* Sits above the button */
+    right: 30px;
     width: 100%;
-    max-width: 420px;
-    max-height: calc(100vh - 4.5rem - 60px);
+    max-width: 400px;
+    max-height: 600px;
+    height: auto;
     background-color: #ffffff;
-    z-index: 1001;
+    z-index: 1003;
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     overflow: hidden;
 
-    /* --- NEW ANIMATION PROPERTIES --- */
-    /* 1. Set the anchor point for the transform to the bottom-right corner */
+    /* Pop-out Animation */
     transform-origin: bottom right;
-
-    /* 2. Initial state: Invisible and scaled down to nothing */
     opacity: 0;
-    transform: scale(0.1); /* Start slightly larger than 0 for a smoother feel */
-
-    /* 3. Make sure the transition animates both opacity and transform */
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-out;
+    transform: scale(0.5);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease-out;
+    pointer-events: none; /* Prevent clicks when hidden */
 }
 
 .basket-sidebar.is-active {
     opacity: 1;
     transform: scale(1);
+    pointer-events: all;
 }
 
+/* --- Header --- */
 .basket-header {
     background-color: var(--button-yellow);
-    padding: 1.5rem;
-    /*border-top-left-radius: 12px;*/
-    /*border-bottom-left-radius: 12px;*/
-}
-.basket-header h3 {
-    font-size: 1.5rem;
-    color: var(--bg-red);
+    padding: 20px;
     text-align: center;
 }
 
+.basket-header h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--bg-red);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* --- Body --- */
 .basket-body {
     flex-grow: 1;
-    padding: 1rem 1.5rem;
-    overflow-y: auto; /* Makes item list scrollable if it gets long */
+    padding: 20px;
+    overflow-y: auto;
+    min-height: 200px;
 }
+
 .canteen-name {
-    font-weight: bold;
+    font-size: 0.85rem;
+    font-weight: 700;
     color: #888;
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
     text-transform: uppercase;
-    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
 }
+
+/* --- Item List --- */
 .basket-item-list {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-/* --- Individual Basket Item Styling --- */
 .basket-item {
-    /* THIS IS THE CORE FIX: Use Flexbox for layout */
     display: flex;
-    align-items: center; /* Vertically aligns the content of all columns */
-    gap: 1rem; /* Creates space between the columns */
-    margin-bottom: 1.5rem; /* Space between each item in the list */
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
 }
 
 .item-image {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
-    flex-shrink: 0; /* Prevents the image from shrinking if the container is narrow */
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .item-details {
-    /* This column will grow to take up all available space */
-    flex-grow: 1;
+    flex: 1;
 }
 
 .item-name {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
-    color: var(--text-dark); /* Ensure text color is dark */
-}
-
-.item-subtext, .item-edit {
-    font-size: 0.9rem;
-    color: #666;
-    text-decoration: none;
-    display: block; /* Ensures they stack vertically */
-}
-.item-edit {
-    text-decoration: underline;
-}
-
-.item-actions {
-    /* This column will align its content to the right */
-    text-align: right;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 2px 0;
+    font-size: 1rem;
 }
 
 .item-price {
-    font-weight: bold;
-    color: var(--bg-red);
-    margin-bottom: 0.5rem;
-}
-
-.quantity-selector {
-    display: flex;
-    align-items: center;
-    /* Pushes the selector to the right edge of its column */
-    justify-content: flex-end;
-}
-
-.quantity-btn {
-    width: 28px;
-    height: 28px;
-    background-color: var(--button-yellow);
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    color: var(--text-dark);
-    cursor: pointer;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 600;
 }
 
 .quantity-value {
-    padding: 0 0.75rem;
     font-weight: bold;
-    color: var(--text-dark);
+    color: var(--bg-red);
+    background: #ffebee;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }
-
 
 /* --- Footer --- */
 .basket-footer {
-    padding: 1.5rem;
+    padding: 20px;
+    background: #f9f9f9;
     border-top: 1px solid #eee;
+    color: #333; /* Ensure all text in the footer is DARK */
 }
+
 .total-amount {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #550508; /* Ensure total amount is Maroon */
+    margin-bottom: 15px;
 }
-.payment-options { margin-bottom: 1.5rem; }
-.payment-option {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-}
-.payment-option input[type="radio"] { display: none; }
-.radio-check { /* Custom radio button styles */ }
 
 .confirm-order-btn {
     width: 100%;
-    padding: 1rem;
+    padding: 15px;
     background-color: var(--button-yellow);
+    color: var(--bg-red);
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 800;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* --- Prevent body scroll when overlay is active --- */
+.confirm-order-btn:hover {
+    background-color: #eac124;
+}
+
+/* Body Lock */
 body.basket-open {
     overflow: hidden;
+}
+
+.payment-option {
+    color: #333; /* Ensure option text is dark */
 }

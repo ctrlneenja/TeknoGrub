@@ -1,5 +1,6 @@
-class Canteen:
-    pass
+import pymysql
 
-class Menu:
-    pass
+# Trick Django into thinking we have the required version
+pymysql.version_info = (2, 2, 1, "final", 0)
+
+pymysql.install_as_MySQLdb()

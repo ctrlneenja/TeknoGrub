@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Menu{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+    <style>
+        /* Add hover zoom effect */
+        .card:hover { transform: scale(1.03); }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Search Bar (Top) -->
+        <div class="search-bar-container">
+            <!-- FIX: ENTIRE FORM must wrap the button and the input for submission to work -->
+            <form method="GET" action="{% url 'menu' %}" style="display:flex; width:100%;">
+                <div class="search-input-box" style="flex-grow:1;">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" name="q" placeholder="Search..." id="globalSearch" />
+                </div>
+                <button type="submit" class="btn-yellow-small" style="height:48px; width:100px; margin-left:10px;">Search</button>
+            </form>
+        </div>
+
+    <!-- Popular Section (White Container) -->
+    <div class="content-box">
+        <h3 class="section-header">Most Popular</h3>
+        <div class="card-scroller">
+            {% for item in popular_items %}
+                {% include 'Menu/item_card.html' with item=item %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Category Section -->
+    <div class="content-box mt-20">
+        <div class="category-nav">
+            <button class="nav-arrow"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="cat-links">
+                <a href="?category=All" class="cat-pill {% if active_category == 'All' %}active{% endif %}">Dish</a>
+                {% for cat in categories %}
+                <a href="?category={{ cat.category_name }}" class="cat-pill {% if active_category == cat.category_name %}active{% endif %}">{{ cat.category_name }}</a>
+                {% endfor %}
+            </div>
+            <button class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="dish-grid">
+            {% for item in menu_items %}
+                {% include 'Menu/item_card.html' with item=item %}
+            {% empty %}
+                <p style="color:#550508; padding:20px;">No items found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+<style>
+    /* Search */
+    .search-bar-container { display: flex; gap: 10px; margin-bottom: 25px; }
+    .search-input-box { flex: 1; background: rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; display: flex; align-items: center; color: white; }
+    .search-input-box input { background: transparent; border: none; color: white; width: 100%; margin-left: 10px; outline: none; font-size: 1rem; }
+    .search-input-box input::placeholder { color: rgba(255,255,255,0.7); }
+    .btn-yellow-small { background: #FBCD36; border: none; padding: 0 30px; border-radius: 8px; font-weight: bold; color: #550508; cursor: pointer; }
+
+    /* Content Boxes (White Backgrounds) */
+    .content-box { background: white; border-radius: 15px; padding: 25px; }
+    .mt-20 { margin-top: 20px; }
+    .section-header { color: #550508; font-weight: 800; font-size: 1.5rem; margin-bottom: 15px; }
+
+    /* Cards */
+    .dish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+    .card-scroller { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; }
+
+    /* Category Navigation */
+    .category-nav { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+    .cat-links { display: flex; gap: 40px; }
+    .cat-pill { text-decoration: none; color: white; font-weight: bold; padding: 10px 20px; border-radius: 20px; transition: 0.2s; background: transparent; }
+    .content-box .cat-pill { color: #550508; opacity: 0.5; }
+    /* Fix: Since categories are inside white box, use maroon text */
+    .content-box .cat-pill.active { background: #550508; color: var(--yellow); opacity: 1; }
+    .nav-arrow { background: none; border: none; color: #550508; font-size: 1.2rem; cursor: pointer; }
+</style>
+
+<!-- Modal Popup Container -->
+<div id="itemDetailModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+        <div class="detail-card-popup" style="background:white; width:90%; max-width:500px; border-radius:15px; overflow:hidden; position:relative;">
+            <button onclick="closeModal()" style="position:absolute; top:15px; right:15px; background:#FBCD36; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-weight:bold; color:#550508; z-index:10;">X</button>
+
+            <img id="modalImg" src="" style="width:100%; height:200px; object-fit:cover;">
+
+            <div style="padding:25px; color:#333;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <h2 id="modalTitle" style="margin:0; font-size:1.8rem; font-weight:800; color:#550508;">Dish Name</h2>
+                    <span id="modalPrice" style="font-weight:bold; color:#888; text-decoration:underline;">₱ 0.00</span>
+                </div>
+
+                <p style="color:#666; font-style:italic; margin-bottom:15px;">Dish</p>
+
+                <p id="modalDesc" style="color:#777; font-size:0.9rem; line-height:1.5; margin-bottom:20px;">Description goes here...</p>
+
+                <!-- Ingredients Section -->
+                <div style="font-weight:700; color:#550508; font-size:1rem; margin-bottom:10px;">Ingredients <i class="fa-solid fa-chevron-up"></i></div>
+                <div style="background:#e0e0e0; border-radius:8px; padding:10px; font-size:0.9rem; color:#550508;">
+                   <ul id="modalIngredList" style="list-style-type:disc; padding-left:20px;"></ul>
+                </div>
+
+                <!-- Add-ons Section -->
+                <div style="font-weight:700; color:#550508; font-size:1rem; margin-top:15px; margin-bottom:10px;">Add-ons</div>
+                <div style="background:#f9f9f9; padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <label style="display:flex; align-items:center; gap:10px; font-weight:500; color:#550508; cursor:pointer;">
+                        <input type="checkbox" id="addon-rice" onchange="updateModalTotal()">
+                        Rice
+                    </label>
+                    <span style="text-decoration: underline;">+ 15.00</span>
+                </div>
+
+                <!-- Take Out Checkbox -->
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
+                    <input type="checkbox" id="takeout-check">
+                    <label for="takeout-check" style="font-weight: 700; color: #550508;">Take out?</label>
+                </div>
+
+                <!-- Note Area -->
+                <div style="font-weight:700; color:#550508; font-size:1rem; margin-top:15px; margin-bottom:10px;">Note</div>
+                <textarea id="modalNote" style="width:100%; background:#ddd; border:none; border-radius:8px; padding:10px; height:60px; resize:none; font-family:'Inter', sans-serif;" placeholder="Special requests..."></textarea>
+
+                <!-- Footer Controls -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #eee; padding-top:20px; margin-top:20px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <strong>Amount:</strong>
+                        <button class="qty-popup-btn" onclick="changeModalQty(-1)" style="background:#FBCD36; border:none; width:30px; height:30px; border-radius:5px; font-weight:bold; cursor:pointer; color:#550508;">-</button>
+                        <div class="qty-display" id="modalQty" style="border:1px solid #ccc; padding:5px 10px; border-radius:5px; font-weight:bold; min-width:30px; text-align:center;">1</div>
+                        <button class="qty-popup-btn" onclick="changeModalQty(1)" style="background:#FBCD36; border:none; width:30px; height:30px; border-radius:5px; font-weight:bold; cursor:pointer; color:#550508;">+</button>
+                    </div>
+
+                    <div>
+                        <strong>Total:</strong>
+                        <span class="total-display" id="modalTotalPrice" style="font-weight:bold;">₱ 0.00</span>
+                    </div>
+                </div>
+
+                <button id="modalAddBtn" class="btn-yellow" style="width:100%; margin-top:20px;">Add to Basket</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let currentModalBasePrice = 0;
+let currentModalQty = 1;
+let currentModalItemId = null;
+const addonPrice = 15.00;
+
+function openItemModal(id, name, price, desc, img, ingredString) {
+    currentModalItemId = id;
+    currentModalBasePrice = parseFloat(price);
+    currentModalQty = 1;
+
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalTitle').innerText = name;
+    document.getElementById('modalPrice').innerText = '₱ ' + currentModalBasePrice.toFixed(2);
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('modalQty').innerText = currentModalQty;
+
+    // Reset Add-ons/Notes
+    document.getElementById('addon-rice').checked = false;
+    document.getElementById('takeout-check').checked = false;
+    document.getElementById('modalNote').value = '';
+
+    // Populate Ingredients List
+    const ingredList = document.getElementById('modalIngredList');
+    ingredList.innerHTML = '';
+    ingredString.split(',').forEach(ingred => {
+        if (ingred.trim()) {
+            const li = document.createElement('li');
+            li.innerText = ingred.trim();
+            ingredList.appendChild(li);
+        }
+    });
+
+    updateModalTotal();
+    document.getElementById('itemDetailModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('itemDetailModal').style.display = 'none';
+}
+
+function changeModalQty(change) {
+    currentModalQty += change;
+    if (currentModalQty < 1) currentModalQty = 1;
+    document.getElementById('modalQty').innerText = currentModalQty;
+    updateModalTotal();
+}
+
+function updateModalTotal() {
+    let total = currentModalBasePrice * currentModalQty;
+
+    const hasRice = document.getElementById('addon-rice').checked;
+    if (hasRice) {
+        total += (addonPrice * currentModalQty);
+    }
+
+    document.getElementById('modalTotalPrice').innerText = "₱ " + total.toLocaleString('en-US', {minimumFractionDigits: 2});
+}
+
+// Wire up the Add to Basket button inside the Modal
+document.getElementById('modalAddBtn').addEventListener('click', function() {
+    // You would gather addons/notes here if needed, but for now, just call addToCart
+    addToCart(currentModalItemId);
+    closeModal();
+});
+</script>
+{% endblock %}

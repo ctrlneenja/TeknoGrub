@@ -4,62 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeknoGrub - {% block title %}Dashboard{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>TeknoGrub - {% block title %}Admin{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/admin_staff.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
 <body class="dashboard-body">
 
-    <!-- Main Header -->
-    <header class="dashboard-header">
-        <div class="logo">
-            TEKNO<span class="logo-yellow">GRUB</span>
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn" aria-label="Notifications">🔔</button>
-            <button class="icon-btn" aria-label="Menu">☰</button>
-        </div>
-    </header>
+    <div class="dashboard-app-container">
 
-    <div class="dashboard-grid">
-        <!-- Left Sidebar Navigation -->
-        <aside class="dashboard-sidebar">
-            <div class="user-profile">
-                <h3>Libeth Bileth</h3> {# Replace with {{ request.user.get_full_name }} #}
-                <p>11-1111-111</p> {# Replace with {{ request.user.id_number }} #}
+        <!-- Left Sidebar Navigation (Matches Admin Screenshot Look) -->
+        <aside class="dashboard-sidebar-admin">
+            <div class="sidebar-header-admin">
+                <h1 class="logo-admin">TEKNO<span class="logo-yellow">GRUB</span></h1>
             </div>
 
-            <div class="canteen-selector">
-                <span>Main Canteen</span>
-                <span>▼</span>
+            <div class="user-profile-admin">
+                <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                <p>{{ request.user.id_number }}</p>
             </div>
 
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item">
-                    <span>🍽️</span> Menu
-                </a>
-                <a href="#" class="nav-item">
-                    <span>⭐</span> Favorites
-                </a>
-                <a href="#" class="nav-item">
-                    <span>%</span> Promos
-                </a>
-                <a href="{% url 'order-history' %}" class="nav-item {% if request.resolver_match.url_name == 'order-history' %}is-active{% endif %}">
-                    <span>🕓</span> History
-                </a>
-                <a href="#" class="nav-item">
-                    <span>⚙️</span> Settings
-                </a>
+            <nav class="sidebar-nav-admin">
+                <ul class="nav-list-admin">
+
+                    {% comment %} ADMIN VIEW LINKS {% endcomment %}
+                    {% if request.user.is_superuser %}
+                        <li>
+                            <a href="{% url 'admin_dashboard' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_dashboard' %}is-active{% endif %}">
+                                <i class="fa-solid fa-chart-line"></i> Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% comment %} STAFF/ADMIN: Orders (Links to /staff/orders/) {% endcomment %}
+                    <li>
+                        <a href="{% url 'staff_orders' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'staff_orders' %}is-active{% endif %}">
+                            <i class="fa-solid fa-receipt"></i> Orders <span class="badge">{% if counts.pending %}{{ counts.pending }}{% endif %}</span>
+                        </a>
+                    </li>
+
+                    {% comment %} Staff/Admin: Notifications {% endcomment %}
+                    <li>
+                        <a href="#" class="nav-link-admin">
+                            <i class="fa-solid fa-bell"></i> Notifications <span class="badge">0</span>
+                        </a>
+                    </li>
+
+                    {% if request.user.is_superuser %}
+                        {% comment %} ADMIN ONLY LINKS {% endcomment %}
+                        <li>
+                            <a href="{% url 'categories' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'categories' %}is-active{% endif %}">
+                                <i class="fa-solid fa-tags"></i> Menu Categories
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'inventory' %}" class="nav-link {% if request.resolver_match.url_name == 'inventory' %}is-active{% endif %}">
+                                <i class="fa-solid fa-box"></i> Inventory
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% comment %} Applies to all staff/admin {% endcomment %}
+                    <li>
+                        <a href="{% url 'settings' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'settings' %}is-active{% endif %}">
+                            <i class="fa-solid fa-gear"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" class="nav-link-admin logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </li>
+                </ul>
             </nav>
         </aside>
 
+        <!-- Main Content Area -->
         <main class="dashboard-content">
-            <div class="content-wrapper" style="width: 100%; align-items: stretch;">
+            <div class="content-wrapper">
                 {% block content %}{% endblock %}
             </div>
         </main>
     </div>
 
+    <script>
+        // Function to open sidebar on mobile (for Admin/Staff view)
+        function toggleSidebar() {
+            document.querySelector('.dashboard-sidebar').classList.toggle('open');
+        }
+    </script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

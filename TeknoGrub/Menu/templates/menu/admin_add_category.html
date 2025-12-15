@@ -1,0 +1,127 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% block title %}Category Management{% endblock %}
+{% block extra_head %}
+    <style>
+        /* Admin Form Styling */
+        .admin-form-container { max-width: 1000px; margin: 0 auto; color: #333; }
+        .page-title { color: white; font-size: 2rem; font-weight: 800; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; color: #550508; margin-bottom: 5px; }
+        input[type="text"], select {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9;
+        }
+        .form-actions { margin-top: 30px; display: flex; justify-content: flex-end; gap: 15px; }
+        .btn-save { background: #FBCD36; color: #550508; padding: 10px 25px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; }
+        .btn-cancel { background: #ccc; color: #333; padding: 10px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+
+        /* Dual List Layout */
+        .dual-list-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px; }
+        .list-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 15px; }
+        .list-box h4 { color: #550508; font-weight: 700; margin-bottom: 15px; }
+        .list-scroll { max-height: 450px; overflow-y: auto; border-top: 1px solid #eee; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; gap: 10px; }
+        .item-info { display: flex; align-items: center; gap: 10px; }
+        .item-name { font-weight: 500; }
+        .btn-remove, .btn-add-mini { border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
+        .btn-remove { background: #ffebee; color: #c62828; }
+        .btn-add-mini { background: #e8f5e9; color: #2e7d32; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-form-container">
+    <h2 class="page-title">{% if category %}Edit Category: {{ category.name }}{% else %}Add New Category{% endif %}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label>Category Name</label>
+            {{ form.category_name }}
+        </div>
+
+        <div class="dual-list-container">
+            
+            <!-- Left: Assigned Items -->
+            <div class="list-box">
+                <h4>Assigned Menu Items (<span id="assigned-count">{{ assigned_items|length }}</span>)</h4>
+                <div class="list-scroll" id="assigned-list">
+                    {% for item in assigned_items %}
+                        <div class="list-item" data-id="{{ item.id }}">
+                            <span class="badge" style="background:#FF9800;">{{ item.name|slice:":2"|upper }}</span>
+                            <span class="item-name">{{ item.name }}</span>
+                            <button type="button" class="btn-remove" onclick="moveItem(this, 'available')">- Remove</button>
+                            <input type="hidden" name="assigned_items" value="{{ item.id }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right: Available Items -->
+            <div class="list-box">
+                <h4>Assign More Items</h4>
+                <input type="text" placeholder="Search Menu Items..." id="searchItems" onkeyup="filterItems()" class="search-input" style="padding:8px; border:1px solid #ddd;">
+                <div class="list-scroll" id="available-list">
+                    {% for item in available_items %}
+                        <div class="list-item" data-id="{{ item.id }}">
+                            <span class="badge" style="background:#28a745;">{{ item.name|slice:":2"|upper }}</span>
+                            <span class="item-name">{{ item.name }}</span>
+                            <button type="button" class="btn-add-mini" onclick="moveItem(this, 'assigned')">+ Add</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'categories' %}" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-save">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // JS for Dual List Item Movement
+    function moveItem(btn, target) {
+        const itemDiv = btn.parentElement;
+        const id = itemDiv.getAttribute('data-id');
+        
+        if (target === 'assigned') {
+            btn.innerText = "- Remove";
+            btn.className = "btn-remove";
+            btn.setAttribute('onclick', "moveItem(this, 'available')");
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'assigned_items';
+            input.value = id;
+            itemDiv.appendChild(input);
+            
+            document.getElementById('assigned-list').appendChild(itemDiv);
+        } else { // target === 'available'
+            btn.innerText = "+ Add";
+            btn.className = "btn-add-mini";
+            btn.setAttribute('onclick', "moveItem(this, 'assigned')");
+            
+            itemDiv.querySelector('input[name="assigned_items"]').remove();
+            document.getElementById('available-list').appendChild(itemDiv);
+        }
+        updateCounts();
+    }
+
+    function updateCounts() {
+        const count = document.getElementById('assigned-list').children.length;
+        document.getElementById('assigned-count').innerText = count;
+    }
+
+    function filterItems() {
+        const term = document.getElementById('searchItems').value.toLowerCase();
+        const items = document.querySelectorAll('#available-list .list-item');
+        items.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(term) ? 'flex' : 'none';
+        });
+    }
+</script>
+{% endblock %}

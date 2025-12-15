@@ -1,79 +1,72 @@
 {% load static %}
 
-<!-- The Floating Basket Button -->
-<button class="floating-basket-btn" id="open-basket-btn" aria-label="Open Basket">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+<!-- Floating Button -->
+<button class="floating-basket-btn" id="open-basket-btn">
+    <img src="{% static 'images/basket_icon.png' %}">
 </button>
 
-<!-- The semi-transparent overlay that covers the page -->
+<!-- Overlay -->
 <div class="basket-overlay" id="basket-overlay"></div>
 
-<!-- The Basket Sidebar (Initially Hidden) -->
+<!-- Sidebar -->
 <aside class="basket-sidebar" id="basket-sidebar">
-    <!-- Header -->
     <div class="basket-header">
         <h3>My Basket</h3>
     </div>
 
-    <!-- Body / Item List -->
     <div class="basket-body">
-        <p class="canteen-name">MAIN CANTEEN ORDER</p>
-        <ul class="basket-item-list">
-            <!-- Item 1 -->
-            <li class="basket-item">
-                <img src="{% static 'images/food_beepstek.png' %}" alt="Biggest Beepstek" class="item-image">
-                <div class="item-details">
-                    <p class="item-name">Biggest beepstek</p>
-                    <span class="item-subtext">Take out</span>
-                    <a href="#" class="item-edit">Edit</a>
-                </div>
-                <div class="item-actions">
-                    <p class="item-price">₱ 1,000,000,000.00</p>
-                    <div class="quantity-selector">
-                        <button class="quantity-btn minus">-</button>
-                        <span class="quantity-value">2</span>
-                        <button class="quantity-btn plus">+</button>
-                    </div>
-                </div>
-            </li>
-            <!-- Item 2 -->
-            <li class="basket-item">
-                <img src="{% static 'images/food_kare.png' %}" alt="Stephen Kare" class="item-image">
-                <div class="item-details">
-                    <p class="item-name">Stephen Kare</p>
-                    <span class="item-subtext">Dine in</span>
-                    <a href="#" class="item-edit">Edit</a>
-                </div>
-                <div class="item-actions">
-                    <p class="item-price">₱ 1 million dollars</p>
-                    <div class="quantity-selector">
-                        <button class="quantity-btn minus">-</button>
-                        <span class="quantity-value">1</span>
-                        <button class="quantity-btn plus">+</button>
-                    </div>
-                </div>
-            </li>
+        <p class="canteen-name">{{ request.session.canteen_name|default:"Main Canteen"|upper }} ORDER</p>
+
+        <ul class="basket-item-list" id="cart-list-container">
+            <p style="text-align:center; padding:20px; color:#888;">Loading cart...</p>
         </ul>
     </div>
 
-    <!-- Footer / Order Summary -->
     <div class="basket-footer">
         <div class="total-amount">
             <span>Total Amount:</span>
-            <span>₱ 1,001,000,150.00</span>
+            <span id="cart-total-display">₱ 0.00</span>
         </div>
-        <div class="payment-options">
+
+        <!-- PAYMENT OPTIONS (Restored from Prototype) -->
+        <div class="payment-options-container" style="margin-bottom: 20px;">
+            <!-- Option 1: Cash -->
             <label class="payment-option">
                 Cash
-                <input type="radio" name="payment" value="cash">
-                <span class="radio-check"></span>
+                <input type="radio" name="payment_method" value="Cash" checked>
+                <span class="checkmark"></span>
             </label>
+            <!-- Option 2: GCash -->
             <label class="payment-option">
-                Gcash 0945 *** **47
-                <input type="radio" name="payment" value="gcash" checked>
-                <span class="radio-check"></span>
+                GCash (Manual Entry)
+                <input type="radio" name="payment_method" value="GCash">
+                <span class="checkmark"></span>
             </label>
         </div>
-        <button class="confirm-order-btn">Confirm Order</button>
+
+        <button class="confirm-order-btn" id="confirmOrderBtn">Confirm Order</button>
     </div>
 </aside>
+
+<style>
+    /* ADD these styles to cart_component.css */
+    .payment-options-container { display: flex; flex-direction: column; gap: 10px; }
+    .payment-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+    }
+    /* Simple radio button look */
+    .payment-option input[type="radio"] { opacity: 0; position: absolute; }
+    .checkmark {
+        height: 20px; width: 20px; background-color: #eee; border-radius: 50%;
+        position: relative;
+    }
+    .payment-option input:checked ~ .checkmark { background-color: #550508; border: 4px solid #FBCD36; }
+</style>

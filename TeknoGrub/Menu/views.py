@@ -1,73 +1,189 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import JsonResponse
 from .models import MenuItem, Category, Inventory, Favorite
+from Canteen.models import Canteen
+from .forms import MenuItemForm, CategoryForm
+from Promo.models import Promo
+from Menu.models import MenuItem # Ensure MenuItem is imported
+from django.db.models import Q, Count
+import json
 
 
-# STUDENT / PUBLIC VIEWS
+# --- Helpers ---
+def is_staff(u):
+    return u.is_staff or (u.role and u.role.role_name in ['Staff', 'Admin'])
+
+
+# --- User Views ---
+
+@login_required
+def set_canteen(request):
+    """Handles changing the active canteen via the sidebar dropdown."""
+    if request.method == "POST":
+        cid = request.POST.get('canteen_id')
+        try:
+            canteen = Canteen.objects.get(pk=cid)
+            request.session['canteen_id'] = int(cid)
+            request.session['canteen_name'] = canteen.name
+        except Canteen.DoesNotExist:
+            pass
+    return redirect(request.META.get('HTTP_REFERER', 'menu'))
+
+
+@login_required
 def menu_view(request):
+    """Displays the main menu, filtered by Canteen and Category."""
+
+    # 1. Get Canteen
+    cid = request.session.get('canteen_id')
+    if not cid:
+        # Set default canteen if session is empty
+        first = Canteen.objects.first()
+        if first:
+            cid = first.pk
+            request.session['canteen_id'] = first.pk
+            request.session['canteen_name'] = first.name
+
+    cat_filter = request.GET.get('category', 'All')
+    all_canteens = Canteen.objects.all()
     categories = Category.objects.all()
-    active_category_name = request.GET.get('category', 'Dish')  # default 'Dish'
 
-    # find category object, if it exists
-    try:
-        active_category = Category.objects.get(category_name=active_category_name)
-        menu_items = MenuItem.objects.filter(category=active_category, is_available=True)
-    except Category.DoesNotExist:
-        # Fallback: show all or empty if category not found
-        menu_items = MenuItem.objects.filter(is_available=True)
+    # 2. Base Item Query
+    items = MenuItem.objects.filter(canteen_id=cid, is_available=True)
 
-    return render(request, 'menu.html')
+    # 3. Search/Filter Logic (If you added a search bar to the menu template)
+    search_query = request.GET.get('q')
+    if search_query:
+        items = items.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
 
+    # 4. Category Filter
+    if cat_filter != 'All':
+        items = items.filter(category__category_name=cat_filter)
+
+    # 5. Favorite Flag (Required for star icon consistency)
+    user_fav_ids = Favorite.objects.filter(user=request.user).values_list('item_id', flat=True)
+    for i in items:
+        i.is_favorite = i.id in user_fav_ids
+
+    context = {
+        'menu_items': items,
+        'categories': categories,
+        'active_category': cat_filter,
+        'canteens_list': all_canteens,
+        'popular_items': items.order_by('?')[:4]
+    }
+    return render(request, 'Menu/menu.html', context)
+
+
+@login_required
+def toggle_favorite(request, item_id):
+    item = get_object_or_404(MenuItem, pk=item_id)
+    fav, created = Favorite.objects.get_or_create(user=request.user, item=item)
+
+    if not created:
+        fav.delete()
+        status = 'removed'
+    else:
+        status = 'added'
+
+    # Redirect if on the favorites page to refresh the state
+    if request.META.get('HTTP_REFERER', '').endswith('/favorites/'):
+        return JsonResponse({'status': 'redirect', 'url': '/favorites/'})
+
+    return JsonResponse({'status': status})
+
+
+@login_required
 def favorites_view(request):
-    return render(request, 'favorites.html')
+    favs = Favorite.objects.filter(user=request.user).select_related('item')
+    items = [f.item for f in favs]
 
-# ADMIN / STAFF VIEWS
-def manage_inventory_view(request):
-
-    # Use select_related to get the associated Item name in one query
-    inventory_list = Inventory.objects.select_related('item').all()
-
-    context = {
-        'inventory_list': inventory_list
-    }
-    return render(request, 'inventory.html', context)
+    # Ensure canteens list is passed for the dropdown to show up
+    return render(request, 'Menu/favorites.html', {
+        'menu_items': items,
+        'canteens_list': Canteen.objects.all()
+    })
 
 
-def manage_categories_view(request):
-    categories = Category.objects.all()
-    # Count items in each category for the dashboard
-    for cat in categories:
-        cat.item_count = MenuItem.objects.filter(category=cat).count()
+@login_required
+def promos_view(request):
+    # FIX: Use the correct related name (should be 'promos') OR use the default (related_name='promos_set')
+    # We will use the default relationship name to be safe if you didn't define a related_name on the M2M field.
+    promos = Promo.objects.filter(is_active=True).prefetch_related('applicable_items')
 
-    return render(request, 'categories.html', {'categories': categories})
+    # NOTE: If the above still fails, change prefetch_related('applicable_items') to prefetch_related('promo') or 'promos_set'
 
+    return render(request, 'Menu/promos.html', {'promos': promos, 'canteens_list': Canteen.objects.all()})
 
-def edit_category_view(request, category_id):
-    category = get_object_or_404(Category, category_id=category_id)
+# --- Admin/Staff Logic ---
 
-    # Items currently in this category
-    current_items = MenuItem.objects.filter(category=category)
-
-    # Items NOT in this category (for the 'Assign More Items' list)
-    other_items = MenuItem.objects.exclude(category=category)
-
-    context = {
-        'category': category,
-        'current_items': current_items,
-        'other_items': other_items,
-    }
-    return render(request, 'edit_category.html', context)
+def is_staff(u):
+    return u.is_staff or (u.role and u.role.role_name in ['Staff', 'Admin'])
 
 
-def add_item(request):
-    return render(request, 'edit_item.html')
+@user_passes_test(is_staff)
+def inventory_list(request):
+    # Ensure inventory list is populated via database
+    items = Inventory.objects.select_related('item').all()
+    return render(request, 'Menu/admin_inventory.html', {'inventory_list': items})
 
 
-def edit_menu_item_view(request, item_id):
-    #mock
-    item = {
-        'id': item_id,
-        'name': 'Sample Item',
-        'price': 0.00,
-        'description': '',
-    }
-    return render(request, 'edit_item.html', {'item': item})
+@user_passes_test(is_staff)
+def add_edit_item(request, item_id=None):
+    item = get_object_or_404(MenuItem, pk=item_id) if item_id else None
+    if request.method == 'POST':
+        form = MenuItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            mi = form.save()
+            # Handle Inventory creation/update
+            Inventory.objects.update_or_create(item=mi, defaults={
+                'current_stock': form.cleaned_data['current_stock'],
+                'threshold_level': form.cleaned_data['threshold_level']
+            })
+            return redirect('inventory')
+    else:
+        initial = {}
+        if item:
+            initial = {'current_stock': item.inventory.current_stock, 'threshold_level': item.inventory.threshold_level}
+        form = MenuItemForm(instance=item, initial=initial)
+    return render(request, 'Menu/admin_add_item.html', {'form': form, 'item': item})
+
+
+@user_passes_test(is_staff)
+def delete_item(request, item_id):
+    get_object_or_404(MenuItem, pk=item_id).delete()
+    return redirect('inventory')
+
+
+@user_passes_test(is_staff)
+def category_list(request):
+    cats = Category.objects.all()
+    for c in cats: c.item_count = MenuItem.objects.filter(category=c).count()
+    return render(request, 'Menu/admin_categories.html', {'categories': cats})
+
+
+@user_passes_test(is_staff)
+def add_edit_category(request, cat_id=None):
+    cat = get_object_or_404(Category, pk=cat_id) if cat_id else None
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=cat)
+        if form.is_valid():
+            c = form.save()
+            # Logic for assigned items (handling the dual-list move)
+            assigned = request.POST.getlist('assigned_items')
+            MenuItem.objects.filter(category=c).exclude(id__in=assigned).update(category=None)
+            MenuItem.objects.filter(id__in=assigned).update(category=c)
+            return redirect('categories')
+    else:
+        form = CategoryForm(instance=cat)
+
+    assigned = MenuItem.objects.filter(category=cat).select_related('inventory') if cat else []
+    available = MenuItem.objects.exclude(category=cat).select_related('inventory') if cat else MenuItem.objects.filter(
+        category__isnull=True)
+
+    return render(request, 'Menu/admin_add_category.html',
+                  {'form': form, 'assigned_items': assigned, 'available_items': available, 'category': cat})

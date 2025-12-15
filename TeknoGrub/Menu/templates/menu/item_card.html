@@ -1,0 +1,32 @@
+{% load static %}
+
+{% static 'images/food.png' as default_image_url %}
+{% with item.image_url|default:default_image_url as image_path %}
+
+<div class="card"
+     onclick="openItemModal(
+         {{ item.id }},
+         '{{ item.name|escapejs }}',
+         '{{ item.price }}',
+         '{{ item.description|escapejs }}',
+         '{{ image_path }}',
+         '{{ item.ingredients|default:'Secret ingredients not listed'|escapejs }}'
+     )">
+
+    <!-- CRITICAL FIX: The is_favorite flag is attached in the menu_view function -->
+    <div class="favorite" onclick="event.stopPropagation(); toggleFavorite({{ item.id }}, this)">
+        <i class="fa-{% if item.is_favorite %}solid{% else %}regular{% endif %} fa-star"></i>
+    </div>
+
+    <img src="{{ image_path }}" alt="{{ item.name }}">
+
+    <div class="details">
+        <p class="food-name">{{ item.name }}</p>
+        <p class="price">₱ {{ item.price }}</p>
+        <button class="add-cart" onclick="event.stopPropagation(); addToCart({{ item.id }})">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+{% endwith %}
