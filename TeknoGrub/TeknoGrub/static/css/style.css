@@ -89,6 +89,15 @@ main {
         grid-template-columns: 1fr; /* Switch to a single column layout */
         gap: 2rem;
     }
+
+    .login-split-layout, .auth-split-layout {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .welcome-text.right-align {
+        text-align: center;
+    }
 }
 
 /* For small mobile phones (less than 576px wide) */
@@ -107,5 +116,18 @@ main {
 
     .main-nav a {
         margin-left: 0; /* Remove the margin on the nav link */
+    }
+
+    .auth-card {
+        width: 100%;
+        padding: 30px 20px;
+    }
+
+    .welcome-text h1 {
+        font-size: 2.5rem;
+    }
+
+    .welcome-text p {
+        font-size: 1.2rem;
     }
 }

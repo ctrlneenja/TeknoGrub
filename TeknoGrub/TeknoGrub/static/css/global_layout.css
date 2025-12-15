@@ -303,9 +303,21 @@ body {
 }
 
 /* =========================================
-   7. RESPONSIVE (TABLETS & PHONES)
+   7. FAVORITE ICON
+   ========================================= */
+.fa-star.favorited {
+    color: var(--accent-yellow);
+}
+
+/* =========================================
+   8. RESPONSIVE (TABLETS & PHONES)
    ========================================= */
 @media (max-width: 992px) {
+    :root {
+        --sidebar-width: 280px;
+        --header-height: 70px;
+    }
+
     /* Switch Grid to Single Column */
     .app-container:not(.auth-mode) {
         grid-template-areas: "header" "content";
@@ -317,7 +329,7 @@ body {
         position: fixed;
         left: -100%; /* Move off screen */
         top: 0;
-        width: 280px;
+        width: var(--sidebar-width);
         transition: 0.3s ease;
         z-index: 1000;
         box-shadow: 5px 0 15px rgba(0,0,0,0.5);
@@ -334,5 +346,33 @@ body {
 
     .public-header {
         padding: 20px; /* Smaller padding on mobile */
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .public-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .public-nav a {
+        margin: 0 10px;
+    }
+
+    .user-profile-summary h4 {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+    .main-content {
+        padding: 15px;
     }
 }

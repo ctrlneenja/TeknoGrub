@@ -33,13 +33,14 @@ urlpatterns = [
                   path('api/cart/add/', cart_views.add_to_cart, name='add_to_cart'),
                   path('api/cart/update/', cart_views.get_cart_data, name='get_cart'),
                   path('api/cart/change_qty/', cart_views.change_qty, name='change_qty'),
-                  # path('api/cart/checkout/', order_views.checkout, name='checkout'),
+                  path('api/cart/checkout/', order_views.checkout, name='checkout'),
                   path('api/notifications/get/', notif_views.get_notifications, name='get_notifications'),
                   path('api/notifications/read/<int:notif_id>/', notif_views.mark_read, name='mark_read'),
 
                   # --- Payment ---
                   path('payment/add/', payment_views.add_payment_method, name='add_payment_method'),
                   path('payment/delete/<int:method_id>/', payment_views.delete_payment_method, name='delete_payment'),
+                  path('payment/set_default/<int:method_id>/', payment_views.set_default_payment_method, name='set_default_payment'),
 
                   # --- STAFF / ADMIN VIEWS ---
                   # Admin Dashboard (for Superuser)
@@ -49,7 +50,7 @@ urlpatterns = [
                   path('staff/order/update/<int:order_id>/', order_views.update_order_status,
                        name='update_order_status'),
 
-                  # Admin Management Paths (Menu)
+                  # Admin Management Paths (Must be clean)
                   path('manage/inventory/', menu_views.inventory_list, name='inventory'),
                   path('manage/inventory/add/', menu_views.add_edit_item, name='add_item'),
                   path('manage/inventory/edit/<int:item_id>/', menu_views.add_edit_item, name='edit_item'),

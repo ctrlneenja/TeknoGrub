@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import UserPaymentMethod
 from django.contrib import messages  # Optional: Use messages for user feedback
@@ -46,4 +46,12 @@ def add_payment_method(request):
 @login_required
 def delete_payment_method(request, method_id):
     UserPaymentMethod.objects.filter(pk=method_id, user=request.user).delete()
+    return redirect('settings')
+
+@login_required
+def set_default_payment_method(request, method_id):
+    UserPaymentMethod.objects.filter(user=request.user).update(is_default=False)
+    method = get_object_or_404(UserPaymentMethod, pk=method_id, user=request.user)
+    method.is_default = True
+    method.save()
     return redirect('settings')

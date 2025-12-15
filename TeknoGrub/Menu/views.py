@@ -105,7 +105,10 @@ def toggle_favorite(request, item_id):
 @login_required
 def favorites_view(request):
     favs = Favorite.objects.filter(user=request.user).select_related('item')
-    items = [f.item for f in favs]
+    items = []
+    for f in favs:
+        f.item.is_favorite = True
+        items.append(f.item)
 
     # Ensure canteens list is passed for the dropdown to show up
     return render(request, 'menu/favorites.html', {
@@ -133,20 +136,6 @@ def is_staff(u):
 @user_passes_test(is_staff)
 def inventory_list(request):
     # Ensure inventory list is populated via database
-    canteen = Canteen.objects.first()
-    if canteen:
-        # Create a dummy item for demonstration
-        menu_item, created = MenuItem.objects.get_or_create(
-            canteen=canteen,
-            name='Omsim',
-            defaults={
-                'price': 50.00,
-                'description': 'A delicious meal.',
-                'image_url': 'food_imgs/omsim3.jpg'
-            }
-        )
-        Inventory.objects.get_or_create(item=menu_item)
-
     items = Inventory.objects.select_related('item').all()
     return render(request, 'menu/inventory.html', {'inventory_list': items})
 

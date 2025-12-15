@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="{% static 'css/global_layout.css' %}">
-    <link rel="stylesheet" href="{% static 'cart/css/cart_component.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global_layout.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'cart/css/cart_component.css' %}?v=2">
 
     {% block extra_head %}{% endblock %}
 </head>
@@ -110,7 +110,6 @@
     <!-- CART (User Only) -->
     {% if user.is_authenticated and user.role.role_name != 'Admin' and user.role.role_name != 'Staff' %}
         {% include 'cart/cart_component.html' %}
-        <script src="{% static 'cart/js/cart_component.js' %}"></script>
     {% endif %}
 
     <!-- JAVASCRIPT LOGIC (Shared) -->
@@ -138,8 +137,14 @@
                     window.location.href = d.url;
                 } else {
                     const icon = btn.querySelector('i');
-                    if (d.status === 'added') { icon.classList.replace('fa-regular', 'fa-solid'); }
-                    else { icon.classList.replace('fa-solid', 'fa-regular'); }
+                    if (d.status === 'added') {
+                        icon.classList.replace('fa-regular', 'fa-solid');
+                        icon.classList.add('favorited');
+                    }
+                    else {
+                        icon.classList.replace('fa-solid', 'fa-regular');
+                        icon.classList.remove('favorited');
+                    }
                 }
             });
         }

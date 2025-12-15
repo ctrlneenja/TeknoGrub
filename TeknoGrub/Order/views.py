@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
-from django.db import models  # <-- ENSURE THIS IS HERE
-from django.db.models import Sum, Count, Q  # <-- ENSURE THIS IS HERE
+from django.db import models, transaction
+from django.db.models import Sum, Count, Q
 from .models import Order, OrderItem
 from Menu.models import MenuItem
+from Cart.models import Cart, CartItem
 from Notification.models import Notification
+from Payment.models import Payment
 import json
 
 
@@ -30,6 +32,57 @@ def get_order_counts():
         ready=Count('id', filter=Q(status='Ready')),
         completed=Count('id', filter=Q(status='Completed'))
     )
+
+
+# --- USER VIEWS ---
+@login_required
+@transaction.atomic
+def checkout(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        payment_method = data.get('payment_method')
+
+        try:
+            cart = Cart.objects.get(user=request.user)
+            cart_items = CartItem.objects.filter(cart=cart)
+
+            if not cart_items.exists():
+                return JsonResponse({'success': False, 'error': 'Cart is empty.'})
+
+            total_amount = sum(item.menu_item.price * item.quantity for item in cart_items)
+
+            order = Order.objects.create(
+                user=request.user,
+                canteen_id=request.session.get('canteen_id'),
+                total_amount=total_amount,
+                payment_method=payment_method
+            )
+
+            for cart_item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    menu_item=cart_item.menu_item,
+                    menu_item_name=cart_item.menu_item.name,
+                    quantity=cart_item.quantity,
+                    price=cart_item.menu_item.price
+                )
+            
+            Payment.objects.create(
+                order=order,
+                amount=total_amount,
+                method_used=payment_method,
+                status='Paid' # Assuming payment is successful at this point
+            )
+
+            cart.delete()
+
+            return JsonResponse({'success': True, 'order_id': order.id})
+        except Cart.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Cart not found.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=400)
 
 
 # --- STAFF/ADMIN VIEWS ---

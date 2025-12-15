@@ -1,4 +1,5 @@
-/* Ensure this exists in admin_staff.css */
+.dashboard-container {background-color: #550508; color: white;}
+.dashboard-content { background-color: #550508}/* Ensure this exists in admin_staff.css */
 .content-card {
     background: white; /* White Background for all main panels */
     color: #333;
@@ -179,4 +180,41 @@
     font-weight: 700;
     margin-bottom: 20px;
     color: #550508; /* Maroon Title */
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 992px) {
+    .main-workspace-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-list-panel {
+        max-height: 40vh;
+    }
+
+    .stats-row-nav {
+        flex-wrap: wrap;
+    }
+
+    .stat-card-nav {
+        flex-basis: 45%;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-row-nav {
+        flex-direction: column;
+    }
+
+    .stat-card-nav {
+        flex-basis: 100%;
+    }
+
+    .detail-actions-row {
+        flex-direction: column;
+    }
+
+    .btn-detail {
+        width: 100%;
+    }
 }
