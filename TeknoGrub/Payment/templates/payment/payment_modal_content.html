@@ -1,41 +1,35 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/payment_modal.css' %}">
 
-<div class="modal-box-content" style="position:relative;">
+<div class="modal-box-content">
 
     <!-- Exit Button -->
     <button onclick="closePaymentModal()" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:#333;">&times;</button>
 
-    <h3 style="font-weight:700; font-size:1.5rem; color:#550508; margin-bottom:15px;">Payment Methods</h3>
+    <h3>Payment Methods</h3>
 
     <!-- LIST EXISTING PAYMENT METHODS -->
-    <div class="payment-methods-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;">
+    <div class="payment-methods-list">
         {% for method in request.user.payment_methods.all %}
-        <div class="payment-card" style="background:#F8F8F8; border-radius:8px; padding:15px; display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-            <div class="card-left" style="display:flex; align-items:center; gap:15px;">
+        <div class="payment-card">
+            <div class="card-left">
                 {% if method.method_type == 'GCash' %}
-                    <img class="card-logo" src="https://upload.wikimedia.org/wikipedia/commons/5/52/GCash_logo.svg" alt="Gcash" style="width:40px; height:30px;">
+                    <img class="card-logo" src="https://upload.wikimedia.org/wikipedia/commons/5/52/GCash_logo.svg" alt="Gcash">
                 {% else %}
                     <i class="fa-brands fa-cc-visa" style="font-size:30px; color:blue;"></i>
                 {% endif %}
-                <div class="card-info" style="display:flex; flex-direction:column;">
-                    <div class="card-title" style="font-weight:700; color:#550508; font-size:1rem;">
+                <div class="card-info">
+                    <div class="card-title">
                         {% if method.method_type == 'GCash' %}
                             GCash {{ method.account_number|slice:":4" }} *** **{{ method.account_number|slice:"-2:" }}
                         {% else %}
                             Visa **** **** **** {{ method.masked_card_number }}
                         {% endif %}
                     </div>
-                    {% if method.is_default %}
-                        <div class="card-subtitle" style="font-size:0.8rem; color:#8B0000; font-weight:600;">Set as Default</div>
-                    {% else %}
-                        <a href="{% url 'set_default_payment' method.id %}" class="set-default-link">Set as Default</a>
-                    {% endif %}
                 </div>
             </div>
-            <div class="card-actions" style="display:flex; gap:15px; align-items:center;">
-                <a href="{% url 'delete_payment' method.id %}"
-                   onclick="return confirm('Delete this method?');"
-                   style="color:#d32f2f;">
+            <div class="card-actions">
+                <a onclick="openDeleteConfirmationModal({{ method.id }})">
                     <i class="fa-solid fa-trash"></i>
                 </a>
             </div>
@@ -46,15 +40,15 @@
     </div>
 
     <!-- ADD NEW PAYMENT METHOD FORM -->
-    <h3 class="section-header" style="font-size:1.2rem; font-weight:700; color:#3E0000; margin-top:10px; margin-bottom:15px;">Add Payment Method</h3>
+    <h3 class="section-header">Add Payment Method</h3>
 
-    <form method="POST" action="{% url 'add_payment_method' %}" id="payment-add-form" style="display:flex; flex-direction:column; gap:15px;" onsubmit="return validatePaymentForm()">
+    <form method="POST" action="{% url 'add_payment_method' %}" id="payment-add-form" onsubmit="return validatePaymentForm()">
         {% csrf_token %}
 
         <!-- Tab selection for Card/GCash -->
-        <div class="payment-tabs" style="display: flex; gap: 10px;">
-            <button type="button" onclick="showPaymentForm('card')" id="tab-card" class="tab-btn" style="flex:1; padding:10px; border:1px solid #ddd; background:#FBCD36;">Credit/Debit Card</button>
-            <button type="button" onclick="showPaymentForm('gcash')" id="tab-gcash" class="tab-btn" style="flex:1; padding:10px; border:1px solid #ddd; background:white;">GCash</button>
+        <div class="payment-tabs">
+            <button type="button" onclick="showPaymentForm('card')" id="tab-card" class="tab-btn active">Credit/Debit Card</button>
+            <button type="button" onclick="showPaymentForm('gcash')" id="tab-gcash" class="tab-btn">GCash</button>
         </div>
 
         <input type="hidden" name="method_type" value="Card" id="payment-method-type">
@@ -79,24 +73,37 @@
             <span style="color:#555;">Set as Default</span>
         </label>
 
-        <button type="submit" class="btn-add" style="background-color:#FBCD36; color:#550508; font-weight:700; font-size:1.1rem; padding:12px; border-radius:8px; border:none; cursor:pointer;">
-            Add
-        </button>
+        <button type="submit" class="btn-add">Add</button>
     </form>
 </div>
 
-<style>
-    .set-default-link {
-        font-size: 0.8rem;
-        color: #007bff;
-        text-decoration: none;
-    }
-    .set-default-link:hover {
-        text-decoration: underline;
-    }
-</style>
-
 <script>
+    // Functions for Modal Control
+    function openPaymentModal() {
+        document.getElementById('paymentModalOverlay').style.display = 'flex';
+    }
+    function closePaymentModal() {
+        document.getElementById('paymentModalOverlay').style.display = 'none';
+    }
+
+    // JS for the Delete Confirmation Modal
+    function openDeleteConfirmationModal(methodId) {
+        const deleteModal = document.getElementById('deleteConfirmationModal');
+        if (deleteModal) {
+            const confirmLink = document.getElementById('confirmDeleteLink');
+            if (confirmLink) {
+                confirmLink.href = '/payment/delete/' + methodId + '/';
+            }
+            deleteModal.classList.add('active');
+        }
+    }
+    function closeDeleteConfirmationModal() {
+        const deleteModal = document.getElementById('deleteConfirmationModal');
+        if (deleteModal) {
+            deleteModal.classList.remove('active');
+        }
+    }
+
     // Initial State Setup
     document.addEventListener('DOMContentLoaded', () => {
         // Ensure the initial state is Card
@@ -106,15 +113,18 @@
     // Tab Switching Logic
     function showPaymentForm(type) {
         document.getElementById('payment-method-type').value = (type === 'card' ? 'Card' : 'GCash');
-        document.getElementById('card-fields').style.display = (type === 'card' ? 'block' : 'none');
-        document.getElementById('gcash-fields').style.display = (type === 'gcash' ? 'block' : 'none');
+        const cardFields = document.getElementById('card-fields');
+        const gcashFields = document.getElementById('gcash-fields');
+        const tabCard = document.getElementById('tab-card');
+        const tabGcash = document.getElementById('tab-gcash');
 
-        // Aesthetic Tab Styling (Active tab is yellow)
-        document.getElementById('tab-card').style.background = (type === 'card' ? '#FBCD36' : 'white');
-        document.getElementById('tab-gcash').style.background = (type === 'gcash' ? '#FBCD36' : 'white');
+        if (cardFields && gcashFields && tabCard && tabGcash) {
+            cardFields.style.display = (type === 'card' ? 'block' : 'none');
+            gcashFields.style.display = (type === 'gcash' ? 'block' : 'none');
 
-        document.getElementById('tab-card').style.color = (type === 'card' ? '#550508' : '#555');
-        document.getElementById('tab-gcash').style.color = (type === 'gcash' ? '#550508' : '#555');
+            tabCard.classList.toggle('active', type === 'card');
+            tabGcash.classList.toggle('active', type === 'gcash');
+        }
     }
 
     function formatExpiry(input) {
@@ -141,7 +151,6 @@
                 alert('Expiry date must be in MM/YY format.');
                 return false;
             }
-            // Basic expiry validation (check if month is 01-12)
             const month = parseInt(expiry.substring(0, 2));
             if (month < 1 || month > 12) {
                 alert('Invalid month in expiry date.');

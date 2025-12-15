@@ -40,7 +40,6 @@ urlpatterns = [
                   # --- Payment ---
                   path('payment/add/', payment_views.add_payment_method, name='add_payment_method'),
                   path('payment/delete/<int:method_id>/', payment_views.delete_payment_method, name='delete_payment'),
-                  path('payment/set_default/<int:method_id>/', payment_views.set_default_payment_method, name='set_default_payment'),
 
                   # --- STAFF / ADMIN VIEWS ---
                   # Admin Dashboard (for Superuser)

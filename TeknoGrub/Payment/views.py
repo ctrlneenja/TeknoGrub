@@ -47,11 +47,3 @@ def add_payment_method(request):
 def delete_payment_method(request, method_id):
     UserPaymentMethod.objects.filter(pk=method_id, user=request.user).delete()
     return redirect('settings')
-
-@login_required
-def set_default_payment_method(request, method_id):
-    UserPaymentMethod.objects.filter(user=request.user).update(is_default=False)
-    method = get_object_or_404(UserPaymentMethod, pk=method_id, user=request.user)
-    method.is_default = True
-    method.save()
-    return redirect('settings')

@@ -154,9 +154,14 @@
 
 .item-price {
     font-size: 0.9rem;
-    color: #666;
+    color: #550508;
     font-weight: 600;
 }
+
+.item-qty {
+    color: #550508;
+}
+
 
 .quantity-value {
     font-weight: bold;
