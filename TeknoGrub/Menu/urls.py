@@ -12,21 +12,30 @@ urlpatterns = [
     # --- Staff / Admin Side ---
     # Inventory Management
     # http://127.0.0.1:8000/menu/staff/inventory/
-    path('staff/inventory/', views.manage_inventory_view, name='inventory'),
+    path('staff/inventory/', views.inventory_list, name='inventory'),
 
     # Add Item
     # http://127.0.0.1:8000/menu/staff/inventory/add/
-    path('staff/inventory/add/', views.add_item, name='add_item'),
+    path('staff/inventory/add/', views.add_edit_item, name='add_item'),
 
     # Edit Item
     # http://127.0.0.1:8000/menu/staff/item/edit/5/
-    path('staff/item/edit/<int:item_id>/', views.edit_menu_item_view, name='edit_item'),
+    path('staff/item/edit/<int:item_id>/', views.add_edit_item, name='edit_item'),
+
+    # Delete Item
+    path('staff/item/delete/<int:item_id>/', views.delete_item, name='delete_item'),
 
     # Category Management
     # http://127.0.0.1:8000/menu/staff/categories/
-    path('staff/categories/', views.manage_categories_view, name='categories'),
+    path('staff/categories/', views.category_list, name='categories'),
+
+    # Add Category
+    path('staff/categories/add/', views.add_edit_category, name='add_category'),
 
     # Edit Category
     # http://127.0.0.1:8000/menu/staff/categories/edit/1/
-    path('staff/categories/edit/<int:category_id>/', views.edit_category_view, name='edit_category'),
+    path('staff/categories/edit/<int:cat_id>/', views.add_edit_category, name='edit_category'),
+
+    # Delete Category
+    path('staff/categories/delete/<int:cat_id>/', views.delete_category, name='delete_category'),
 ]

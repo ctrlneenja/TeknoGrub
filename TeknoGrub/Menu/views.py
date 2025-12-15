@@ -68,6 +68,11 @@ def menu_view(request):
     user_fav_ids = Favorite.objects.filter(user=request.user).values_list('item_id', flat=True)
     for i in items:
         i.is_favorite = i.id in user_fav_ids
+        if i.image_url:
+            i.image_url = i.image_url.url
+        else:
+            i.image_url = ''
+
 
     context = {
         'menu_items': items,
@@ -76,7 +81,7 @@ def menu_view(request):
         'canteens_list': all_canteens,
         'popular_items': items.order_by('?')[:4]
     }
-    return render(request, 'Menu/menu.html', context)
+    return render(request, 'menu/menu.html', context)
 
 
 @login_required
@@ -103,7 +108,7 @@ def favorites_view(request):
     items = [f.item for f in favs]
 
     # Ensure canteens list is passed for the dropdown to show up
-    return render(request, 'Menu/favorites.html', {
+    return render(request, 'menu/favorites.html', {
         'menu_items': items,
         'canteens_list': Canteen.objects.all()
     })
@@ -117,7 +122,7 @@ def promos_view(request):
 
     # NOTE: If the above still fails, change prefetch_related('applicable_items') to prefetch_related('promo') or 'promos_set'
 
-    return render(request, 'Menu/promos.html', {'promos': promos, 'canteens_list': Canteen.objects.all()})
+    return render(request, 'menu/promos.html', {'promos': promos, 'canteens_list': Canteen.objects.all()})
 
 # --- Admin/Staff Logic ---
 
@@ -128,8 +133,22 @@ def is_staff(u):
 @user_passes_test(is_staff)
 def inventory_list(request):
     # Ensure inventory list is populated via database
+    canteen = Canteen.objects.first()
+    if canteen:
+        # Create a dummy item for demonstration
+        menu_item, created = MenuItem.objects.get_or_create(
+            canteen=canteen,
+            name='Omsim',
+            defaults={
+                'price': 50.00,
+                'description': 'A delicious meal.',
+                'image_url': 'food_imgs/omsim3.jpg'
+            }
+        )
+        Inventory.objects.get_or_create(item=menu_item)
+
     items = Inventory.objects.select_related('item').all()
-    return render(request, 'Menu/admin_inventory.html', {'inventory_list': items})
+    return render(request, 'menu/inventory.html', {'inventory_list': items})
 
 
 @user_passes_test(is_staff)
@@ -147,10 +166,10 @@ def add_edit_item(request, item_id=None):
             return redirect('inventory')
     else:
         initial = {}
-        if item:
+        if item and hasattr(item, 'inventory'):
             initial = {'current_stock': item.inventory.current_stock, 'threshold_level': item.inventory.threshold_level}
         form = MenuItemForm(instance=item, initial=initial)
-    return render(request, 'Menu/admin_add_item.html', {'form': form, 'item': item})
+    return render(request, 'menu/admin_add_item.html', {'form': form, 'item': item})
 
 
 @user_passes_test(is_staff)
@@ -163,7 +182,7 @@ def delete_item(request, item_id):
 def category_list(request):
     cats = Category.objects.all()
     for c in cats: c.item_count = MenuItem.objects.filter(category=c).count()
-    return render(request, 'Menu/admin_categories.html', {'categories': cats})
+    return render(request, 'menu/categories.html', {'categories': cats})
 
 
 @user_passes_test(is_staff)
@@ -185,5 +204,11 @@ def add_edit_category(request, cat_id=None):
     available = MenuItem.objects.exclude(category=cat).select_related('inventory') if cat else MenuItem.objects.filter(
         category__isnull=True)
 
-    return render(request, 'Menu/admin_add_category.html',
+    return render(request, 'menu/admin_add_category.html',
                   {'form': form, 'assigned_items': assigned, 'available_items': available, 'category': cat})
+
+
+@user_passes_test(is_staff)
+def delete_category(request, cat_id):
+    get_object_or_404(Category, pk=cat_id).delete()
+    return redirect('categories')

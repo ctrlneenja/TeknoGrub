@@ -49,7 +49,7 @@ urlpatterns = [
                   path('staff/order/update/<int:order_id>/', order_views.update_order_status,
                        name='update_order_status'),
 
-                  # Admin Management Paths (Must be clean)
+                  # Admin Management Paths (Menu)
                   path('manage/inventory/', menu_views.inventory_list, name='inventory'),
                   path('manage/inventory/add/', menu_views.add_edit_item, name='add_item'),
                   path('manage/inventory/edit/<int:item_id>/', menu_views.add_edit_item, name='edit_item'),
@@ -58,6 +58,7 @@ urlpatterns = [
                   path('manage/categories/', menu_views.category_list, name='categories'),
                   path('manage/categories/add/', menu_views.add_edit_category, name='add_category'),
                   path('manage/categories/edit/<int:cat_id>/', menu_views.add_edit_category, name='edit_category'),
+                  path('manage/categories/delete/<int:cat_id>/', menu_views.delete_category, name='delete_category'),
 
                   # Standard Django Password Change (for User settings)
                   path('settings/password/change/',
