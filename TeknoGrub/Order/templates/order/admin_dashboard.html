@@ -22,11 +22,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-container" style="max-width: 1400px; margin: 0 auto;">
-    <h2 style="color:white; margin-bottom: 20px;">Admin Dashboard</h2>
+<div class="dashboard-container">
+    <h2 class="dashboard-title">Admin Dashboard</h2>
 
     <!-- TOP STAT CARDS (These are now navigation links!) -->
-    <div class="stats-row-nav" style="margin-bottom: 30px;">
+    <div class="stats-row-nav">
 
         <!-- New Orders -->
         <a href="{% url 'staff_orders' %}?tab=Pending" class="stat-card-nav {% if active_tab == 'Pending' %}active{% endif %}">
