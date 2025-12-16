@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm  # <--- Added PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from .models import Users, Role
@@ -8,11 +8,6 @@ from Order.models import Order
 from Menu.models import Favorite
 
 
-# You would need to enable the messages framework in settings.py to use these:
-# from django.contrib import messages
-
-
-# --- Helper: Get User Role (For Redirection) ---
 def get_user_role(user):
     """Safely retrieves the role name for redirection logic."""
     if user.is_superuser:
@@ -20,9 +15,7 @@ def get_user_role(user):
     return user.role.role_name if user.role else 'Student'
 
 
-# --- 1. Login View ---
 def login_view(request):
-    # If user is already logged in, redirect them
     if request.user.is_authenticated:
         role = get_user_role(request.user)
 
@@ -71,7 +64,6 @@ def signup_view(request):
         try:
             student_role = Role.objects.get(role_name='Student')
 
-            # Create user using the custom manager (ID number is USERNAME_FIELD)
             user = Users.objects.create_user(
                 id_number=id_number,
                 password=password,
@@ -94,13 +86,11 @@ def signup_view(request):
     return render(request, 'User/signup.html')
 
 
-# --- 3. Logout View ---
 def logout_view(request):
     logout(request)
     return redirect('login')
 
 
-# --- 4. Settings View ---
 @login_required
 def settings_view(request):
     orders_count = Order.objects.filter(user=request.user).count()
@@ -112,25 +102,18 @@ def settings_view(request):
     })
 
 
-# --- 5. Password Change View (NEW) ---
 @login_required
 def password_change_view(request):
     if request.method == 'POST':
-        # 1. Use Django's built-in form, passing the user and POST data
         form = PasswordChangeForm(request.user, request.POST)
 
         if form.is_valid():
-            # 2. Save the new password
             user = form.save()
 
-            # 3. CRITICAL: Update the session hash to prevent the user from being logged out
             update_session_auth_hash(request, user)
 
-            # 4. Success: Redirect back to settings (You would show a success message here)
             return redirect('settings')
-        # If form is not valid, it automatically renders the template with errors
     else:
-        # 5. GET Request: Initialize an empty form
         form = PasswordChangeForm(request.user)
 
     return render(request, 'User/password_change.html', {'form': form})

@@ -11,7 +11,6 @@ from Payment.models import Payment
 import json
 
 
-# --- Helpers ---
 def is_staff_or_admin(user):
     if not user.is_authenticated:
         return False
@@ -25,7 +24,6 @@ def is_admin(user):
 
 
 def get_order_counts():
-    """Helper to get counts for the top display cards."""
     return Order.objects.aggregate(
         pending=Count('id', filter=Q(status='Pending')),
         preparing=Count('id', filter=Q(status='Preparing')),
@@ -34,7 +32,6 @@ def get_order_counts():
     )
 
 
-# --- USER VIEWS ---
 @login_required
 @transaction.atomic
 def checkout(request):
@@ -71,7 +68,7 @@ def checkout(request):
                 order=order,
                 amount=total_amount,
                 method_used=payment_method,
-                status='Paid' # Assuming payment is successful at this point
+                status='Paid'
             )
 
             cart.delete()
@@ -85,18 +82,13 @@ def checkout(request):
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=400)
 
 
-# --- STAFF/ADMIN VIEWS ---
-
-# 1. ADMIN DASHBOARD (For Superuser/Admin)
 @user_passes_test(is_admin)
 def admin_dashboard(request):
     counts = get_order_counts()
 
-    # Fetch total sales from completed orders
     total_sales = Order.objects.filter(status='Completed').aggregate(total=Sum('total_amount'))['total'] or 0
 
     context = {
-        # FIX: Passing variables directly, matching the staff_orders template structure
         'pending': counts['pending'],
         'preparing': counts['preparing'],
         'ready': counts['ready'],
@@ -105,7 +97,6 @@ def admin_dashboard(request):
     }
     return render(request, 'Order/admin_dashboard.html', context)
 
-# 2. STAFF ORDERS VIEW (KanBan/Master-Detail for all staff)
 @user_passes_test(is_staff_or_admin)
 def staff_orders(request):
     active_tab = request.GET.get('tab', 'Pending')
@@ -125,7 +116,6 @@ def staff_orders(request):
     context = {
         'orders': orders,
         'active_tab': active_tab,
-        # Pass counts individually for the Dashboard template fix
         'pending': counts['pending'],
         'preparing': counts['preparing'],
         'ready': counts['ready'],
@@ -133,7 +123,6 @@ def staff_orders(request):
     }
     return render(request, 'Order/staff_orders.html', context)
 
-# 3. Order Status Update Logic (Handles Stock & Notifications)
 @user_passes_test(is_staff_or_admin)
 def update_order_status(request, order_id):
     if request.method == "POST":
@@ -162,7 +151,6 @@ def update_order_status(request, order_id):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
-# --- 4. History View (Student View) ---
 @login_required
 def history_view(request):
     active_status = request.GET.get('status', 'Ongoing')
@@ -172,7 +160,7 @@ def history_view(request):
             '-created_at')
     elif active_status == 'Completed':
         orders = Order.objects.filter(user=request.user, status='Completed').order_by('-created_at')
-    else:  # Cancelled
+    else:
         orders = Order.objects.filter(user=request.user, status='Cancelled').order_by('-created_at')
 
     return render(request, 'Order/history.html', {

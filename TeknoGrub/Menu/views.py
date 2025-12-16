@@ -5,17 +5,12 @@ from .models import MenuItem, Category, Inventory, Favorite
 from Canteen.models import Canteen
 from .forms import MenuItemForm, CategoryForm
 from Promo.models import Promo
-from Menu.models import MenuItem # Ensure MenuItem is imported
-from django.db.models import Q, Count
-import json
+from Menu.models import MenuItem
+from django.db.models import Q
 
 
-# --- Helpers ---
 def is_staff(u):
     return u.is_staff or (u.role and u.role.role_name in ['Staff', 'Admin'])
-
-
-# --- User Views ---
 
 @login_required
 def set_canteen(request):
@@ -35,10 +30,8 @@ def set_canteen(request):
 def menu_view(request):
     """Displays the main menu, filtered by Canteen and Category."""
 
-    # 1. Get Canteen
     cid = request.session.get('canteen_id')
     if not cid:
-        # Set default canteen if session is empty
         first = Canteen.objects.first()
         if first:
             cid = first.pk
@@ -49,10 +42,8 @@ def menu_view(request):
     all_canteens = Canteen.objects.all()
     categories = Category.objects.all()
 
-    # 2. Base Item Query
     items = MenuItem.objects.filter(canteen_id=cid, is_available=True)
 
-    # 3. Search/Filter Logic (If you added a search bar to the menu template)
     search_query = request.GET.get('q')
     if search_query:
         items = items.filter(
@@ -60,11 +51,9 @@ def menu_view(request):
             Q(description__icontains=search_query)
         )
 
-    # 4. Category Filter
     if cat_filter != 'All':
         items = items.filter(category__category_name=cat_filter)
 
-    # 5. Favorite Flag (Required for star icon consistency)
     user_fav_ids = Favorite.objects.filter(user=request.user).values_list('item_id', flat=True)
     for i in items:
         i.is_favorite = i.id in user_fav_ids
@@ -95,7 +84,6 @@ def toggle_favorite(request, item_id):
     else:
         status = 'added'
 
-    # Redirect if on the favorites page to refresh the state
     if request.META.get('HTTP_REFERER', '').endswith('/favorites/'):
         return JsonResponse({'status': 'redirect', 'url': '/favorites/'})
 
@@ -110,7 +98,6 @@ def favorites_view(request):
         f.item.is_favorite = True
         items.append(f.item)
 
-    # Ensure canteens list is passed for the dropdown to show up
     return render(request, 'menu/favorites.html', {
         'menu_items': items,
         'canteens_list': Canteen.objects.all()
@@ -119,15 +106,10 @@ def favorites_view(request):
 
 @login_required
 def promos_view(request):
-    # FIX: Use the correct related name (should be 'promos') OR use the default (related_name='promos_set')
-    # We will use the default relationship name to be safe if you didn't define a related_name on the M2M field.
     promos = Promo.objects.filter(is_active=True).prefetch_related('applicable_items')
-
-    # NOTE: If the above still fails, change prefetch_related('applicable_items') to prefetch_related('promo') or 'promos_set'
 
     return render(request, 'menu/promos.html', {'promos': promos, 'canteens_list': Canteen.objects.all()})
 
-# --- Admin/Staff Logic ---
 
 def is_staff(u):
     return u.is_staff or (u.role and u.role.role_name in ['Staff', 'Admin'])
@@ -135,7 +117,6 @@ def is_staff(u):
 
 @user_passes_test(is_staff)
 def inventory_list(request):
-    # Ensure inventory list is populated via database
     items = Inventory.objects.select_related('item').all()
     return render(request, 'menu/inventory.html', {'inventory_list': items})
 
@@ -147,7 +128,6 @@ def add_edit_item(request, item_id=None):
         form = MenuItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             mi = form.save()
-            # Handle Inventory creation/update
             Inventory.objects.update_or_create(item=mi, defaults={
                 'current_stock': form.cleaned_data['current_stock'],
                 'threshold_level': form.cleaned_data['threshold_level']

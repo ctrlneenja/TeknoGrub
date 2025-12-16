@@ -218,3 +218,46 @@
         width: 100%;
     }
 }
+
+
+@media (max-width: 1100px) {
+    /* General staff layout switch */
+    .dashboard-app-container {
+        grid-template-columns: 1fr; /* Sidebar goes full width */
+    }
+
+    .dashboard-sidebar {
+        /* The sidebar slides in and out (controlled by JS toggleSidebar()) */
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+    }
+    .dashboard-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .dashboard-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    /* STATS CARD STACKING */
+    .stats-row-nav, .stats-row {
+        grid-template-columns: 1fr; /* Stack counters vertically */
+    }
+
+    /* Order Master/Detail Layout */
+    .main-workspace-grid {
+        grid-template-columns: 1fr; /* Stack List and Details vertically */
+    }
+
+    /* Orders List Panel should take full width */
+    .order-list-panel {
+        grid-column: 1 / -1;
+    }
+
+    /* Order Details Panel - Might need to hide initially on small screens */
+    .order-details-panel {
+        grid-column: 1 / -1;
+    }
+}

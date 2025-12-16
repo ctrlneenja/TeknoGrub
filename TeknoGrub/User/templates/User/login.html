@@ -18,7 +18,7 @@
             {% csrf_token %}
 
             <div class="input-wrapper">
-                <input type="text" name="username" placeholder="ID Number" required>
+                <input type="text" name="username" placeholder="ID Number" required pattern="[0-9\-]*" title="ID Number must only contain numbers and dashes (-)">
             </div>
 
             <div class="input-wrapper relative">

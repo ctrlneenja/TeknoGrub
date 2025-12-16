@@ -8,21 +8,17 @@ class Command(BaseCommand):
     help = 'Seeds initial data'
 
     def handle(self, *args, **kwargs):
-        # 1. Roles
         Role.objects.get_or_create(role_name='Student')
         Role.objects.get_or_create(role_name='Staff')
         Role.objects.get_or_create(role_name='Admin')
 
-        # 2. Canteens
         main, _ = Canteen.objects.get_or_create(name="Main Canteen", location="Main")
         shs, _ = Canteen.objects.get_or_create(name="SHS Canteen", location="SHS")
         jhs_canteen, _ = Canteen.objects.get_or_create(name="JHS Canteen", location="JHS Building")
 
-        # 3. Categories
         cats = ["Rice Meals", "Snacks", "Drinks", "Desserts", "Pasta"]
         cat_objs = {c: Category.objects.get_or_create(category_name=c)[0] for c in cats}
 
-        # 4. Items (10 Items)
         items = [
             ("Chicken Adobo", 60, "Rice Meals", main), ("Pork Sinigang", 70, "Rice Meals", main),
             ("Beef Caldereta", 85, "Rice Meals", main), ("Spaghetti", 50, "Pasta", main),
@@ -40,7 +36,6 @@ class Command(BaseCommand):
 
             self.stdout.write('Creating Promos...')
 
-            # Get items for the promo
         spaghetti = MenuItem.objects.get(name="Spaghetti")
         caldereta = MenuItem.objects.get(name="Beef Caldereta")
         promo_1, created = Promo.objects.get_or_create(
