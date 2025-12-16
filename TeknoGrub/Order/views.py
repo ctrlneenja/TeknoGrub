@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
-from django.db import models, transaction
+from django.db import models, transaction, connection
 from django.db.models import Sum, Count, Q
 from .models import Order, OrderItem
 from Menu.models import MenuItem
@@ -39,10 +39,10 @@ def get_order_counts():
 @transaction.atomic
 def checkout(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        payment_method = data.get('payment_method')
-
         try:
+            data = json.loads(request.body)
+            payment_method = data.get('payment_method')
+
             cart = Cart.objects.get(user=request.user)
             cart_items = CartItem.objects.filter(cart=cart)
 
@@ -51,12 +51,11 @@ def checkout(request):
 
             total_amount = sum(item.menu_item.price * item.quantity for item in cart_items)
 
-            order = Order.objects.create(
-                user=request.user,
-                canteen_id=request.session.get('canteen_id'),
-                total_amount=total_amount,
-                payment_method=payment_method
-            )
+            with connection.cursor() as cursor:
+                cursor.callproc('CreateOrder', [request.user.id, request.session.get('canteen_id'), total_amount, payment_method])
+                order_id = cursor.fetchone()[0]
+
+            order = Order.objects.get(pk=order_id)
 
             for cart_item in cart_items:
                 OrderItem.objects.create(
@@ -137,28 +136,31 @@ def staff_orders(request):
 @user_passes_test(is_staff_or_admin)
 def update_order_status(request, order_id):
     if request.method == "POST":
-        data = json.loads(request.body)
-        new_status = data['status']
-        order = get_object_or_404(Order, pk=order_id)
-        customer = order.user
+        try:
+            data = json.loads(request.body)
+            new_status = data['status']
+            order = get_object_or_404(Order, pk=order_id)
+            customer = order.user
 
-        # Stock Deduction & Notification Logic
-        if new_status == 'Preparing' and order.status == 'Pending':
-            # ... (Stock deduction logic remains the same) ...
-            Notification.objects.create(user=customer, title="Order Accepted",
-                                        message=f"Your order #{order.id} is now being prepared.")
+            # Stock Deduction & Notification Logic
+            if new_status == 'Preparing' and order.status == 'Pending':
+                # ... (Stock deduction logic remains the same) ...
+                Notification.objects.create(user=customer, title="Order Accepted",
+                                            message=f"Your order #{order.id} is now being prepared.")
 
-        elif new_status == 'Ready' and order.status == 'Preparing':
-            Notification.objects.create(user=customer, title="Order Ready!",
-                                        message=f"Your order #{order.id} is ready for pickup.")
+            elif new_status == 'Ready' and order.status == 'Preparing':
+                Notification.objects.create(user=customer, title="Order Ready!",
+                                            message=f"Your order #{order.id} is ready for pickup.")
 
-        elif new_status == 'Completed':
-            Notification.objects.create(user=customer, title="Order Completed",
-                                        message=f"Thank you! Your order #{order.id} is complete.")
+            elif new_status == 'Completed':
+                Notification.objects.create(user=customer, title="Order Completed",
+                                            message=f"Thank you! Your order #{order.id} is complete.")
 
-        order.status = new_status
-        order.save()
-        return JsonResponse({'status': 'success', 'new_status': new_status})
+            order.status = new_status
+            order.save()
+            return JsonResponse({'status': 'success', 'new_status': new_status})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 

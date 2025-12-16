@@ -7,6 +7,7 @@ from .forms import MenuItemForm, CategoryForm
 from Promo.models import Promo
 from Menu.models import MenuItem # Ensure MenuItem is imported
 from django.db.models import Q, Count
+from django.db import connection
 import json
 
 
@@ -146,13 +147,42 @@ def add_edit_item(request, item_id=None):
     if request.method == 'POST':
         form = MenuItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
-            mi = form.save()
-            # Handle Inventory creation/update
-            Inventory.objects.update_or_create(item=mi, defaults={
-                'current_stock': form.cleaned_data['current_stock'],
-                'threshold_level': form.cleaned_data['threshold_level']
-            })
-            return redirect('inventory')
+            try:
+                with connection.cursor() as cursor:
+                    if item:
+                        cursor.callproc('UpdateMenuItem', [
+                            item.id,
+                            form.cleaned_data['canteen'].id,
+                            form.cleaned_data['category'].id,
+                            form.cleaned_data['name'],
+                            form.cleaned_data['description'],
+                            form.cleaned_data['ingredients'],
+                            form.cleaned_data['price'],
+                            form.cleaned_data['image_url'],
+                            form.cleaned_data['is_available']
+                        ])
+                    else:
+                        cursor.callproc('CreateMenuItem', [
+                            form.cleaned_data['canteen'].id,
+                            form.cleaned_data['category'].id,
+                            form.cleaned_data['name'],
+                            form.cleaned_data['description'],
+                            form.cleaned_data['ingredients'],
+                            form.cleaned_data['price'],
+                            form.cleaned_data['image_url'],
+                            form.cleaned_data['is_available']
+                        ])
+                        item_id = cursor.fetchone()[0]
+                
+                mi = MenuItem.objects.get(pk=item_id)
+                Inventory.objects.update_or_create(item=mi, defaults={
+                    'current_stock': form.cleaned_data['current_stock'],
+                    'threshold_level': form.cleaned_data['threshold_level']
+                })
+                return redirect('inventory')
+            except Exception as e:
+                # Handle database errors
+                form.add_error(None, str(e))
     else:
         initial = {}
         if item and hasattr(item, 'inventory'):

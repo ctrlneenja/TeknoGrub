@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm  # <--- Added PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
+from django.db import IntegrityError, connection
 from .models import Users, Role
 from Order.models import Order
 from Menu.models import Favorite
-
+from django.contrib.auth.hashers import make_password
 
 # You would need to enable the messages framework in settings.py to use these:
 # from django.contrib import messages
@@ -70,17 +70,18 @@ def signup_view(request):
 
         try:
             student_role = Role.objects.get(role_name='Student')
+            hashed_password = make_password(password)
 
-            # Create user using the custom manager (ID number is USERNAME_FIELD)
-            user = Users.objects.create_user(
-                id_number=id_number,
-                password=password,
-                email=school_email,
-                first_name=first_name,
-                last_name=last_name,
-                school_email=school_email,
-                role=student_role
-            )
+            with connection.cursor() as cursor:
+                cursor.callproc('CreateUser', [
+                    id_number,
+                    hashed_password,
+                    school_email,
+                    first_name,
+                    last_name,
+                    id_number,
+                    student_role.id
+                ])
 
             return redirect('login')
 
