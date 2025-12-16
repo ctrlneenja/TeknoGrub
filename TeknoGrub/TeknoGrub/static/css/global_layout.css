@@ -376,3 +376,43 @@ body {
         padding: 15px;
     }
 }
+
+@media (max-width: 992px) {
+    /* General App Container Switch */
+    .app-container {
+        /* If using base.html (Student) */
+        grid-template-areas: "header" "content";
+        grid-template-columns: 1fr;
+        grid-template-rows: var(--header-height) 1fr;
+    }
+    .app-container.auth-mode {
+        display: block; /* Keep login/signup full width */
+    }
+    .app-container.auth-mode .main-content {
+        height: 100vh;
+    }
+
+    /* Student Sidebar (Menu) Hiding */
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        height: 100%; /* Full height */
+        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    .mobile-toggle {
+        display: block !important; /* Ensure hamburger is visible */
+    }
+
+    /* Admin/Staff Sidebar Hiding */
+    .dashboard-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        height: 100vh;
+        z-index: 1000;
+    }
+    .dashboard-sidebar.open {
+        transform: translateX(0);
+    }

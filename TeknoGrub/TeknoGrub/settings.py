@@ -138,8 +138,6 @@ LOGIN_REDIRECT_URL = 'menu'
 LOGOUT_REDIRECT_URL = 'login'
 
 AUTHENTICATION_BACKENDS = [
-    # Use our custom backend first
     'User.backends.IdNumberBackend',
-    # Keep the default Django backend as a fallback for superusers/admin if needed
     'django.contrib.auth.backends.ModelBackend',
 ]

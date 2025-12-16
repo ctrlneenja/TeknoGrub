@@ -138,3 +138,39 @@
     border-radius: 6px;
     z-index: 10;
 }
+
+/* --- Menu Page Responsiveness --- */
+.dish-grid {
+    display: grid;
+    /* Adjust columns: On small screens, use 2 columns, otherwise fill based on size */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+.card {
+    /* Ensure cards don't stretch too wide if there's only one row */
+    min-width: 180px;
+}
+
+/* Fixing Category Scroll Bar */
+.category-header {
+    /* Ensure category buttons don't overflow badly */
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.cat-links {
+    /* Allow the links to scroll horizontally if they don't fit */
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+.cat-links::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for aesthetics */
+}
+
+/* Cart Sidebar (Ensure it doesn't push content off-screen) */
+.basket-sidebar {
+    max-width: 90vw; /* Use viewport width on small screens */
+    right: 0; /* Anchor to the right edge */
+    bottom: 0; /* Anchor to the bottom edge */
+    max-height: 100vh;
+    border-radius: 0; /* Full edge pop-up */
+}

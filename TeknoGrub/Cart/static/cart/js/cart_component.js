@@ -1,4 +1,4 @@
-// Define globally so it's accessible from base.html (needed for Add button)
+
 window.addToCart = function(itemId) {
     fetch('/api/cart/add/', {
         method: 'POST',
@@ -13,13 +13,11 @@ window.addToCart = function(itemId) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
     const openBasketBtn = document.getElementById('open-basket-btn');
     const basketSidebar = document.getElementById('basket-sidebar');
     const basketOverlay = document.getElementById('basket-overlay');
     const confirmBtn = document.getElementById('confirmOrderBtn');
 
-    // --- 1. UI LOGIC (Open/Close) ---
     window.openBasket = function() {
         if(!basketSidebar || !basketOverlay) return;
         basketSidebar.classList.add('is-active');
@@ -42,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 2. DATA LOGIC (Talk to Django) ---
     window.refreshBasketUI = function() {
         const listContainer = document.getElementById('cart-list-container');
         const totalDisplay = document.getElementById('cart-total-display');
@@ -52,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/api/cart/update/')
         .then(response => response.json())
         .then(data => {
-            listContainer.innerHTML = ''; // Clear current list
+            listContainer.innerHTML = '';
 
             if (data.items.length === 0) {
                 listContainer.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Your basket is empty.</p>';
@@ -62,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             confirmBtn.disabled = false;
 
-            // Build HTML for each item
             data.items.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'basket-item';
@@ -84,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 listContainer.appendChild(li);
             });
 
-            // Update Total
             totalDisplay.innerText = '₱ ' + data.total.toLocaleString('en-US', {minimumFractionDigits: 2});
         })
         .catch(error => {
@@ -93,11 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- 3. CHECKOUT LOGIC ---
     if(confirmBtn) {
         confirmBtn.addEventListener('click', () => {
             if(confirmBtn.disabled) return;
-            // Add payment method selection logic here if fully implemented
 
             fetch('/api/cart/checkout/', {
                 method: 'POST',
@@ -119,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.refreshBasketUI();
 });
 
-// Helper for CSRF Token (Needs to be defined outside the DOMContentLoaded block)
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

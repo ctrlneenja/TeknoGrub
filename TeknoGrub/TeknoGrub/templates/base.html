@@ -101,18 +101,15 @@
             </header>
         {% endif %}
 
-        <!-- MAIN CONTENT AREA -->
         <main class="main-content">
             {% block content %}{% endblock %}
         </main>
     </div>
 
-    <!-- CART (User Only) -->
     {% if user.is_authenticated and user.role.role_name != 'Admin' and user.role.role_name != 'Staff' %}
         {% include 'cart/cart_component.html' %}
     {% endif %}
 
-    <!-- JAVASCRIPT LOGIC (Shared) -->
     <script>
         function getCookie(name) {
             let cookieValue = null;
