@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 from django.db import models, transaction
 from django.db.models import Sum, Count, Q
+from django.contrib import messages # <-- ADD THIS IMPORT
 from .models import Order, OrderItem
 from Menu.models import MenuItem
 from Cart.models import Cart, CartItem
@@ -167,3 +168,36 @@ def history_view(request):
         'orders': orders,
         'active_status': active_status
     })
+
+
+@login_required
+def reorder_view(request, old_order_id):
+    try:
+        original_order = Order.objects.get(pk=old_order_id, user=request.user)
+
+        new_order = Order.objects.create(
+            user=request.user,
+            canteen=original_order.canteen,
+            total_amount=original_order.total_amount,
+            payment_method="Reordered - " + original_order.payment_method,
+            status='Pending'
+        )
+
+        for item in original_order.items.all():
+            OrderItem.objects.create(
+                order=new_order,
+                menu_item=item.menu_item,
+                menu_item_name=item.menu_item_name,
+                quantity=item.quantity,
+                price=item.price
+            )
+
+        messages.success(request, f"Order #{original_order.id} reordered successfully! New Order ID: {new_order.id}")
+        return redirect('history')
+
+    except Order.DoesNotExist:
+        messages.error(request, "Original order not found.")
+        return redirect('history')
+    except Exception as e:
+        messages.error(request, f"Failed to reorder: {e}")
+        return redirect('history')

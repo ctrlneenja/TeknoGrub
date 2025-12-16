@@ -1,55 +1,110 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}History{% endblock %}
+
 {% block content %}
 <div class="history-container" style="max-width: 900px; margin: 0 auto; color: white;">
-    <h2 class="page-title" style="color:white; margin-bottom: 10px;">Order History</h2>
+    <h2 class="page-title" style="color:white; margin-bottom: 20px;">Order History</h2>
 
-    <!-- TABS Aesthetic Fix -->
-    <div class="tabs-nav" style="display: flex; gap: 20px; border-bottom: 2px solid rgba(255,255,255,0.3); margin-bottom: 25px;">
-        <a href="?status=Ongoing" class="tab-btn-history {% if active_status == 'Ongoing' %}active{% endif %}" style="text-decoration: none;">Ongoing</a>
-        <a href="?status=Completed" class="tab-btn-history {% if active_status == 'Completed' %}active{% endif %}" style="text-decoration: none;">Completed</a>
-        <a href="?status=Cancelled" class="tab-btn-history {% if active_status == 'Cancelled' %}active{% endif %}" style="text-decoration: none;">Cancelled</a>
+    <!-- Tabs Section (Must match prototype style) -->
+    <div class="history-tabs" style="display: flex; gap: 30px; margin-bottom: 25px;">
+        <a href="?status=Ongoing" class="tab-link {% if active_status == 'Ongoing' %}active{% endif %}">Ongoing</a>
+        <a href="?status=Completed" class="tab-link {% if active_status == 'Completed' %}active{% endif %}">Completed</a>
+        <a href="?status=Cancelled" class="tab-link {% if active_status == 'Cancelled' %}active{% endif %}">Cancelled</a>
     </div>
 
-    <!-- Order List -->
-    {% for order in orders %}
-        <div class="order-history-card" style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; color: #333;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <h3 style="margin: 0; color: #550508;">{{ order.canteen.name }}</h3>
-                <span style="font-weight: bold; color: {% if order.status == 'Pending' %}#FBCD36{% elif order.status == 'Completed' %}green{% else %}red{% endif %};">{{ order.status|upper }}</span>
-            </div>
-            <p style="color: #777; font-size: 0.9rem;">{{ order.created_at|date:"M d, Y h:i A" }}</p>
+    <div class="order-list-history">
+        {% for order in orders %}
+        <div class="history-card">
 
-            <ul style="margin: 10px 0; padding-left: 20px;">
+            <!-- TOP ROW: Canteen Name and Status -->
+            <div class="history-card-header">
+                <h3 class="history-canteen-name">{{ order.canteen.name }}</h3>
+                <span class="history-status status-{{ order.status|lower }}">{{ order.status|upper }}</span>
+            </div>
+
+            <p class="history-datetime">{{ order.created_at|date:"M d, Y h:i A" }}</p>
+
+            <hr style="border-color:#eee;">
+
+            <!-- ITEM LIST -->
+            <ul class="history-item-list">
                 {% for item in order.items.all %}
                 <li>{{ item.quantity }}x {{ item.menu_item_name }}</li>
                 {% endfor %}
             </ul>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px;">
-                <span style="font-weight: bold; font-size: 1.1rem;">Total: ₱ {{ order.total_amount }}</span>
+            <!-- BOTTOM ROW: Total and Reorder Button -->
+            <div class="history-footer">
+                <span class="history-total">Total: ₱ {{ order.total_amount }}</span>
+
                 {% if order.status == 'Completed' %}
-                <button class="btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Reorder</button>
+                    <button class="reorder-btn" onclick="window.location.href='{% url 'reorder_item' order.id %}'">
+                        Reorder
+                    </button>
                 {% endif %}
             </div>
+
         </div>
-    {% empty %}
-        <p style="color: white; padding: 20px;">No orders found in this status.</p>
-    {% endfor %}
+        {% empty %}
+        <p style="color:white; padding: 30px; text-align: center;">No orders found in the {{ active_status }} tab.</p>
+        {% endfor %}
+    </div>
 </div>
 
 <style>
-    /* History Tab Aesthetic Fix */
-    .tab-btn-history {
-        color: rgba(255,255,255,0.7);
-        font-weight: 600;
-        padding: 10px 0;
-        transition: color 0.2s;
+    /* --- HISTORY PAGE CSS --- */
+    .history-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        color: #333;
+        position: relative;
     }
-    .tab-btn-history.active {
+    .history-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .history-canteen-name { font-weight: 800; font-size: 1.2rem; color: #550508; margin: 0; }
+    .history-datetime { color: #777; font-size: 0.85rem; margin-bottom: 10px; }
+    .history-status { font-weight: 800; color: green; } /* Status text color */
+
+    .history-item-list { padding-left: 20px; margin: 15px 0; list-style-type: disc; }
+    .history-item-list li { margin-bottom: 5px; }
+
+    .history-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    .history-total { font-weight: bold; font-size: 1.1rem; color: #550508; }
+
+    .reorder-btn {
+        padding: 8px 20px;
+        background-color: #FBCD36;
+        border: none;
+        border-radius: 6px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    /* Tab Styling Fixes */
+    .history-tabs { border-bottom: 2px solid rgba(255,255,255,0.2); }
+    .tab-link {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-weight: 600;
+        padding-bottom: 8px;
+    }
+    .tab-link.active {
         color: white;
-        border-bottom: 2px solid #FBCD36;
+        border-bottom: 3px solid #FBCD36;
         font-weight: 800;
     }
 </style>

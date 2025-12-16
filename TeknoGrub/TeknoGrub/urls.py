@@ -56,4 +56,5 @@ urlpatterns = [
                        name='password_change'),
                   path('settings/password/change/done/', auth_views.PasswordChangeDoneView.as_view(),
                        name='password_change_done'),
+                  path('history/reorder/<int:old_order_id>/', order_views.reorder_view, name='reorder_item'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

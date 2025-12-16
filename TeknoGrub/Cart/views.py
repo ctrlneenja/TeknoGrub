@@ -9,7 +9,6 @@ import json
 
 
 def get_csrf_token(request):
-    """Retrieves CSRF token from the request cookies."""
     return request.COOKIES.get('csrftoken')
 
 
