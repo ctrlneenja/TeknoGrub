@@ -30,7 +30,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px;">
                 <span style="font-weight: bold; font-size: 1.1rem;">Total: ₱ {{ order.total_amount }}</span>
                 {% if order.status == 'Completed' %}
-                <button class="btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Reorder</button>
+                <a href="{% url 'reorder' order.id %}" class="btn-primary" style="padding: 8px 20px; font-size: 0.9rem; text-decoration: none; color: white; background-color: #007bff; border-color: #007bff; border-radius: .25rem;">Reorder</a>
                 {% endif %}
             </div>
         </div>

@@ -83,6 +83,24 @@ def checkout(request):
 
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=400)
 
+@login_required
+def reorder(request, order_id):
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+
+    # Clear existing cart items
+    cart.items.all().delete()
+
+    for item in order.items.all():
+        if item.menu_item:
+            CartItem.objects.create(
+                cart=cart,
+                menu_item=item.menu_item,
+                quantity=item.quantity
+            )
+    
+    return redirect('menu')
+
 
 # --- STAFF/ADMIN VIEWS ---
 

@@ -26,6 +26,7 @@ urlpatterns = [
                   path('favorites/', menu_views.favorites_view, name='favorites'),
                   path('promos/', menu_views.promos_view, name='promos'),
                   path('history/', order_views.history_view, name='history'),
+                  path('reorder/<int:order_id>/', order_views.reorder, name='reorder'),
 
                   # --- LOGIC & APIs ---
                   path('set_canteen/', menu_views.set_canteen, name='set_canteen'),
